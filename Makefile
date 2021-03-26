@@ -7,7 +7,15 @@ LINK = `sdl2-config --libs --cflags` -lSDL2_image -larmadillo -lm
 # name of executable
 EXE := bounce
 
-OBJ = obj/main.o obj/object.o obj/geometric_equation.o obj/circle.o obj/line.o obj/game.o
+GAME = obj/game/game.o
+
+SHAPES = obj/shapes/geometric_equation.o\
+				 obj/shapes/circle.o\
+				 obj/shapes/line.o
+
+OBJECT = obj/object/object.o
+
+OBJ = obj/main.o $(GAME) $(SHAPES) $(OBJECT)
 
 ## Colours
 COL_OBJ = $(shell tput setaf 3 2>/dev/null)

@@ -1,7 +1,8 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <vector>
-#include "object.hpp"
+
+#include "../object/object.hpp"
 
 class Game {
   public:

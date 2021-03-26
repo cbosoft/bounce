@@ -2,7 +2,7 @@
 #include <armadillo>
 #include <vector>
 
-#include "geometric_equation.hpp"
+#include "../shapes/shapes.hpp"
 
 
 class PhysicsObject {

@@ -2,8 +2,7 @@
 #include <stdexcept>
 
 #include "game.hpp"
-#include "circle.hpp"
-#include "line.hpp"
+#include "../shapes/shapes.hpp"
 
 Game::Game(double dt, double g)
   : dt(dt)
