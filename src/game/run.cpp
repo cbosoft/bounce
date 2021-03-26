@@ -9,3 +9,8 @@ void Game::run()
     this->input_step();
   }
 }
+
+void Game::quit()
+{
+  this->should_quit = true;
+}

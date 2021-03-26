@@ -7,7 +7,7 @@ void Game::input_step()
   while (SDL_PollEvent(&e)) {
     switch (e.type) {
       case SDL_QUIT:
-        this->should_quit = true;
+        this->quit();
         break;
 
       case SDL_KEYDOWN:
@@ -23,7 +23,7 @@ void Game::keydown(SDL_Scancode scancode)
   switch (scancode)
   {
     case SDL_SCANCODE_ESCAPE:
-      this->should_quit = true;
+      this->quit();
       break;
 
     default:
