@@ -7,7 +7,12 @@ LINK = `sdl2-config --libs --cflags` -lSDL2_image -larmadillo -lm
 # name of executable
 EXE := bounce
 
-GAME = obj/game/game.o
+GAME = obj/game/ctor.o\
+			 obj/game/dtor.o\
+			 obj/game/input.o\
+			 obj/game/physics.o\
+			 obj/game/render.o\
+			 obj/game/run.o
 
 SHAPES = obj/shapes/geometric_equation.o\
 				 obj/shapes/circle.o\
