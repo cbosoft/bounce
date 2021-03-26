@@ -1,7 +1,9 @@
 #include "game.hpp"
 
-Game::Game(double dt, double g)
-  : dt(dt)
+Game::Game(double dt, double g, int w, int h)
+  : w(w)
+  , h(h)
+  , dt(dt)
   , g(g)
   , time(0)
   , should_quit(false)
@@ -16,13 +18,5 @@ Game::Game(double dt, double g)
   po = new PhysicsObject({0, 10}, false);
   po->add_geometry(gen_circle(1));
   this->objects.push_back(po);
-
-  // RENDERER INIT
-  if (SDL_Init(SDL_INIT_EVERYTHING)) {
-    throw std::runtime_error(SDL_GetError());
-  }
-
-  if (SDL_CreateWindowAndRenderer(640, 480, 0, &this->win, &this->renderer)) {
-    throw std::runtime_error(SDL_GetError());
-  }
+  this->render_init();
 }
