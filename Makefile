@@ -45,7 +45,8 @@ options:
 
 # recipe for building the final executable
 $(EXE): $(OBJ) $(HDR) Makefile
-	$(CXX) -o $@ $(OBJ) $(CFLAGS) $(LINK)
+	@printf "$(COL_OBJ)LINKING OBJECTS TO EXECUTABLE $@$(COL_RST)\n"
+	@$(CXX) -o $@ $(OBJ) $(CFLAGS) $(LINK)
 
 clean:
 	rm -rf $(EXE) obj
