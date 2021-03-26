@@ -1,0 +1,17 @@
+# Editor
+tags
+*.un~
+
+# Python
+__pycache__
+*.pyc
+
+# Outputs
+*.pdf
+*.dat
+gmon.out
+vgcore*
+
+# Build files
+obj
+bounce
