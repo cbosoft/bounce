@@ -1,8 +1,29 @@
 #include "game.hpp"
 
+void Game::physics_init()
+{
+  this->physics_epoch = Clock::now();
+}
+
+double Game::check_time()
+{
+  Clock::time_point now = Clock::now();
+  Duration delta = (now - this->physics_epoch);
+  this->irl_time =  delta.count();
+  return this->irl_time;
+}
+
 void Game::physics_step()
 {
-  this->time += this->dt;
+  this->check_time();
+  while (this->physics_time < this->irl_time) {
+    this->physics_timestep_objects();
+  }
+}
+
+void Game::physics_timestep_objects()
+{
+  this->physics_time += this->dt;
   for (auto *obj : this->objects) {
     obj->timestep(this->dt, this->g);
   }
