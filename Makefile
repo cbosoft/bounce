@@ -12,6 +12,7 @@ GAME = obj/game/ctor.o\
 			 obj/game/input.o\
 			 obj/game/physics.o\
 			 obj/game/render.o\
+			 obj/game/logic.o\
 			 obj/game/run.o
 
 SHAPES = obj/shapes/geometric_equation.o\

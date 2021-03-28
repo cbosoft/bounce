@@ -30,6 +30,9 @@ class Game {
     void physics_timestep_objects();
     double check_time();
 
+    // Logic
+    void logic_step();
+
     // Loop
     void run();
     void quit();
