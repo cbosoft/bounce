@@ -5,7 +5,7 @@ class Line : public GeometricEquation {
   public:
     Line(double m, double c, double xmin, double xmax);
 
-    double func(double x) const override;
+    double func_raw(double x) const override;
 
   private:
     double m, c;

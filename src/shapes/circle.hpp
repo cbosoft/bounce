@@ -6,7 +6,7 @@ class HalfCircle : public GeometricEquation {
   public:
     HalfCircle(double r, bool positive);
 
-    double func(double x) const override;
+    double func_raw(double x) const override;
 
     double radius2, dir;
 };
