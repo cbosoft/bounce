@@ -26,6 +26,7 @@ arma::vec2 Game::world_pt_to_screen_pt(arma::vec2 pt)
 {
   pt = pt - this->camera_position;
   pt = pt % this->window_size / this->camera_size;
+  pt = pt + this->window_size*0.5;
   pt[1] = this->h - pt[1];
   return pt;
 }
