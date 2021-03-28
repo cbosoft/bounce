@@ -7,4 +7,6 @@ Game::~Game()
 
   if (this->win)
     SDL_DestroyWindow(this->win);
+
+  SDL_Quit();
 }
