@@ -47,9 +47,9 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
 
   if (f < 0.0) f *= -1.0;
 
-  double dx = (x_hi - x_lo)*0.01;
+  double dx = (x_hi - x_lo)*0.1;
 
-  constexpr double thresh = 1e-2;
+  constexpr double thresh = 5e-3;
   double minf = f, minx = x;
   for (int i = 0; i < 100; i++) {
     x += dx;
@@ -58,8 +58,7 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
     }
     double nf = this->func(x) - other.func(x);
     if (nf < 0) nf *= -1.0;
-    //double dfdx = (nf - f)/dx;
-    //if (dfdx > 0.0) dx *= -0.5;
+    if ((nf - f) > 0.0) dx *= -0.5;
 
     f = nf;
 
