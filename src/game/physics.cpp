@@ -33,14 +33,26 @@ void Game::physics_timestep_objects()
       if (j >= i) break;
 
       auto *o1 = this->objects[i], *o2 = this->objects[j];
+      if (o1->fixed() && o2->fixed()) continue;
 
       arma::vec2 norm;
       if (o1->will_collide(o2, norm)) {
         if (o1->fixed() || o2->fixed()) {
           auto *free_body = (o2->fixed()?o1:o2);
-          double m = (o2->fixed()?1.0:-1.0);
-          double vmag = arma::norm(free_body->velocity);
-          free_body->velocity = norm * vmag * m;
+
+          const arma::vec &v = free_body->velocity;
+          double n2 = arma::dot(norm, norm);
+          double vn = arma::dot(v, norm);
+          arma::vec2 vel_parallel_to_norm = (vn/n2)*norm;
+          arma::vec2 vel_perpendicular_to_norm = v - vel_parallel_to_norm;
+
+          arma::vec2 new_vel = vel_perpendicular_to_norm - vel_parallel_to_norm;
+          // std::cerr
+          //   << n2 << " "
+          //   << vn << " "
+          //   << "(" << new_vel[0] << ", " << new_vel[1] << ") "
+          //   << std::endl;
+          free_body->velocity = new_vel;
           free_body->new_position = free_body->velocity*dt + free_body->position;
         }
         else {
