@@ -80,11 +80,8 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
     else if (a.has_nan()) {
       a = b;
     }
-    else if (b.has_nan()) {
-      b = a;
-    }
 
-    norm = (a+b)*0.5;
+    norm = a;
     return true;
   }
   else {
