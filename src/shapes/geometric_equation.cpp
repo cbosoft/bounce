@@ -8,7 +8,8 @@ GeometricEquation::GeometricEquation(double x_lo, double x_hi, double y_lo, doub
   , y_hi(y_hi)
   , p(nullptr)
 {
-  // do nothing
+    // set p to refer not to parent position, but to dummy zero position (self origin)
+    this->p = &this->_self_origin;
 }
 
 double GeometricEquation::func(double x) const

@@ -19,6 +19,7 @@ class GeometricEquation {
 
     bool in_range_x(double x) const;
     bool in_range_y(double y) const;
+    arma::vec2 _self_origin;
 
     // int points_n;
     // std::vector<arma::vec2> points;
