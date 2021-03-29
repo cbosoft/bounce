@@ -1,5 +1,6 @@
 # Editor
 tags
+.idea
 *.un~
 
 # Python
@@ -15,3 +16,4 @@ vgcore*
 # Build files
 obj
 bounce
+build
