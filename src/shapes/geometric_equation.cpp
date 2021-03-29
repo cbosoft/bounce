@@ -42,13 +42,10 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
   double x = (x_hi + x_lo)*0.5;
 
   double f = this->func(x) - other.func(x);
-  //if (this->p) f += this->p->at(1);
-  //if (other.p) f -= other.p->at(1);
 
   if (f < 0.0) f *= -1.0;
 
   double dx = (x_hi - x_lo)*0.1;
-
   constexpr double thresh = 5e-3;
   double minf = f, minx = x;
   for (int i = 0; i < 100; i++) {
@@ -87,11 +84,6 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
       b = a;
     }
 
-    std::cerr
-      << "(" << a.at(0) << ", " << a.at(1) << ") "
-      << "(" << b.at(0) << ", " << b.at(1) << ")"
-      << "(" << this->p->at(0) << ", " << this->p->at(1) << ")"
-      << std::endl;
     norm = (a+b)*0.5;
     return true;
   }
