@@ -9,7 +9,7 @@ double Game::check_time()
 {
   Clock::time_point now = Clock::now();
   Duration delta = (now - this->physics_epoch);
-  this->irl_time =  delta.count();
+  this->irl_time =  delta.count()*this->time_scale;
   return this->irl_time;
 }
 

@@ -39,7 +39,7 @@ class Game {
 
   private:
     int w, h;
-    double dt, g, irl_time, physics_time;
+    double dt, g, irl_time, physics_time, time_scale;
     bool should_quit;
     SDL_Window *win;
     SDL_Renderer *renderer;
