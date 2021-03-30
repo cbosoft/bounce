@@ -9,4 +9,7 @@ Game::~Game()
     SDL_DestroyWindow(this->win);
 
   SDL_Quit();
+
+  for (auto *object : this->objects)
+      delete object;
 }
