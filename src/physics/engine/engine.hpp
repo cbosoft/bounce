@@ -8,6 +8,11 @@
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::duration<double, std::ratio<1, 1>> Duration;
 
+typedef struct {
+    bool happens;
+    arma::vec2 normal;
+} CollisionInformation;
+
 class PhysicsEngine {
 public:
     static PhysicsEngine &engine();
@@ -18,6 +23,9 @@ public:
 
     void timestep();
     void timestep_objects();
+    CollisionInformation &resolve_collision(PhysicsObject *a, PhysicsObject *b);
+    CollisionInformation &resolve_collision_free_bodies(PhysicsObject *a, PhysicsObject *b);
+    CollisionInformation &resolve_collision_one_fixed(PhysicsObject *free_body);
 
     void check_set_time();
     void set_timescale(double v);
@@ -32,4 +40,5 @@ private:
 
     double dt, time, irl_time, timescale;
     Clock::time_point epoch;
+    CollisionInformation _cached_collision;
 };
