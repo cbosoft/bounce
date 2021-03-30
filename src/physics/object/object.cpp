@@ -14,6 +14,7 @@ PhysicsObject::PhysicsObject(arma::vec2 position, double mass)
   : position(position)
   , new_position(position)
   , velocity({0, 0})
+  , force({0, 0})
   , _fixed(false)
 {
     this->set_mass(mass);
