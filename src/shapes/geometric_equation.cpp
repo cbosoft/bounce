@@ -32,48 +32,43 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
   //   //std::cerr << "NOT IN RANGE" << std::endl;
   //   return false;
   // }
+  constexpr double thresh = 5e-3;
+  constexpr double m = 0.1;
 
   double tx_lo = this->x_lo + this->p->at(0);
   double tx_hi = this->x_hi + this->p->at(0);
   double ox_lo = other.x_lo + other.p->at(0);
   double ox_hi = other.x_hi + other.p->at(0);
-  double x_lo = (tx_lo < ox_lo ? ox_lo : tx_lo);
-  double x_hi = (tx_hi > ox_hi ? ox_hi : tx_hi);
+  double lb = (tx_lo < ox_lo ? ox_lo : tx_lo);
+  double ub = (tx_hi > ox_hi ? ox_hi : tx_hi);
+  double span = ub - lb;
 
-  double x = (x_hi + x_lo)*0.5;
+  double x = span*0.5 + lb;
 
   double f = this->func(x) - other.func(x);
 
   if (f < 0.0) f *= -1.0;
 
-  double dx = (x_hi - x_lo)*0.1;
-  constexpr double thresh = 5e-3;
-  double minf = f, minx = x;
+  double dx = span*m;
   for (int i = 0; i < 100; i++) {
     x += dx;
-    if ((x_lo > x) || (x_hi < x)) {
-      break;
-    }
+    if (x > ub) x = ub;
+    if (x < lb) x = lb;
     double nf = this->func(x) - other.func(x);
     if (nf < 0) nf *= -1.0;
-    if ((nf - f) > 0.0) dx *= -0.5;
+    if ((nf - f) >= 0.0) dx *= -0.5;
 
     f = nf;
 
-    if (f < minf) {
-      minf = f;
-      minx = x;
-    }
-
-    if (f < thresh)
+    if (f <= thresh)
       break;
 
   }
 
-  if (minf < thresh) {
+  if (f < thresh) {
     // collision; find normal vector
-    auto a = this->normal_at_point(minx);
-    auto b = other.normal_at_point(minx);
+    auto a = this->normal_at_point(x);
+    auto b = other.normal_at_point(x);
 
     if (a.has_nan() && b.has_nan()) {
       norm = arma::vec2{0,0};
