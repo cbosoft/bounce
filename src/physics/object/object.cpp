@@ -1,7 +1,7 @@
 #include <iostream>
 #include "object.hpp"
 
-PhysicsObject::PhysicsObject(arma::vec2 position, bool fixed)
+PhysicsObject::PhysicsObject(const arma::vec2 &position, bool fixed)
   : position(position)
   , new_position(position)
   , velocity({0, 0})
@@ -10,7 +10,7 @@ PhysicsObject::PhysicsObject(arma::vec2 position, bool fixed)
     this->set_mass(1.0);
 }
 
-PhysicsObject::PhysicsObject(arma::vec2 position, double mass)
+PhysicsObject::PhysicsObject(const arma::vec2 &position, double mass)
   : position(position)
   , new_position(position)
   , velocity({0, 0})

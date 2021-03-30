@@ -7,8 +7,8 @@
 
 class PhysicsObject {
   public:
-    PhysicsObject(arma::vec2 position, bool fixed=false);
-    PhysicsObject(arma::vec2 position, double mass);
+    PhysicsObject(const arma::vec2 &position, bool fixed=false);
+    PhysicsObject(const arma::vec2 &position, double mass);
 
     void timestep(double dt);
 
