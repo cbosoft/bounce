@@ -2,11 +2,13 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cert-err58-cpp"
 
+#include <iostream>
 #include <armadillo>
 #include <gtest/gtest.h>
 
 #include "../src/shapes/shapes.hpp"
 
+// Lines
 TEST(ShapeTest, Lines_Parallel) {
     Line line_a(0, 0, -1, 1), line_b(0, 1, -1, 1);
 
@@ -59,6 +61,38 @@ TEST(ShapeTest, Lines_Intersecting_OutOfRange) {
     bool v = line_a.intersects(line_b, norm);
 
     EXPECT_FALSE(v);
+}
+
+// Circles
+TEST(ShapeTest, Circle_Intersection) {
+    HalfCircle c(1.0, true);
+    Line l(0.0, 0.0, -1.5, 1.5);
+
+    arma::vec2 norm;
+    bool v = c.intersects(l, norm);
+
+    EXPECT_TRUE(v);
+}
+
+TEST(ShapeTest, Circle_Intersection_OutOfRange) {
+    HalfCircle c(1.0, true);
+    Line l(0.0, -1e-2, -1.5, 1.5);
+
+    arma::vec2 norm;
+    bool v = c.intersects(l, norm);
+
+    EXPECT_FALSE(v);
+}
+
+TEST(ShapeTest, Circle_Intersection_Overlapping) {
+    HalfCircle upper(1.0, true), lower(1.0, false);
+    arma::vec2 upper_pos{0, -0.5};
+    upper.p = &upper_pos;
+
+    arma::vec2 norm;
+    bool v = upper.intersects(lower, norm);
+
+    EXPECT_TRUE(v);
 }
 
 #pragma clang diagnostic pop
