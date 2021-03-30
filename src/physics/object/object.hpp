@@ -2,7 +2,7 @@
 #include <armadillo>
 #include <vector>
 
-#include "../shapes/shapes.hpp"
+#include "../../shapes/shapes.hpp"
 
 
 class PhysicsObject {

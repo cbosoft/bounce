@@ -4,14 +4,14 @@
 #include <vector>
 #include <chrono>
 
-#include "../object/object.hpp"
+#include "../physics/engine/engine.hpp"
 
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::duration<double, std::ratio<1, 1>> Duration;
 
 class Game {
   public:
-    Game(double dt=1e-4, double g=10, int w=1280, int h=960);
+    Game(int w=1280, int h=960);
     ~Game();
 
     // Rendering
@@ -24,14 +24,9 @@ class Game {
     void input_step();
     void keydown(SDL_Scancode scancode);
 
-    // Physics
-    void physics_init();
-    void physics_step();
-    void physics_timestep_objects();
-    double check_time();
-
     // Logic
     void logic_step();
+    void add_object(PhysicsObject *obj);
 
     // Loop
     void run();
@@ -39,7 +34,6 @@ class Game {
 
   private:
     int w, h;
-    double dt, g, irl_time, physics_time, time_scale;
     bool should_quit;
     SDL_Window *win;
     SDL_Renderer *renderer;
