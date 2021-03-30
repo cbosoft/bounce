@@ -18,3 +18,8 @@ void PhysicsEngine::set_timescale(double v)
     this->timescale = v;
 }
 
+double PhysicsEngine::get_dt() const
+{
+    return this->dt;
+}
+

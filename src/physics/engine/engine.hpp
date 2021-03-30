@@ -22,6 +22,7 @@ public:
     void check_set_time();
     void set_timescale(double v);
     double get_time() const;
+    double get_dt() const;
 
 private:
     PhysicsEngine(double dt);
