@@ -21,7 +21,14 @@ void PhysicsEngine::timestep_objects()
 {
     this->time += this->dt/this->timescale;
     for (auto *obj : this->objects) {
-        obj->timestep(this->dt, 10);
+        obj->force = arma::vec{0, 0};
+        for (auto *field : this->fields) {
+            obj->force += field->measure_at(obj->position);
+        }
+    }
+
+    for (auto *obj : this->objects) {
+        obj->timestep(this->dt);
     }
 
     for (size_t i = 0; i < this->objects.size(); i++) {

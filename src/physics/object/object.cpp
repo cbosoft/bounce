@@ -7,14 +7,30 @@ PhysicsObject::PhysicsObject(arma::vec2 position, bool fixed)
   , velocity({0, 0})
   , _fixed(fixed)
 {
-  // do nothing
+    this->set_mass(1.0);
 }
 
-void PhysicsObject::timestep(double dt, double g)
+PhysicsObject::PhysicsObject(arma::vec2 position, double mass)
+  : position(position)
+  , new_position(position)
+  , velocity({0, 0})
+  , _fixed(false)
+{
+    this->set_mass(mass);
+}
+
+void PhysicsObject::set_mass(double mass)
+{
+    this->mass = mass;
+    this->inv_mass = 1./mass;
+}
+
+void PhysicsObject::timestep(double dt)
 {
   if (this->_fixed)
     return;
-  this->velocity += arma::dvec({0, -g*dt});
+
+  this->velocity += this->inv_mass*dt*this->force;
   this->new_position = this->position + this->velocity*dt;
 }
 
