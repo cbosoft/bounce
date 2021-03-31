@@ -6,6 +6,7 @@ class Line : public GeometricEquation {
     Line(double m, double c, double xmin, double xmax);
 
     double func_raw(double x) const override;
+    static Line *from_points(const arma::vec2 &start, const arma::vec2 &end);
 
   private:
     double m, c;

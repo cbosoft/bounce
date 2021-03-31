@@ -14,12 +14,12 @@ int main()
   o->add_geometry(new Line(0.1, 0, -50, 50));
   game.add_object(o);
 
-  o = new PhysicsObject({-50, -50}, true);
-  o->add_geometry(new Line(1e9, 0, 0, 1e-7));
+  o = new PhysicsObject({-50, 0}, true);
+  o->add_geometry(Line::from_points(arma::vec2{0, 0}, arma::vec2{0, 50}));
   game.add_object(o);
 
-  o = new PhysicsObject({ 50, -50}, true);
-  o->add_geometry(new Line(1e9, 0, 0, 1e-7));
+  o = new PhysicsObject({ 50, 0}, true);
+  o->add_geometry(Line::from_points(arma::vec2{0, 0}, arma::vec2{0, 50}));
   game.add_object(o);
 
   // ball
