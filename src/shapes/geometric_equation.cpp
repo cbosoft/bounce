@@ -114,10 +114,11 @@ std::vector<arma::vec2> GeometricEquation::as_points(int n)
   std::vector<arma::vec2> rv;
   double dx = (this->x_hi - this->x_lo) / double(n-1);
 
+  double x = this->x_lo;
   for (int i = 0; i < n; i++) {
-    double x = this->x_lo + dx*double(i) + this->p->at(0);
-    double y = this->func(x);
-    rv.push_back(arma::vec2{x, y});
+    double y = this->func_raw(x);
+    rv.emplace_back(arma::vec2{x, y} + (*this->p));
+    x += dx;
   }
 
   return rv;
