@@ -14,6 +14,11 @@ class GeometricEquation {
 
     arma::vec2 normal_at_point(double x) const;
 
+    double adj_x_lo() const;
+    double adj_x_hi() const;
+    double adj_y_lo() const;
+    double adj_y_hi() const;
+
     double x_lo, x_hi, y_lo, y_hi;
     arma::vec2 *p;
 

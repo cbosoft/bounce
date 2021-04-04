@@ -12,6 +12,26 @@ GeometricEquation::GeometricEquation(double x_lo, double x_hi, double y_lo, doub
     this->p = &this->_self_origin;
 }
 
+double GeometricEquation::adj_x_lo() const
+{
+    return this->p->at(0) + this->x_lo;
+}
+
+double GeometricEquation::adj_x_hi() const
+{
+    return this->p->at(0) + this->x_hi;
+}
+
+double GeometricEquation::adj_y_lo() const
+{
+    return this->p->at(1) + this->y_lo;
+}
+
+double GeometricEquation::adj_y_hi() const
+{
+    return this->p->at(1) + this->y_hi;
+}
+
 double GeometricEquation::func(double x) const
 {
   double xraw = x - this->p->at(0);
