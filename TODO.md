@@ -1,13 +1,13 @@
 # TODO
-- [ ] more shapes
-    - [ ] rectangles
-    - [ ] triangles
-    - [ ] regular polygons
 - [ ] transform system
 - [ ] Add parent GameObject which has children:
   - PhysicsObject
   - GeometricEquation(s)
   - RenderableObject
+- [x] more shapes
+  - [ ] ~~rectangles~~
+  - [ ] ~~triangles~~
+  - [x] regular polygons
 - [x] materials
   - [ ] ~~friction~~
   - [x] bounciness
@@ -29,3 +29,4 @@
   - possibly related to normal calculated on half-circle
   - ~~solve by improving normal calculation on bounds~~
   - solved by fixing edge-of-range collision detection
+- [ ] Polygons break through bounds occasionally

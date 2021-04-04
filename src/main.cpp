@@ -12,7 +12,7 @@ int main()
 
     // platform
     o = new PhysicsObject({0, 0}, true);
-    o->add_geometry(new Line(1, 0, -5, 5));
+    o->add_geometry(new Line(3, 0, -5, 5));
     game.add_object(o);
 
     // walls
@@ -34,20 +34,20 @@ int main()
     game.add_object(o);
 
     // balls
-    o = new PhysicsObject({0, 10}, false, 1.0);
-    o->add_geometry(gen_circle(1.0));
-    game.add_object(o);
+    // o = new PhysicsObject({0, 10}, false, 1.0);
+    // o->add_geometry(gen_circle(1.0));
+    // game.add_object(o);
 
-    o = new PhysicsObject({1, 20}, false, 1.0);
-    o->add_geometry(gen_circle(1.0));
-    game.add_object(o);
+    // o = new PhysicsObject({1, 20}, false, 1.0);
+    // o->add_geometry(gen_circle(1.0));
+    // game.add_object(o);
 
-    o = new PhysicsObject({-2, 30}, false, 0.5);
-    o->add_geometry(gen_circle(1.0));
-    game.add_object(o);
+    // o = new PhysicsObject({-2, 30}, false, 1.0);
+    // o->add_geometry(gen_circle(1.0));
+    // game.add_object(o);
 
-    o = new PhysicsObject({4, 40}, false, 0.5);
-    o->add_geometry(gen_circle(1.0));
+    o = new PhysicsObject({4, 40}, false, 1.0);
+    o->add_geometry(gen_regular_polygon(2.0, 4));
     game.add_object(o);
 
     game.run();
