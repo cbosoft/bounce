@@ -28,7 +28,6 @@ CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, Physics
         return this->resolve_collision_one_fixed(b->fixed()?a:b);
     }
 
-    std::cerr << "free body collision\n";
     return this->resolve_collision_free_bodies(a, b);
 }
 
