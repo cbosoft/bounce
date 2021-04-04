@@ -11,6 +11,7 @@ typedef std::chrono::duration<double, std::ratio<1, 1>> Duration;
 typedef struct {
     bool happens;
     arma::vec2 normal;
+    arma::vec2 at;
 } CollisionInformation;
 
 class PhysicsEngine {

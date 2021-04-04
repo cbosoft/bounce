@@ -15,9 +15,19 @@ GeometricEquation::GeometricEquation(double x_lo, double x_hi, double y_lo, doub
 double GeometricEquation::func(double x) const
 {
   return this->func_raw(x - this->p->at(0)) + this->p->at(1);
+bool GeometricEquation::intersects(const GeometricEquation &other) const
+{
+  arma::vec2 dummy;
+  return this->intersects(other, dummy);
 }
 
 bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &norm) const
+{
+  arma::vec2 dummy;
+  return this->intersects(other, norm, dummy);
+}
+
+bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &norm, arma::vec2 &at) const
 {
   // bool x_in_range = (
   //     this->in_range_x(other.x_lo + other.p->at(0)) ||

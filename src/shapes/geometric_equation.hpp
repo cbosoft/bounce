@@ -7,7 +7,9 @@ class GeometricEquation {
     GeometricEquation(double x_lo, double x_hi, double y_lo, double y_hi);
     double func(double x) const;
     virtual double func_raw(double x) const =0;
+    bool intersects(const GeometricEquation& other) const;
     bool intersects(const GeometricEquation& other, arma::vec2 &norm) const;
+    bool intersects(const GeometricEquation& other, arma::vec2 &norm, arma::vec2 &at) const;
     std::vector<arma::vec2> as_points(int n = 100);
 
     arma::vec2 normal_at_point(double x) const;

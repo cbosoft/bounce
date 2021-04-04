@@ -20,7 +20,7 @@ CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, Physics
         return this->_cached_collision;
     }
 
-    if (!a->will_collide(b, this->_cached_collision.normal)) {
+    if (!a->will_collide(b, this->_cached_collision.normal, this->_cached_collision.at)) {
         this->_cached_collision.happens = false;
         return this->_cached_collision;
     }

@@ -18,7 +18,7 @@ class PhysicsObject {
 
     void set_mass(double mass);
 
-    bool will_collide(const PhysicsObject *other, arma::vec2 &norm) const;
+    bool will_collide(const PhysicsObject *other, arma::vec2 &norm, arma::vec2 &at) const;
     bool fixed() const;
 
     arma::vec2 position;
