@@ -14,12 +14,6 @@ double HalfCircle::func_raw(double x) const
   double y2 = this->radius2 - x*x;
   double y = std::pow(y2, 0.5)*this->dir;
 
-  if (y != y) {
-    std::cerr
-      << " CC (" << x << "," << y << ")"
-      << std::endl;
-  }
-
   return y;
 }
 
