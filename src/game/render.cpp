@@ -7,7 +7,6 @@ void Game::render_init()
   }
 
   this->aspect_ratio = double(this->w)/double(this->h);
-  this->camera_position = arma::vec2{-5, -50};
   this->set_camera_size(100);
   this->window_size = arma::vec2{double(this->w), double(this->h)};
   if (SDL_CreateWindowAndRenderer(this->w, this->h, 0, &this->win, &this->renderer)) {
@@ -24,7 +23,7 @@ void Game::set_camera_size(double size)
 
 arma::vec2 Game::world_pt_to_screen_pt(arma::vec2 pt)
 {
-  pt = pt - this->camera_position;
+  pt = pt - this->camera_transform.get_position();
   pt = pt % this->window_size / this->camera_size;
   pt = pt + this->window_size*0.5;
   pt[1] = this->h - pt[1];

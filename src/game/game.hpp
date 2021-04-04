@@ -11,7 +11,7 @@ typedef std::chrono::duration<double, std::ratio<1, 1>> Duration;
 
 class Game {
   public:
-    Game(int w=1280, int h=960);
+    explicit Game(int w=1280, int h=960);
     ~Game();
 
     // Rendering
@@ -32,6 +32,8 @@ class Game {
     void run();
     void quit();
 
+    Transform &get_camera();
+
   private:
     int w, h;
     bool should_quit;
@@ -39,7 +41,7 @@ class Game {
     SDL_Renderer *renderer;
 
     // camera position and size in world units
-    arma::vec2 camera_position;
+    Transform camera_transform;
     arma::vec2 camera_size;
 
     arma::vec2 window_size;

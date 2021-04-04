@@ -16,6 +16,9 @@ int main()
     o->add_geometry(new Line(3, 0, -5, 5));
     game.add_object(o);
 
+    auto cam = game.get_camera();
+    cam.set_parent(o);
+
     // walls
     o = new PhysicsObject(&root, {-50, 0}, true);
     o->add_geometry(Line::from_points(arma::vec2{0, 0}, arma::vec2{0, 50}));
