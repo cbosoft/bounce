@@ -65,7 +65,7 @@ CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(PhysicsObject
 
     // inertia
     arma::mat I = arma::eye(2, 2);
-    arma::mat I_inv = I; // only for identity
+    const arma::mat &I_inv = I; // only for identity
 
     const arma::vec2 &p = this->_cached_collision.at;
     arma::vec2 pa = p - a->get_new_position();
