@@ -35,14 +35,15 @@ CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, Physics
 CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *free_body)
 {
     const arma::vec &norm = this->_cached_collision.normal;
-    const arma::vec &v = free_body->velocity;
+    const arma::vec &v = free_body->get_velocity();
     double nn = arma::dot(norm, norm);
     double vn = arma::dot(v, norm);
     arma::vec2 vel_parallel_to_norm = (vn/nn)*norm;
     arma::vec2 vel_perpendicular_to_norm = v - vel_parallel_to_norm;
 
-    free_body->velocity = vel_perpendicular_to_norm - vel_parallel_to_norm;
-    free_body->new_position = free_body->velocity*this->dt + free_body->position;
+    free_body->set_velocity(vel_perpendicular_to_norm - vel_parallel_to_norm);
+    free_body->set_new_position(free_body->get_velocity()*this->dt + free_body->get_position());
+
     return this->_cached_collision;
 }
 
@@ -50,7 +51,7 @@ CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(PhysicsObject
 {
     // collision response - https://en.wikipedia.org/wiki/Collision_response
     double cor = 1.0;
-    arma::vec2 relative_velocity = b->velocity - a->velocity;
+    arma::vec2 relative_velocity = b->get_velocity() - a->get_velocity();
     const arma::vec2 &norm = -this->_cached_collision.normal;
     if (norm.has_nan())
       throw std::runtime_error("nan in norm");
@@ -62,8 +63,8 @@ CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(PhysicsObject
     arma::mat I_inv = I; // only for identity
 
     const arma::vec2 &p = this->_cached_collision.at;
-    arma::vec2 pa = p - a->new_position;
-    arma::vec2 pb = p - b->new_position;
+    arma::vec2 pa = p - a->get_new_position();
+    arma::vec2 pb = p - b->get_new_position();
     arma::vec2 irnr_a = (I_inv*(pa*norm.t()))*pa;
     arma::vec2 irnr_b = (I_inv*(pb*norm.t()))*pb;
     arma::vec2 irnr = irnr_a+irnr_b;
@@ -71,13 +72,11 @@ CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(PhysicsObject
     double impulse_magnitude = impulse_magnitude_num/impulse_magnitude_den;
     arma::vec2 impulse = impulse_magnitude*norm;
 
-    std::cerr << impulse << std::endl;
+    a->set_velocity(a->get_velocity() - impulse/a->get_mass());
+    b->set_velocity(b->get_velocity() + impulse/b->get_mass());
 
-    a->velocity = a->velocity - impulse/a->get_mass();
-    b->velocity = b->velocity + impulse/b->get_mass();
-
-    a->new_position = a->velocity*this->dt + a->position;
-    b->new_position = b->velocity*this->dt + b->position;
+    a->set_new_position(a->get_velocity()*this->dt + a->get_position());
+    b->set_new_position(b->get_velocity()*this->dt + b->get_position());
 
     return this->_cached_collision;
 }

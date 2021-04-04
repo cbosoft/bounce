@@ -49,20 +49,20 @@ void Game::render_step()
 
   for (auto *obj : this->objects) {
 
-    auto pos = this->world_pt_to_screen_pt(obj->position);
+    auto pos = this->world_pt_to_screen_pt(obj->get_position());
     if (pos[0] < 0 || pos[1] > this->window_size[0] ||
         pos[1] < 0 || pos[1] > this->window_size[1]) {
       continue;
     }
 
-    for (auto *eqn : obj->eqns) {
+    for (auto *eqn : obj->get_equations()) {
       auto points = eqn->as_points();
       int npoints = points.size();
       for (int i = 0; i < npoints - 1; i++) {
         auto point = this->world_pt_to_screen_pt(points[i]);
         auto next = this->world_pt_to_screen_pt(points[i+1]);
 
-        if (point.has_nan() || point.has_nan())
+        if (point.has_nan() || next.has_nan())
           continue;
 
         int x1 = int(point[0]);

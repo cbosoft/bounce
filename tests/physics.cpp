@@ -5,7 +5,7 @@
 TEST(PhysicsTest, PhysicsEngine_GravityField) {
     double mass = 1.0;
     PhysicsObject o({0, 0}, mass);
-    PhysicsEngine &pe = PhysicsEngine::engine();
+    PhysicsEngine &pe = PhysicsEngine::init_engine(1e-4, 1.0);
     pe.add_object(&o);
 
     double force_due_to_gravity = -10;
@@ -15,7 +15,7 @@ TEST(PhysicsTest, PhysicsEngine_GravityField) {
     arma::vec2 accel{0, force_due_to_gravity/mass};
     arma::vec2 vel = accel*pe.get_dt();
 
-    arma::vec2 dv = vel - o.velocity;
+    arma::vec2 dv = vel - o.get_velocity();
     EXPECT_DOUBLE_EQ(dv[0], 0.0);
     EXPECT_DOUBLE_EQ(dv[1], 0.0);
 }
@@ -23,7 +23,7 @@ TEST(PhysicsTest, PhysicsEngine_GravityField) {
 TEST(PhysicsTest, PhysicsEngine_MultipleFields) {
     double mass = 1.0;
     PhysicsObject o({0, 0}, mass);
-    PhysicsEngine &pe = PhysicsEngine::engine();
+    PhysicsEngine &pe = PhysicsEngine::init_engine(1e-4, 1.0);
     pe.add_object(&o);
 
     double force_due_to_gravity = -10;
@@ -33,6 +33,6 @@ TEST(PhysicsTest, PhysicsEngine_MultipleFields) {
     pe.add_field(new UnboundedLinearForceField(0, -force_due_to_gravity, 0, 0));
     pe.timestep_objects();
 
-    EXPECT_DOUBLE_EQ(o.velocity[0], 0.0);
-    EXPECT_DOUBLE_EQ(o.velocity[1], 0.0);
+    EXPECT_DOUBLE_EQ(o.get_velocity()[0], 0.0);
+    EXPECT_DOUBLE_EQ(o.get_velocity()[1], 0.0);
 }

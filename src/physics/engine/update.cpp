@@ -24,7 +24,7 @@ void PhysicsEngine::timestep_objects()
     // resolve force fields acting on objects
     for (auto *obj : this->objects) {
         for (auto *field : this->fields) {
-            obj->force += field->measure_at(obj->position);
+            obj->set_force(obj->get_force() + field->measure_at(obj->get_position()));
         }
     }
 
@@ -44,7 +44,7 @@ void PhysicsEngine::timestep_objects()
     // Accept resolved positions; zero forces
     for (auto *obj : this->objects) {
         obj->accept_position();
-        obj->force = arma::vec{0, 0};
+        obj->set_force({0, 0});
     }
 }
 

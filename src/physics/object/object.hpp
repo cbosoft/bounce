@@ -22,13 +22,29 @@ class PhysicsObject {
     bool will_collide(const PhysicsObject *other, arma::vec2 &norm, arma::vec2 &at) const;
     bool fixed() const;
 
+    const arma::vec2 &get_position() const;
+    const arma::vec2 &get_new_position() const;
+    const arma::vec2 &get_velocity() const;
+    const arma::vec2 &get_force() const;
+
+    void set_new_position(const arma::vec2 &new_position);
+    void set_new_position(const arma::vec2 &&new_position);
+    void set_velocity(const arma::vec2 &new_position);
+    void set_velocity(const arma::vec2 &&new_position);
+    void set_force(const arma::vec2 &force);
+    void set_force(const arma::vec2 &&force);
+
+    const std::vector<GeometricEquation *> &get_equations() const;
+
+  private:
     arma::vec2 position;
     arma::vec2 new_position;
     arma::vec2 velocity;
     arma::vec2 force;
-    std::vector<GeometricEquation *> eqns;
 
-  private:
     double mass, inv_mass;
+
     bool _fixed;
+
+    std::vector<GeometricEquation *> eqns;
 };
