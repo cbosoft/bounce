@@ -53,19 +53,6 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
 
 bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &norm, arma::vec2 &at) const
 {
-  // bool x_in_range = (
-  //     this->in_range_x(other.x_lo + other.p->at(0)) ||
-  //     this->in_range_x(other.x_hi + other.p->at(0))
-  // );
-  // bool y_in_range = (
-  //     this->in_range_y(other.y_lo + other.p->at(1)) ||
-  //     this->in_range_y(other.y_hi + other.p->at(1))
-  // );
-
-  // if (!(x_in_range && y_in_range)) {
-  //   //std::cerr << "NOT IN RANGE" << std::endl;
-  //   return false;
-  // }
 
   constexpr double thresh = 5e-3;
   constexpr double m = 0.1;
@@ -74,11 +61,15 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
   double tx_hi = this->x_hi + this->p->at(0);
   double ox_lo = other.x_lo + other.p->at(0);
   double ox_hi = other.x_hi + other.p->at(0);
+
+  if (tx_lo > ox_hi)
+      return false;
+
   double lb = (tx_lo < ox_lo ? ox_lo : tx_lo);
   double ub = (tx_hi > ox_hi ? ox_hi : tx_hi);
   double span = ub - lb;
 
-  if (lb == ub)
+  if (lb >= ub)
     return false;
 
   double x = span*0.5 + lb;
@@ -142,17 +133,10 @@ arma::vec2 GeometricEquation::normal_at_point(double x) const
 {
   constexpr double fudge = 1e-2;
   double x_below = x - fudge, x_above = x + fudge;
-  if (x_below < this->x_lo) x_below = this->x_lo;
-  if (x_above > this->x_hi) x_above = this->x_hi;
+  if (x_below < this->adj_x_lo()) x_below = this->adj_x_lo();
+  if (x_above > this->adj_x_hi()) x_above = this->adj_x_hi();
   double y_below = this->func(x_below), y_above = this->func(x_above);
   arma::vec2 rv = arma::normalise(arma::vec2{y_below - y_above, x_above - x_below});
-
-  // if (rv.has_nan()) {
-  //   std::cerr
-  //     << "(" << x_below + this->p->at(0) << "," << y_below + this->p->at(1) << ") "
-  //     << "(" << x_above + this->p->at(0) << "," << y_above + this->p->at(1) << ") "
-  //     << std::endl;
-  // }
   return rv;
 }
 
