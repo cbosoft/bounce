@@ -34,7 +34,7 @@ class PhysicsObject {
     void set_force(const arma::vec2 &force);
     void set_force(const arma::vec2 &&force);
 
-    const std::vector<GeometricEquation *> &get_equations() const;
+    std::vector<std::vector<arma::vec2>> get_lines();
 
   private:
     arma::vec2 position;
@@ -45,6 +45,6 @@ class PhysicsObject {
     double mass, inv_mass;
 
     bool _fixed;
-
+    std::vector<std::vector<arma::vec2>> _cached_eqn_points;
     std::vector<GeometricEquation *> eqns;
 };

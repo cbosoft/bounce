@@ -55,8 +55,7 @@ void Game::render_step()
       continue;
     }
 
-    for (auto *eqn : obj->get_equations()) {
-      auto points = eqn->as_points();
+    for (const auto &points : obj->get_lines()) {
       int npoints = points.size();
       for (int i = 0; i < npoints - 1; i++) {
         auto point = this->world_pt_to_screen_pt(points[i]);

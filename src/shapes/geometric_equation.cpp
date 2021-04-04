@@ -147,7 +147,7 @@ std::vector<arma::vec2> GeometricEquation::as_points(int n)
   double x = this->x_lo;
   for (int i = 0; i < n; i++) {
     double y = this->func_raw(x);
-    rv.emplace_back(arma::vec2{x, y} + (*this->p));
+    rv.emplace_back(arma::vec2{x, y});
     x += dx;
     if (x > this->x_hi) x = x_hi;
   }

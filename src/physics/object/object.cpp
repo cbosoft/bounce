@@ -86,10 +86,6 @@ const arma::vec2 &PhysicsObject::get_force() const
     return this->force;
 }
 
-const std::vector<GeometricEquation *> &PhysicsObject::get_equations() const
-{
-    return this->eqns;
-}
 
 
 
@@ -137,4 +133,29 @@ void PhysicsObject::add_geometry(std::vector<GeometricEquation *> eqns)
   for (auto *eqn : eqns) {
     this->add_geometry(eqn);
   }
+}
+
+std::vector<std::vector<arma::vec2>> PhysicsObject::get_lines()
+{
+    if (this->_cached_eqn_points.empty()) {
+        int i = 0;
+        for (auto *eqn: this->eqns) {
+            this->_cached_eqn_points.emplace_back(std::vector<arma::vec2>());
+            for (const auto &pt: eqn->as_points()) {
+                this->_cached_eqn_points[i].emplace_back(pt);
+            }
+            i++;
+        }
+    }
+
+    std::vector<std::vector<arma::vec2>> rv;
+    int i = 0;
+    for (const auto &list : this->_cached_eqn_points) {
+        rv.emplace_back(std::vector<arma::vec2>());
+        for (const auto &pt : list) {
+            rv[i].emplace_back(pt + this->position);
+        }
+        i++;
+    }
+    return rv;
 }
