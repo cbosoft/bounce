@@ -1,5 +1,6 @@
 # TODO
-
+- [ ] improve collision detection efficiency
+  - chugs when there are more than a few objects
 - [ ] materials
     - [ ] friction
     - [ ] bounciness
@@ -19,6 +20,7 @@
 - [ ] Free objects placed at start, disappear
   - reckon its due to non-initialised force vector
   - initialised force vector to zero; will see if this is fixed
-- [ ] Objects fall through lines near edge
+- [x] Objects fall through lines near edge
   - possibly related to normal calculated on half-circle
-  - solve by improving normal calculation on bounds
+  - ~~solve by improving normal calculation on bounds~~
+  - solved by fixing edge-of-range collision detection
