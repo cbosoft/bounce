@@ -5,7 +5,7 @@
 int main()
 {
     Game game;
-    auto &pe = PhysicsEngine::init_engine(1e-4, 1.0);
+    auto &pe = PhysicsEngine::init_engine(5e-4, 1.0);
     pe.add_field(new UnboundedLinearForceField(0, 0, 0, -10));
 
     PhysicsObject *o = nullptr;
@@ -34,15 +34,19 @@ int main()
     game.add_object(o);
 
     // balls
-    o = new PhysicsObject({0, 10}, false);
+    o = new PhysicsObject({0, 10}, false, 1.0);
     o->add_geometry(gen_circle(1.0));
     game.add_object(o);
 
-    o = new PhysicsObject({1, 20}, false);
+    o = new PhysicsObject({1, 20}, false, 1.0);
     o->add_geometry(gen_circle(1.0));
     game.add_object(o);
 
-    o = new PhysicsObject({-1, 30}, false);
+    o = new PhysicsObject({-2, 30}, false, 0.5);
+    o->add_geometry(gen_circle(1.0));
+    game.add_object(o);
+
+    o = new PhysicsObject({4, 40}, false, 0.5);
     o->add_geometry(gen_circle(1.0));
     game.add_object(o);
 
