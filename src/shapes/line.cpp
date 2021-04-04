@@ -23,13 +23,6 @@ Line *Line::from_points(const arma::vec2 &start, const arma::vec2 &end)
     xmin = b; xmax = a;
   }
 
-  std::cerr
-    << m << " "
-    << c << " "
-    << xmin << " "
-    << xmax << " "
-    << std::endl;
-
   return new Line(m, c, xmin, xmax);
 }
 
