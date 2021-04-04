@@ -7,6 +7,8 @@ GeometricEquation::GeometricEquation(double x_lo, double x_hi, double y_lo, doub
   , y_lo(y_lo)
   , y_hi(y_hi)
   , p(nullptr)
+  , _previous(nullptr)
+  , _next(nullptr)
 {
     // set p to refer not to parent position, but to dummy zero position (self origin)
     this->p = &this->_self_origin;
@@ -128,15 +130,41 @@ bool GeometricEquation::in_range_y(double y) const
   return (y_lo <= y) && (y <= y_hi);
 }
 
+void GeometricEquation::connect_to_next(GeometricEquation *next) { this->_next = next; }
+void GeometricEquation::connect_to_previous(GeometricEquation *previous) { this->_previous = previous; }
+
 arma::vec2 GeometricEquation::normal_at_point(double x) const
 {
-  constexpr double fudge = 1e-2;
-  double x_below = x - fudge, x_above = x + fudge;
-  if (x_below < this->adj_x_lo()) x_below = this->adj_x_lo();
-  if (x_above > this->adj_x_hi()) x_above = this->adj_x_hi();
-  double y_below = this->func(x_below), y_above = this->func(x_above);
-  arma::vec2 rv = arma::normalise(arma::vec2{y_below - y_above, x_above - x_below});
-  return rv;
+    constexpr double fudge = 1e-2;
+    double x_below = x - fudge, x_above = x + fudge;
+    double y_below = 0, y_above = 0;
+
+    if (x_below < this->adj_x_lo()) {
+        if (this->_previous) {
+            y_below = this->_previous->func(x_below);
+        }
+        else {
+            y_below = this->func(this->adj_x_lo());
+        }
+    }
+    else {
+        y_below = this->func(x_below);
+    }
+
+    if (x_above > this->adj_x_hi()) {
+        if (this->_next) {
+            y_above = this->_next->func(x_above);
+        }
+        else {
+            y_above = this->func(this->adj_x_hi());
+        }
+    }
+    else {
+        y_above = this->func(x_above);
+    }
+
+    arma::vec2 rv = arma::normalise(arma::vec2{y_below - y_above, x_above - x_below});
+    return rv;
 }
 
 std::vector<arma::vec2> GeometricEquation::as_points(int n)

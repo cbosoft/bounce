@@ -22,9 +22,13 @@ class GeometricEquation {
     double x_lo, x_hi, y_lo, y_hi;
     arma::vec2 *p;
 
+    void connect_to_next(GeometricEquation *next);
+    void connect_to_previous(GeometricEquation *previous);
+
   private:
 
     bool in_range_x(double x) const;
     bool in_range_y(double y) const;
     arma::vec2 _self_origin;
+    GeometricEquation *_previous, *_next;
 };
