@@ -5,7 +5,7 @@
 int main()
 {
   Game game;
-  auto &pe = PhysicsEngine::engine();
+  auto &pe = PhysicsEngine::init_engine(5e-5, 1.0);
   pe.add_field(new UnboundedLinearForceField(0, 0, 0, -10));
 
   PhysicsObject *o = nullptr;

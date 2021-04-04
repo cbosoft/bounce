@@ -16,6 +16,7 @@ typedef struct {
 
 class PhysicsEngine {
 public:
+    static PhysicsEngine &init_engine(double dt, double timescale);
     static PhysicsEngine &engine();
     ~PhysicsEngine();
 
@@ -34,7 +35,7 @@ public:
     double get_dt() const;
 
 private:
-    PhysicsEngine(double dt);
+    PhysicsEngine(double dt, double timescale);
 
     std::vector<PhysicsObject *> objects;
     std::vector<ForceField *> fields;

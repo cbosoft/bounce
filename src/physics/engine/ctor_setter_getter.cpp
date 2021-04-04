@@ -1,9 +1,9 @@
 #include "engine.hpp"
 
-PhysicsEngine::PhysicsEngine(double dt)
+PhysicsEngine::PhysicsEngine(double dt, double timescale)
     : dt(dt)
     , time(0.0)
-    , timescale(1.0)
+    , timescale(timescale)
 {
     this->epoch = Clock::now();
 }
