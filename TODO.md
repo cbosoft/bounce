@@ -1,18 +1,19 @@
 # TODO
-- [ ] improve collision detection efficiency
-  - chugs when there are more than a few objects
-- [ ] materials
-    - [ ] friction
-    - [ ] bounciness
 - [ ] more shapes
     - [ ] rectangles
     - [ ] triangles
     - [ ] regular polygons
 - [ ] transform system
-- [ ] Add parent GameObject which has children
+- [ ] Add parent GameObject which has children:
   - PhysicsObject
   - GeometricEquation(s)
   - RenderableObject
+- [x] materials
+  - [ ] ~~friction~~
+  - [x] bounciness
+- [x] improve collision detection efficiency
+  - chugs when there are more than a few objects
+  - improved with bigger physics timedelta
 - [x] free object collisions
 - [x] physics engine tests
 - [x] force fields
