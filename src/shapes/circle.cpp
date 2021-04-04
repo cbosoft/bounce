@@ -12,7 +12,15 @@ HalfCircle::HalfCircle(double r, bool positive)
 double HalfCircle::func_raw(double x) const
 {
   double y2 = this->radius2 - x*x;
-  return std::pow(y2, 0.5)*this->dir;
+  double y = std::pow(y2, 0.5)*this->dir;
+
+  if (y != y) {
+    std::cerr
+      << " CC (" << x << "," << y << ")"
+      << std::endl;
+  }
+
+  return y;
 }
 
 std::vector<GeometricEquation *> gen_circle(double radius)

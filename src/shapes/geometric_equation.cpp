@@ -14,7 +14,11 @@ GeometricEquation::GeometricEquation(double x_lo, double x_hi, double y_lo, doub
 
 double GeometricEquation::func(double x) const
 {
-  return this->func_raw(x - this->p->at(0)) + this->p->at(1);
+  double xraw = x - this->p->at(0);
+  double yraw = this->func_raw(xraw);
+  return yraw + this->p->at(1);
+}
+
 bool GeometricEquation::intersects(const GeometricEquation &other) const
 {
   arma::vec2 dummy;
@@ -42,6 +46,7 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
   //   //std::cerr << "NOT IN RANGE" << std::endl;
   //   return false;
   // }
+
   constexpr double thresh = 5e-3;
   constexpr double m = 0.1;
 
@@ -53,6 +58,9 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
   double ub = (tx_hi > ox_hi ? ox_hi : tx_hi);
   double span = ub - lb;
 
+  if (lb == ub)
+    return false;
+
   double x = span*0.5 + lb;
 
   double f = this->func(x) - other.func(x);
@@ -62,8 +70,8 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
   double dx = span*m;
   for (int i = 0; i < 100; i++) {
     x += dx;
-    if (x > ub) x = ub;
-    if (x < lb) x = lb;
+    if (x > ub) return false;
+    if (x < lb) return false;
     double nf = this->func(x) - other.func(x);
     if (nf < 0) nf *= -1.0;
     if ((nf - f) >= 0.0) dx *= -0.5;
@@ -117,7 +125,15 @@ arma::vec2 GeometricEquation::normal_at_point(double x) const
   if (x_below < this->x_lo) x_below = this->x_lo;
   if (x_above > this->x_hi) x_above = this->x_hi;
   double y_below = this->func(x_below), y_above = this->func(x_above);
-  return arma::normalise(arma::vec2{y_below - y_above, x_above - x_below});
+  arma::vec2 rv = arma::normalise(arma::vec2{y_below - y_above, x_above - x_below});
+
+  // if (rv.has_nan()) {
+  //   std::cerr
+  //     << "(" << x_below + this->p->at(0) << "," << y_below + this->p->at(1) << ") "
+  //     << "(" << x_above + this->p->at(0) << "," << y_above + this->p->at(1) << ") "
+  //     << std::endl;
+  // }
+  return rv;
 }
 
 std::vector<arma::vec2> GeometricEquation::as_points(int n)
@@ -130,6 +146,7 @@ std::vector<arma::vec2> GeometricEquation::as_points(int n)
     double y = this->func_raw(x);
     rv.emplace_back(arma::vec2{x, y} + (*this->p));
     x += dx;
+    if (x > this->x_hi) x = x_hi;
   }
 
   return rv;

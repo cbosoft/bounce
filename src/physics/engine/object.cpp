@@ -28,6 +28,7 @@ CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, Physics
         return this->resolve_collision_one_fixed(b->fixed()?a:b);
     }
 
+    std::cerr << "free body collision\n";
     return this->resolve_collision_free_bodies(a, b);
 }
 
@@ -47,8 +48,36 @@ CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *
 
 CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(PhysicsObject *a, PhysicsObject *b)
 {
-    // not yet implemented!
-    (void) a;
-    (void) b;
+    // collision response - https://en.wikipedia.org/wiki/Collision_response
+    double cor = 1.0;
+    arma::vec2 relative_velocity = b->velocity - a->velocity;
+    const arma::vec2 &norm = -this->_cached_collision.normal;
+    if (norm.has_nan())
+      throw std::runtime_error("nan in norm");
+    double vr_dot_n = arma::dot(relative_velocity, norm);
+    double impulse_magnitude_num = -(1 + cor)*vr_dot_n;
+
+    // inertia
+    arma::mat I = arma::eye(2, 2);
+    arma::mat I_inv = I; // only for identity
+
+    const arma::vec2 &p = this->_cached_collision.at;
+    arma::vec2 pa = p - a->new_position;
+    arma::vec2 pb = p - b->new_position;
+    arma::vec2 irnr_a = (I_inv*(pa*norm.t()))*pa;
+    arma::vec2 irnr_b = (I_inv*(pb*norm.t()))*pb;
+    arma::vec2 irnr = irnr_a+irnr_b;
+    double impulse_magnitude_den = 1./a->get_mass() + 1./b->get_mass() + arma::dot(irnr, norm);
+    double impulse_magnitude = impulse_magnitude_num/impulse_magnitude_den;
+    arma::vec2 impulse = impulse_magnitude*norm;
+
+    std::cerr << impulse << std::endl;
+
+    a->velocity = a->velocity - impulse/a->get_mass();
+    b->velocity = b->velocity + impulse/b->get_mass();
+
+    a->new_position = a->velocity*this->dt + a->position;
+    b->new_position = b->velocity*this->dt + b->position;
+
     return this->_cached_collision;
 }
