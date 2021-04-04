@@ -1,6 +1,11 @@
 #include "engine.hpp"
 #include <iostream>
 
+double PhysicsEngine::get_overall_cor(double cora, double corb)
+{
+    return (cora < corb) ? cora : corb;
+}
+
 void PhysicsEngine::add_object(PhysicsObject *obj)
 {
     this->objects.push_back(obj);
@@ -25,13 +30,13 @@ CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, Physics
         return this->_cached_collision;
     }
     else if (a->fixed() || b->fixed()) {
-        return this->resolve_collision_one_fixed(b->fixed()?a:b);
+        return this->resolve_collision_one_fixed(b->fixed()?a:b, b->fixed()?b:a);
     }
 
     return this->resolve_collision_free_bodies(a, b);
 }
 
-CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *free_body)
+CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *free_body, PhysicsObject *fixed_body)
 {
     const arma::vec &norm = this->_cached_collision.normal;
     const arma::vec &v = free_body->get_velocity();
@@ -40,7 +45,8 @@ CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *
     arma::vec2 vel_parallel_to_norm = (vn/nn)*norm;
     arma::vec2 vel_perpendicular_to_norm = v - vel_parallel_to_norm;
 
-    free_body->set_velocity(vel_perpendicular_to_norm - vel_parallel_to_norm);
+    const double cor = PhysicsEngine::get_overall_cor(free_body->get_cor(), fixed_body->get_cor());
+    free_body->set_velocity(cor * (vel_perpendicular_to_norm - vel_parallel_to_norm));
     free_body->set_new_position(free_body->get_velocity()*this->dt + free_body->get_position());
 
     return this->_cached_collision;
@@ -49,7 +55,7 @@ CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *
 CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(PhysicsObject *a, PhysicsObject *b)
 {
     // collision response - https://en.wikipedia.org/wiki/Collision_response
-    double cor = 1.0;
+    const double cor = PhysicsEngine::get_overall_cor(a->get_cor(), b->get_cor());
     arma::vec2 relative_velocity = b->get_velocity() - a->get_velocity();
     const arma::vec2 &norm = -this->_cached_collision.normal;
     if (norm.has_nan())

@@ -7,8 +7,8 @@
 
 class PhysicsObject {
   public:
-    PhysicsObject(const arma::vec2 &position, bool fixed=false);
-    PhysicsObject(const arma::vec2 &position, double mass);
+    PhysicsObject(const arma::vec2 &position, bool fixed=false, double cor=1.0);
+    PhysicsObject(const arma::vec2 &position, double mass, double cor=1.0);
 
     void timestep(double dt);
 
@@ -34,6 +34,9 @@ class PhysicsObject {
     void set_force(const arma::vec2 &force);
     void set_force(const arma::vec2 &&force);
 
+    double get_cor() const;
+    void set_cor(double _cor);
+
     std::vector<std::vector<arma::vec2>> get_lines();
 
   private:
@@ -42,7 +45,7 @@ class PhysicsObject {
     arma::vec2 velocity;
     arma::vec2 force;
 
-    double mass, inv_mass;
+    double mass, inv_mass, cor;
 
     bool _fixed;
     std::vector<std::vector<arma::vec2>> _cached_eqn_points;

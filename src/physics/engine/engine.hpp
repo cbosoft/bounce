@@ -27,8 +27,9 @@ public:
     void timestep_objects();
     CollisionInformation &resolve_collision(PhysicsObject *a, PhysicsObject *b);
     CollisionInformation &resolve_collision_free_bodies(PhysicsObject *a, PhysicsObject *b);
-    CollisionInformation &resolve_collision_one_fixed(PhysicsObject *free_body);
+    CollisionInformation &resolve_collision_one_fixed(PhysicsObject *free_body, PhysicsObject *fixed_body);
 
+    static double get_overall_cor(double cora, double corb);
     void check_set_time();
     void set_timescale(double v);
     double get_time() const;

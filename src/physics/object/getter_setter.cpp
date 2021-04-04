@@ -65,3 +65,14 @@ bool PhysicsObject::fixed() const
 {
     return this->_fixed;
 }
+
+
+double PhysicsObject::get_cor() const
+{
+    return this->cor;
+}
+
+void PhysicsObject::set_cor(double _cor)
+{
+    this->cor = _cor;
+}
