@@ -88,6 +88,7 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
     }
 
     norm = a;
+    at = arma::vec2{x, this->func(x)};
     return true;
   }
   else {
