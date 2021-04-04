@@ -17,3 +17,4 @@ vgcore*
 obj
 bounce
 build
+cmake-build-debug
