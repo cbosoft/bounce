@@ -14,7 +14,7 @@ class PhysicsObject {
 
     void accept_position();
     void add_geometry(GeometricEquation *eqn);
-    void add_geometry(std::vector<GeometricEquation *> eqns);
+    void add_geometry(const std::vector<GeometricEquation *> &eqns);
 
     void set_mass(double mass);
     double get_mass() const;
