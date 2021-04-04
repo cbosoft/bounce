@@ -6,5 +6,5 @@ void PhysicsObject::timestep(double dt)
         return;
 
     this->velocity += this->inv_mass*dt*this->force;
-    this->new_position = this->position + this->velocity*dt;
+    this->new_position = this->get_position() + this->velocity*dt;
 }

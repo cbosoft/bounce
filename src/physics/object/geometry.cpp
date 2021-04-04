@@ -34,7 +34,7 @@ std::vector<std::vector<arma::vec2>> PhysicsObject::get_lines()
     for (const auto &list : this->_cached_eqn_points) {
         rv.emplace_back(std::vector<arma::vec2>());
         for (const auto &pt : list) {
-            rv[i].emplace_back(pt + this->position);
+            rv[i].emplace_back(pt + this->get_position());
         }
         i++;
     }

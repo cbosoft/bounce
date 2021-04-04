@@ -2,7 +2,7 @@
 
 void PhysicsObject::accept_position()
 {
-    this->position = this->new_position;
+    this->set_position(this->new_position);
 }
 
 bool PhysicsObject::will_collide(const PhysicsObject *other, arma::vec2 &norm, arma::vec2 &at) const

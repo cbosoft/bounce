@@ -41,11 +41,6 @@ void PhysicsObject::set_force(const arma::vec2 &&_force)
     this->force = _force;
 }
 
-const arma::vec2 &PhysicsObject::get_position() const
-{
-    return this->position;
-}
-
 const arma::vec2 &PhysicsObject::get_new_position() const
 {
     return this->new_position;

@@ -1,5 +1,7 @@
 # TODO
 - [ ] transform system
+  - [x] basic structure
+  - [ ] transform represented by transformation matrices
 - [ ] Add parent GameObject which has children:
   - PhysicsObject
   - GeometricEquation(s)

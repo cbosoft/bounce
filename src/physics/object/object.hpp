@@ -3,12 +3,13 @@
 #include <vector>
 
 #include "../../shapes/shapes.hpp"
+#include "../../transform/transform.hpp"
 
 
-class PhysicsObject {
+class PhysicsObject : public Transform {
   public:
-    PhysicsObject(const arma::vec2 &position, bool fixed=false, double cor=1.0);
-    PhysicsObject(const arma::vec2 &position, double mass, double cor=1.0);
+    PhysicsObject(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
+    PhysicsObject(Transform *parent, const arma::vec2 &position, double mass, double cor=1.0);
 
     void timestep(double dt);
 
@@ -22,7 +23,6 @@ class PhysicsObject {
     bool will_collide(const PhysicsObject *other, arma::vec2 &norm, arma::vec2 &at) const;
     bool fixed() const;
 
-    const arma::vec2 &get_position() const;
     const arma::vec2 &get_new_position() const;
     const arma::vec2 &get_velocity() const;
     const arma::vec2 &get_force() const;
@@ -40,7 +40,6 @@ class PhysicsObject {
     std::vector<std::vector<arma::vec2>> get_lines();
 
   private:
-    arma::vec2 position;
     arma::vec2 new_position;
     arma::vec2 velocity;
     arma::vec2 force;
