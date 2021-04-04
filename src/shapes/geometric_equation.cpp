@@ -54,65 +54,64 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
 bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &norm, arma::vec2 &at) const
 {
 
-  constexpr double thresh = 5e-3;
-  constexpr double m = 0.1;
+    constexpr double thresh = 5e-3;
+    constexpr double m = 0.1;
 
-  double tx_lo = this->x_lo + this->p->at(0);
-  double tx_hi = this->x_hi + this->p->at(0);
-  double ox_lo = other.x_lo + other.p->at(0);
-  double ox_hi = other.x_hi + other.p->at(0);
+    double tx_lo = this->x_lo + this->p->at(0);
+    double tx_hi = this->x_hi + this->p->at(0);
+    double ox_lo = other.x_lo + other.p->at(0);
+    double ox_hi = other.x_hi + other.p->at(0);
 
-  if (tx_lo > ox_hi)
-      return false;
+    if (tx_lo > ox_hi)
+        return false;
 
-  double lb = (tx_lo < ox_lo ? ox_lo : tx_lo);
-  double ub = (tx_hi > ox_hi ? ox_hi : tx_hi);
-  double span = ub - lb;
+    double lb = (tx_lo < ox_lo ? ox_lo : tx_lo);
+    double ub = (tx_hi > ox_hi ? ox_hi : tx_hi);
+    double span = ub - lb;
 
-  if (lb >= ub)
-    return false;
+    if (lb >= ub)
+        return false;
 
-  double x = span*0.5 + lb;
+    double x = span*0.5 + lb;
 
-  double f = this->func(x) - other.func(x);
+    double f = this->func(x) - other.func(x);
 
-  if (f < 0.0) f *= -1.0;
+    if (f < 0.0) f *= -1.0;
 
-  double dx = span*m;
-  for (int i = 0; i < 100; i++) {
-    x += dx;
-    if (x > ub) return false;
-    if (x < lb) return false;
-    double nf = this->func(x) - other.func(x);
-    if (nf < 0) nf *= -1.0;
-    if ((nf - f) >= 0.0) dx *= -0.5;
+    double dx = span*m;
+    for (int i = 0; i < 100; i++) {
+        x += dx;
+        if (x > ub) x = ub;
+        if (x < lb) x = lb;
+        double nf = this->func(x) - other.func(x);
+        if (nf < 0) nf *= -1.0;
+        if ((nf - f) >= 0.0) dx *= -0.5;
 
-    f = nf;
+        f = nf;
 
-    if (f <= thresh)
-      break;
+        if (f <= thresh)
+          break;
 
-  }
-
-  if (f < thresh) {
-    // collision; find normal vector
-    auto a = this->normal_at_point(x);
-    auto b = other.normal_at_point(x);
-
-    if (a.has_nan() && b.has_nan()) {
-      norm = arma::vec2{0,0};
-    }
-    else if (a.has_nan()) {
-      a = b;
     }
 
-    norm = a;
-    at = arma::vec2{x, this->func(x)};
-    return true;
-  }
-  else {
+    if (f < thresh) {
+        // collision; find normal vector
+        auto a = this->normal_at_point(x);
+        auto b = other.normal_at_point(x);
+
+        if (a.has_nan() && b.has_nan()) {
+          norm = arma::vec2{0,0};
+        }
+        else if (a.has_nan()) {
+          a = b;
+        }
+
+        norm = a;
+        at = arma::vec2{x, this->func(x)};
+        return true;
+    }
+
     return false;
-  }
 }
 
 bool GeometricEquation::in_range_x(double x) const
