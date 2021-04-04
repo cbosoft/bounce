@@ -9,6 +9,10 @@
     - [ ] triangles
     - [ ] regular polygons
 - [ ] transform system
+- [ ] Add parent GameObject which has children
+  - PhysicsObject
+  - GeometricEquation(s)
+  - RenderableObject
 - [x] free object collisions
 - [x] physics engine tests
 - [x] force fields
