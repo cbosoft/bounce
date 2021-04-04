@@ -17,6 +17,7 @@ class PhysicsObject {
     void add_geometry(std::vector<GeometricEquation *> eqns);
 
     void set_mass(double mass);
+    double get_mass() const;
 
     bool will_collide(const PhysicsObject *other, arma::vec2 &norm, arma::vec2 &at) const;
     bool fixed() const;

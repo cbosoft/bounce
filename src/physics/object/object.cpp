@@ -26,6 +26,11 @@ void PhysicsObject::set_mass(double mass)
     this->inv_mass = 1./mass;
 }
 
+double PhysicsObject::get_mass() const
+{
+  return this->mass;
+}
+
 void PhysicsObject::timestep(double dt)
 {
   if (this->_fixed)
