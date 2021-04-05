@@ -1,18 +1,8 @@
 # TODO
-- [ ] transform system
-  - [x] basic structure
-  - [ ] transform represented by transformation matrices
-- [ ] Add parent GameObject which has children:
-  - PhysicsObject
-  - GeometricEquation(s)
-  - RenderableObject
+- [x] transform system
+- [x] ~~Add parent GameObject which has children~~
 - [x] more shapes
-  - [ ] ~~rectangles~~
-  - [ ] ~~triangles~~
-  - [x] regular polygons
 - [x] materials
-  - [ ] ~~friction~~
-  - [x] bounciness
 - [x] improve collision detection efficiency
   - chugs when there are more than a few objects
   - improved with bigger physics timedelta
@@ -24,11 +14,12 @@
 
 ## Bugs
 
-- [ ] Free objects placed at start, disappear
+- [x] Free objects placed at start, disappear
   - reckon its due to non-initialised force vector
   - initialised force vector to zero; will see if this is fixed
 - [x] Objects fall through lines near edge
   - possibly related to normal calculated on half-circle
   - ~~solve by improving normal calculation on bounds~~
   - solved by fixing edge-of-range collision detection
-- [ ] Polygons break through bounds occasionally
+- [x] Polygons break through bounds occasionally
+  - can't have broken polygon physics if there aren't polygons!
