@@ -1,11 +1,31 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Bounce VERSION "0.1.0")
+###################################################################################################
+# VERSION
+
+# powered by git_watcher.cmake; from https://github.com/andrew-hardin/cmake-git-version-tracking
+
+# Define the two required variables before including
+# the source code for watching a git repository.
+set(PRE_CONFIGURE_FILE "src/version.cpp.in")
+set(POST_CONFIGURE_FILE "src/version.cpp")
+include(git_watcher.cmake)
+
+# Create a library out of the compiled post-configure file.
+add_library(git STATIC ${POST_CONFIGURE_FILE})
+target_include_directories(git PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_dependencies(git check_git)
+
+###################################################################################################
+# MAIN EXE
+
+project(Bounce)
 set(EXE bounce)
 
 file(GLOB_RECURSE COMMON_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/common/*.cpp")
 
 add_executable(${EXE} src/demo_main/main.cpp ${COMMON_SOURCES})
+target_link_libraries(bounce git)
 
 set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 11)
 
@@ -30,6 +50,10 @@ else()
 endif()
 
 enable_testing()
+
+
+###################################################################################################
+## TESTS
 
 find_package(GTest REQUIRED)
 include(GoogleTest)
