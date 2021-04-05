@@ -2,11 +2,9 @@
 #include <armadillo>
 #include <vector>
 
-#include "../../shapes/shapes.hpp"
-#include "../../renderable/renderable.hpp"
+#include "../../transform/transform.hpp"
 
-
-class PhysicsObject : public Renderable {
+class PhysicsObject : public Transform {
   public:
     PhysicsObject(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
     PhysicsObject(Transform *parent, const arma::vec2 &position, double mass, double cor=1.0);
@@ -19,7 +17,6 @@ class PhysicsObject : public Renderable {
     void set_mass(double mass);
     double get_mass() const;
 
-    bool will_collide(const PhysicsObject *other, arma::vec2 &norm, arma::vec2 &at) const;
     bool fixed() const;
 
     const arma::vec2 &get_new_position() const;
@@ -33,6 +30,13 @@ class PhysicsObject : public Renderable {
     void set_force(const arma::vec2 &force);
     void set_force(const arma::vec2 &&force);
 
+    double get_radius() const;
+    void set_radius(double radius);
+
+    bool will_collide_with(const PhysicsObject *other);
+    bool will_collide_with(const PhysicsObject *other, arma::vec2 &normal);
+    bool will_collide_with(const PhysicsObject *other, arma::vec2 &normal, arma::vec2 &at);
+
     double get_cor() const;
     void set_cor(double _cor);
 
@@ -41,7 +45,8 @@ class PhysicsObject : public Renderable {
     arma::vec2 velocity;
     arma::vec2 force;
 
-    double mass, inv_mass, cor;
+    double mass, inv_mass, cor, _radius;
+    static constexpr double COLLISION_THRESH = 1e-2;
 
     bool _fixed;
 };

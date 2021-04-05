@@ -71,3 +71,13 @@ void PhysicsObject::set_cor(double _cor)
 {
     this->cor = _cor;
 }
+
+double PhysicsObject::get_radius() const
+{
+    return this->_radius;
+}
+
+void PhysicsObject::set_radius(double radius)
+{
+    this->_radius = radius;
+}

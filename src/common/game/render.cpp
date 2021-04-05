@@ -30,6 +30,88 @@ arma::vec2 Game::world_pt_to_screen_pt(arma::vec2 pt)
   return pt;
 }
 
+double Game::world_len_to_screen_len(double l)
+{
+    return l * this->window_size[0] / this->camera_size[0];
+}
+
+// from: https://stackoverflow.com/questions/38334081/howto-draw-circles-arcs-and-vector-graphics-in-sdl
+// static void draw_circle(SDL_Renderer *renderer, int32_t centreX, int32_t centreY, int32_t radius)
+// {
+//     const int32_t diameter = (radius * 2);
+//
+//     int32_t x = (radius - 1);
+//     int32_t y = 0;
+//     int32_t tx = 1;
+//     int32_t ty = 1;
+//     int32_t error = (tx - diameter);
+//
+//     while (x >= y)
+//     {
+//         //  Each of the following renders an octant of the circle
+//         SDL_RenderDrawPoint(renderer, centreX + x, centreY - y);
+//         SDL_RenderDrawPoint(renderer, centreX + x, centreY + y);
+//         SDL_RenderDrawPoint(renderer, centreX - x, centreY - y);
+//         SDL_RenderDrawPoint(renderer, centreX - x, centreY + y);
+//         SDL_RenderDrawPoint(renderer, centreX + y, centreY - x);
+//         SDL_RenderDrawPoint(renderer, centreX + y, centreY + x);
+//         SDL_RenderDrawPoint(renderer, centreX - y, centreY - x);
+//         SDL_RenderDrawPoint(renderer, centreX - y, centreY + x);
+//
+//         if (error <= 0)
+//         {
+//             ++y;
+//             error += ty;
+//             ty += 2;
+//         }
+//
+//         if (error > 0)
+//         {
+//             --x;
+//             tx += 2;
+//             error += (tx - diameter);
+//         }
+//     }
+// }
+
+static void draw_filled_circle(SDL_Renderer *renderer, int32_t centreX, int32_t centreY, int32_t radius)
+{
+    const int32_t diameter = (radius * 2);
+
+    int32_t x = (radius - 1);
+    int32_t y = 0;
+    int32_t tx = 1;
+    int32_t ty = 1;
+    int32_t error = (tx - diameter);
+
+    while (x >= y)
+    {
+        //  Each of the following renders an octant of the circle
+        SDL_RenderDrawLine(renderer, centreX + x, centreY - y, centreX + x, centreY + y);
+        SDL_RenderDrawLine(renderer, centreX - x, centreY - y, centreX - x, centreY + y);
+        SDL_RenderDrawLine(renderer, centreX + y, centreY - x, centreX + y, centreY + x);
+        SDL_RenderDrawLine(renderer, centreX - y, centreY - x, centreX - y, centreY + x);
+
+        if (error <= 0)
+        {
+            ++y;
+            error += ty;
+            ty += 2;
+        }
+
+        if (error > 0)
+        {
+            --x;
+            tx += 2;
+            error += (tx - diameter);
+        }
+    }
+}
+
+
+
+
+
 void Game::render_step()
 {
   Clock::time_point now = Clock::now();
@@ -49,33 +131,9 @@ void Game::render_step()
   for (auto *obj : this->objects) {
 
     auto pos = this->world_pt_to_screen_pt(obj->get_position());
-    if (pos[0] < 0 || pos[1] > this->window_size[0] ||
-        pos[1] < 0 || pos[1] > this->window_size[1]) {
-      continue;
-    }
 
-    for (const auto &points : obj->get_lines()) {
-      int npoints = points.size();
-      for (int i = 0; i < npoints - 1; i++) {
-        auto point = this->world_pt_to_screen_pt(points[i]);
-        auto next = this->world_pt_to_screen_pt(points[i+1]);
-
-        if (point.has_nan() || next.has_nan())
-          continue;
-
-        int x1 = int(point[0]);
-        int y1 = int(point[1]);
-        int x2 = int(next[0]);
-        int y2 = int(next[1]);
-
-        if ((x1 < 0) || (x1 > this->w) ||
-            (x2 < 0) || (x2 > this->w) ||
-            (y1 < 0) || (y1 > this->h) ||
-            (y2 < 0) || (y2 > this->h))
-          continue;
-        SDL_RenderDrawLine(this->renderer, x1, y1, x2, y2);
-      }
-    }
+    int x = pos[0], y = pos[1], r = int(this->world_len_to_screen_len(obj->get_radius()));
+    draw_filled_circle(this->renderer, x, y, r);
 
   }
 

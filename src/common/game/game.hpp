@@ -4,6 +4,7 @@
 #include <vector>
 #include <chrono>
 
+#include "../transform/transform.hpp"
 #include "../physics/engine/engine.hpp"
 
 typedef std::chrono::high_resolution_clock Clock;
@@ -18,7 +19,8 @@ class Game {
     void render_init();
     void render_step();
     void set_camera_size(double size);
-    arma::vec2 world_pt_to_screen_pt(arma::vec2 );
+    arma::vec2 world_pt_to_screen_pt(arma::vec2 pt);
+    double world_len_to_screen_len(double l);
 
     // Input
     void input_step();
