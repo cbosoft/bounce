@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../../transform/transform.hpp"
+#include "../../colour/colour.hpp"
 
 class PhysicsObject : public Transform {
   public:
@@ -18,6 +19,8 @@ class PhysicsObject : public Transform {
     double get_mass() const;
 
     bool fixed() const;
+
+    const Colour &get_colour() const;
 
     const arma::vec2 &get_new_position() const;
     const arma::vec2 &get_velocity() const;
@@ -47,6 +50,8 @@ class PhysicsObject : public Transform {
 
     double mass, inv_mass, cor, _radius;
     static constexpr double COLLISION_THRESH = 1e-2;
+
+    Colour c;
 
     bool _fixed;
 };

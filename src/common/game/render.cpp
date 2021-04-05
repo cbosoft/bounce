@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "../colour/colour.hpp"
 
 void Game::render_init()
 {
@@ -114,29 +115,30 @@ static void draw_filled_circle(SDL_Renderer *renderer, int32_t centreX, int32_t 
 
 void Game::render_step()
 {
-  Clock::time_point now = Clock::now();
-  Duration time_per_frame = now - this->time_of_last_render;
-  double fps = 1./time_per_frame.count();
+    Clock::time_point now = Clock::now();
+    Duration time_per_frame = now - this->time_of_last_render;
+    double fps = 1./time_per_frame.count();
 
-  if (fps > 60) {
-    return;
-  }
+    if (fps > 60) {
+        return;
+    }
 
-  this->time_of_last_render = now;
+    this->time_of_last_render = now;
 
-  SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-  SDL_RenderClear(this->renderer);
-  SDL_SetRenderDrawColor(this->renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    Colour c = Colour::from_rgb(0, 0, 25);
+    SDL_SetRenderDrawColor(this->renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(this->renderer);
 
-  for (auto *obj : this->objects) {
+    for (auto *obj : this->objects) {
+        const Colour &c = obj->get_colour();
+        SDL_SetRenderDrawColor(this->renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
+        auto pos = this->world_pt_to_screen_pt(obj->get_position());
 
-    auto pos = this->world_pt_to_screen_pt(obj->get_position());
+        int x = pos[0], y = pos[1], r = int(this->world_len_to_screen_len(obj->get_radius()));
+        draw_filled_circle(this->renderer, x, y, r);
 
-    int x = pos[0], y = pos[1], r = int(this->world_len_to_screen_len(obj->get_radius()));
-    draw_filled_circle(this->renderer, x, y, r);
+    }
 
-  }
-
-  SDL_RenderPresent(this->renderer);
+    SDL_RenderPresent(this->renderer);
 
 }

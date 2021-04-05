@@ -9,6 +9,7 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, bool
         , inv_mass(1.0)
         , cor(cor)
         , _radius(1.0)
+        , c(Colour::from_grayscale(255))
         , _fixed(fixed)
 {
     this->set_position(position);
@@ -24,6 +25,7 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, doub
         , inv_mass(1.0)
         , cor(cor)
         , _radius(1.0)
+        , c(Colour::from_grayscale(255))
         , _fixed(false)
 {
     this->set_position(position);

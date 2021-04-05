@@ -81,3 +81,8 @@ void PhysicsObject::set_radius(double radius)
 {
     this->_radius = radius;
 }
+
+const Colour &PhysicsObject::get_colour() const
+{
+    return this->c;
+}
