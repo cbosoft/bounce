@@ -12,6 +12,7 @@ __pycache__
 *.dat
 gmon.out
 vgcore*
+src/version.cpp
 
 # Build files
 obj
