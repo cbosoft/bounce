@@ -1,9 +1,11 @@
 #include "../common/game/game.hpp"
 #include "../common/physics/field/force_fields.hpp"
 #include "../common/shapes/shapes.hpp"
+#include "../version.hpp"
 
 int main()
 {
+    std::cerr << GitMetadata::version_string() << std::endl;
     Game game;
     auto &pe = PhysicsEngine::init_engine(5e-4, 1.0);
     pe.add_field(new UnboundedLinearForceField(0, 0, 0, -10));
