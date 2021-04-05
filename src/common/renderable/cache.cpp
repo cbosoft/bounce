@@ -2,5 +2,5 @@
 
 bool Renderable::cache_invalid() const
 {
-    return true;
+    return false;
 }
