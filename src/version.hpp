@@ -22,4 +22,7 @@ public:
     static std::string commit_body();
     static std::string describe();
     static std::string branch();
+
+    // derived from the above
+    static std::string version_string();
 };

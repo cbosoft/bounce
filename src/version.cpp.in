@@ -1,3 +1,4 @@
+#include <sstream>
 #include "version.hpp"
 
 // From https://github.com/andrew-hardin/cmake-git-version-tracking
@@ -31,4 +32,15 @@ std::string GitMetadata::describe() {
 }
 std::string GitMetadata::branch() {
     return "@GIT_BRANCH@";
+}
+
+std::string GitMetadata::version_string() {
+    std::stringstream ss;
+
+    ss << "Bounce version "
+       << GitMetadata::describe()
+       << (GitMetadata::is_dirty()?"+":"")
+       << " (" << GitMetadata::branch() << ")"
+       << std::endl;
+    return ss.str();
 }
