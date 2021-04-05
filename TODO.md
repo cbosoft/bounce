@@ -1,4 +1,7 @@
 # TODO
+- [ ] Cellular physics
+  - split area into cells 
+  - only the cells near the camera are simulated
 - [x] transform system
 - [x] ~~Add parent GameObject which has children~~
 - [x] more shapes
@@ -11,6 +14,9 @@
 - [x] force fields
 - [x] physics engine separate to game logic
 - [x] tests
+
+## Games
+- procedurally generated solar system
 
 ## Bugs
 
