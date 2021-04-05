@@ -6,39 +6,28 @@ GeometricEquation::GeometricEquation(double x_lo, double x_hi, double y_lo, doub
   , x_hi(x_hi)
   , y_lo(y_lo)
   , y_hi(y_hi)
-  , p(nullptr)
   , _previous(nullptr)
   , _next(nullptr)
 {
-    // set p to refer not to parent position, but to dummy zero position (self origin)
-    this->p = &this->_self_origin;
+    // do nothing
 }
 
 double GeometricEquation::adj_x_lo() const
 {
-    return this->p->at(0) + this->x_lo;
+    return this->get_position()[0] + this->x_lo;
 }
 
 double GeometricEquation::adj_x_hi() const
 {
-    return this->p->at(0) + this->x_hi;
-}
-
-double GeometricEquation::adj_y_lo() const
-{
-    return this->p->at(1) + this->y_lo;
-}
-
-double GeometricEquation::adj_y_hi() const
-{
-    return this->p->at(1) + this->y_hi;
+    return this->get_position()[0] + this->x_hi;
 }
 
 double GeometricEquation::func(double x) const
 {
-  double xraw = x - this->p->at(0);
-  double yraw = this->func_raw(xraw);
-  return yraw + this->p->at(1);
+    arma::vec2 pos = this->get_position();
+    double xraw = x - pos[0];
+    double yraw = this->func_raw(xraw);
+    return yraw + pos[1];
 }
 
 bool GeometricEquation::intersects(const GeometricEquation &other) const
@@ -59,10 +48,12 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
     constexpr double thresh = 5e-3;
     constexpr double m = 0.1;
 
-    double tx_lo = this->x_lo + this->p->at(0);
-    double tx_hi = this->x_hi + this->p->at(0);
-    double ox_lo = other.x_lo + other.p->at(0);
-    double ox_hi = other.x_hi + other.p->at(0);
+    arma::vec2 tpos= this->get_position(), opos = other.get_position();
+
+    double tx_lo = this->x_lo + tpos.at(0);
+    double tx_hi = this->x_hi + tpos.at(0);
+    double ox_lo = other.x_lo + opos.at(0);
+    double ox_hi = other.x_hi + opos.at(0);
 
     if (tx_lo > ox_hi)
         return false;
@@ -116,19 +107,19 @@ bool GeometricEquation::intersects(const GeometricEquation &other, arma::vec2 &n
     return false;
 }
 
-bool GeometricEquation::in_range_x(double x) const
-{
-  double dx = this->p->at(0);
-  double x_lo = this->x_lo + dx, x_hi = this->x_hi + dx;
-  return (x_lo <= x) && (x <= x_hi);
-}
-
-bool GeometricEquation::in_range_y(double y) const
-{
-  double dy = this->p->at(1);
-  double y_lo = this->y_lo + dy, y_hi = this->y_hi + dy;
-  return (y_lo <= y) && (y <= y_hi);
-}
+// bool GeometricEquation::in_range_x(double x) const
+// {
+//   double dx = this->p->at(0);
+//   double x_lo = this->x_lo + dx, x_hi = this->x_hi + dx;
+//   return (x_lo <= x) && (x <= x_hi);
+// }
+//
+// bool GeometricEquation::in_range_y(double y) const
+// {
+//   double dy = this->p->at(1);
+//   double y_lo = this->y_lo + dy, y_hi = this->y_hi + dy;
+//   return (y_lo <= y) && (y <= y_hi);
+// }
 
 void GeometricEquation::connect_to_next(GeometricEquation *next) { this->_next = next; }
 void GeometricEquation::connect_to_previous(GeometricEquation *previous) { this->_previous = previous; }

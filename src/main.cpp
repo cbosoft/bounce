@@ -50,9 +50,9 @@ int main()
     o->add_geometry(gen_circle(1.0));
     game.add_object(o);
 
-    // o = new PhysicsObject(&root, {4, 40}, false, 1.0);
-    // o->add_geometry(gen_regular_polygon(2.0, 4));
-    // game.add_object(o);
+    o = new PhysicsObject(&root, {4, 40}, false, 1.0);
+    o->add_geometry(gen_regular_polygon(2.0, 4));
+    game.add_object(o);
 
     game.run();
     return 0;

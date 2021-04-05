@@ -1,7 +1,7 @@
 #include "object.hpp"
 
 PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, bool fixed, double cor)
-        : Transform(parent, position)
+        : Renderable(parent)
         , new_position(position)
         , velocity({0, 0})
         , force({0,0})
@@ -10,11 +10,12 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, bool
         , cor(cor)
         , _fixed(fixed)
 {
+    this->set_position(position);
     this->set_mass(1.0);
 }
 
 PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, double mass, double cor)
-        : Transform(parent, position)
+        : Renderable(parent)
         , new_position(position)
         , velocity({0, 0})
         , force({0, 0})
@@ -23,5 +24,6 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, doub
         , cor(cor)
         , _fixed(false)
 {
+    this->set_position(position);
     this->set_mass(mass);
 }

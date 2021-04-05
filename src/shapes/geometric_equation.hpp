@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
 #include <armadillo>
+#include "../transform/transform.hpp"
 
-class GeometricEquation {
+class GeometricEquation : public Transform {
   public:
     GeometricEquation(double x_lo, double x_hi, double y_lo, double y_hi);
     double func(double x) const;
@@ -16,19 +17,17 @@ class GeometricEquation {
 
     double adj_x_lo() const;
     double adj_x_hi() const;
-    double adj_y_lo() const;
-    double adj_y_hi() const;
+    // double adj_y_lo() const;
+    // double adj_y_hi() const;
 
     double x_lo, x_hi, y_lo, y_hi;
-    arma::vec2 *p;
 
     void connect_to_next(GeometricEquation *next);
     void connect_to_previous(GeometricEquation *previous);
 
   private:
 
-    bool in_range_x(double x) const;
-    bool in_range_y(double y) const;
-    arma::vec2 _self_origin;
+    // bool in_range_x(double x) const;
+    // bool in_range_y(double y) const;
     GeometricEquation *_previous, *_next;
 };
