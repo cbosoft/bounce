@@ -1,7 +1,7 @@
 #pragma once
-#include <armadillo>
+#include "../../transform/transform.hpp"
 
-class ForceField {
+class ForceField: public Transform {
 public:
     virtual ~ForceField() = default;
 
