@@ -1,5 +1,5 @@
-#include "../src/physics/engine/engine.hpp"
-#include "../src/physics/field/force_fields.hpp"
+#include "../common/physics/engine/engine.hpp"
+#include "../common/physics/field/force_fields.hpp"
 #include <gtest/gtest.h>
 
 TEST(PhysicsTest, PhysicsEngine_GravityField) {

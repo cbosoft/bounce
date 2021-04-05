@@ -1,6 +1,6 @@
-#include "game/game.hpp"
-#include "physics/field/force_fields.hpp"
-#include "shapes/shapes.hpp"
+#include "../common/game/game.hpp"
+#include "../common/physics/field/force_fields.hpp"
+#include "../common/shapes/shapes.hpp"
 
 int main()
 {

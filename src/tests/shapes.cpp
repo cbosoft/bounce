@@ -6,7 +6,7 @@
 #include <armadillo>
 #include <gtest/gtest.h>
 
-#include "../src/shapes/shapes.hpp"
+#include "../common/shapes/shapes.hpp"
 
 // Lines
 TEST(ShapeTest, Lines_Parallel) {
