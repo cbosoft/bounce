@@ -6,10 +6,11 @@ class DefaultContext : public InputContext {
 public:
     DefaultContext(Game *game) : InputContext(game) {}
 
-    void left() override { }
-    void right() override { }
-    void up() override { }
-    void down() override { }
+    static constexpr double speed = 1e3;
+    void left() override  { this->get_game()->get_player()->add_force({ -speed,    0.0}); }
+    void right() override { this->get_game()->get_player()->add_force({  speed,    0.0}); }
+    void up() override    { this->get_game()->get_player()->add_force({    0.0,  speed}); }
+    void down() override  { this->get_game()->get_player()->add_force({    0.0, -speed}); }
     void back() override { this->get_game()->quit(); }
 
 };
