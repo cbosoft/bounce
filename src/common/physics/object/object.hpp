@@ -4,6 +4,7 @@
 
 #include "../../transform/transform.hpp"
 #include "../../colour/colour.hpp"
+#include "../../renderer/renderable/renderable.hpp"
 
 class PhysicsObject : public Transform {
   public:
@@ -21,6 +22,7 @@ class PhysicsObject : public Transform {
     bool fixed() const;
 
     const Colour &get_colour() const;
+    void set_colour(const Colour &colour);
 
     const arma::vec2 &get_new_position() const;
     const arma::vec2 &get_velocity() const;
@@ -43,6 +45,9 @@ class PhysicsObject : public Transform {
     double get_cor() const;
     void set_cor(double _cor);
 
+    Renderable *get_renderable() const;
+    void set_renderable(Renderable *renderable);
+
   private:
     arma::vec2 new_position;
     arma::vec2 velocity;
@@ -54,4 +59,5 @@ class PhysicsObject : public Transform {
     Colour c;
 
     bool _fixed;
+    Renderable *_renderable;
 };

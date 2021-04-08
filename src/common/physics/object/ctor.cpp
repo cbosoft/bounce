@@ -11,6 +11,7 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, bool
         , _radius(1.0)
         , c(Colour::from_grayscale(255))
         , _fixed(fixed)
+        , _renderable(nullptr)
 {
     this->set_position(position);
     this->set_mass(1.0);
@@ -27,6 +28,7 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, doub
         , _radius(1.0)
         , c(Colour::from_grayscale(255))
         , _fixed(false)
+        , _renderable(nullptr)
 {
     this->set_position(position);
     this->set_mass(mass);

@@ -10,6 +10,10 @@ public:
     static Colour from_grayscale(int gy);
     static Colour from_grayscale_f(double gy);
 
+    float rf() const;
+    float gf() const;
+    float bf() const;
+
     int r, g, b;
 private:
     Colour(int r, int g, int b);

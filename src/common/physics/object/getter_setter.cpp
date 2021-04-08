@@ -86,3 +86,19 @@ const Colour &PhysicsObject::get_colour() const
 {
     return this->c;
 }
+
+void PhysicsObject::set_colour(const Colour &colour)
+{
+    this->c = colour;
+}
+
+Renderable *PhysicsObject::get_renderable() const
+{
+    return this->_renderable;
+}
+
+void PhysicsObject::set_renderable(Renderable *renderable)
+{
+    renderable->set_object(this);
+    this->_renderable = renderable;
+}

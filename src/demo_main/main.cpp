@@ -1,5 +1,6 @@
 #include "../common/game/game.hpp"
 #include "../common/physics/field/force_fields.hpp"
+#include "../common/renderer/renderables.hpp"
 #include "../version.hpp"
 
 int main()
@@ -19,6 +20,8 @@ int main()
     f->set_parent(o);
     game.add_object(o);
     pe.add_field(f);
+    o->set_renderable(new CircleRenderable());
+    o->set_colour(Colour::from_rgb_f(0.3, 0.3, 0.4));
 
     // double wrad = 1000, off=45;
     // walls
@@ -70,6 +73,7 @@ int main()
     // f->set_parent(o);
     game.add_object(o);
     // pe.add_field(f);
+    o->set_renderable(new CircleRenderable());
 
     game.run();
     return 0;

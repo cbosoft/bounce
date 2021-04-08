@@ -22,13 +22,18 @@ public:
     GLFWwindow *get_window();
 
     void set_camera_target(Transform *t);
+    const Transform *get_camera_transform() const;
 
     friend class Game;
+
+    GLuint get_shader(const std::string &name) const;
+    GLuint get_vbuf() const;
+    GLuint get_varr() const;
 
 private:
     Renderer(int w, int h, const std::string &title);
 
-    void render(PhysicsObject *object);
+    void update_shader_uniforms() const;
     arma::vec2 world_pt_to_screen_pt(arma::vec2 pt);
     double world_len_to_screen_len(double l);
 
