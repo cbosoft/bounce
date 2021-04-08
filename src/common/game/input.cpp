@@ -1,10 +1,11 @@
 #include "game.hpp"
 
-void Game::input_step()
+InputContext *Game::get_context() const
 {
-    auto window = this->renderer.get_window();
-    this->should_quit = glfwWindowShouldClose(window) ||
-            glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS;
+    return this->context;
+}
 
-    // TODO handle input
+void Game::quit()
+{
+    this->should_quit = true;
 }

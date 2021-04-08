@@ -5,7 +5,7 @@
 int main()
 {
     std::cerr << GitMetadata::version_string() << std::endl;
-    auto &pe = PhysicsEngine::init_engine(1e-3, 2.0);
+    auto &pe = PhysicsEngine::init_engine(1e-3, 1.0);
     (void)pe;
     Game game;
 
@@ -15,6 +15,7 @@ int main()
     // platform
     ForceField *f = new PointSourceForceField(-0.1);
     o = new PhysicsObject(&root, {0, 0}, true);
+    o->set_radius(10.0);
     f->set_parent(o);
     game.add_object(o);
     pe.add_field(f);
@@ -63,9 +64,9 @@ int main()
     // game.add_object(o);
 
     // f = new PointSourceForceField(-0.1);
-    o = new PhysicsObject(&root, {10, 0}, false, 1.0);
+    o = new PhysicsObject(&root, {30, 0}, false, 0.5);
     // o->set_radius(0.5);
-    o->set_velocity({0.0, -15});
+    o->set_velocity({0.0, -45});
     // f->set_parent(o);
     game.add_object(o);
     // pe.add_field(f);

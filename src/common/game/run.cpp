@@ -7,11 +7,6 @@ void Game::run()
     this->physics.timestep();
     this->logic_step();
     this->renderer.render();
-    this->input_step();
+    InputManager::get_active(this)->handle_input();
   }
-}
-
-void Game::quit()
-{
-  this->should_quit = true;
 }
