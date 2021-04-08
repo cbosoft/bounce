@@ -13,5 +13,5 @@ arma::vec2 PointSourceForceField::f(const arma::vec2 &pt) const
     if (r == 0)
         return {0.0, 0.0};
     arma::vec2 dir = arma::normalise(dp);
-    return dir*this->s*r;  ///r/r*9e5;
+    return dir*this->s/r/r*9e5;
 }
