@@ -5,8 +5,9 @@
 int main()
 {
     std::cerr << GitMetadata::version_string() << std::endl;
-    Game game;
     auto &pe = PhysicsEngine::init_engine(1e-3, 2.0);
+    (void)pe;
+    Game game;
 
     PhysicsObject *o = nullptr;
     Transform root;
@@ -17,9 +18,6 @@ int main()
     f->set_parent(o);
     game.add_object(o);
     pe.add_field(f);
-
-    auto cam = game.get_camera();
-    cam.set_parent(o);
 
     // double wrad = 1000, off=45;
     // walls
@@ -54,23 +52,23 @@ int main()
     // o = new PhysicsObject(&root, {0, 10}, false, 1.0);
     // game.add_object(o);
 
-    f = new PointSourceForceField(-0.1);
-    o = new PhysicsObject(&root, {1, 20}, false, 1.0);
-    o->set_velocity({-10, 0});
-    f->set_parent(o);
-    game.add_object(o);
-    pe.add_field(f);
+    // f = new PointSourceForceField(-0.1);
+    // o = new PhysicsObject(&root, {1, 20}, false, 1.0);
+    // o->set_velocity({-10, 0});
+    // f->set_parent(o);
+    // game.add_object(o);
+    // pe.add_field(f);
 
     // o = new PhysicsObject(&root, {-2, 30}, false, 1.0);
     // game.add_object(o);
 
-    f = new PointSourceForceField(-0.1);
-    o = new PhysicsObject(&root, {0, 10}, false, 1.0);
-    o->set_radius(0.5);
-    o->set_velocity({10, 0});
-    f->set_parent(o);
+    // f = new PointSourceForceField(-0.1);
+    o = new PhysicsObject(&root, {10, 0}, false, 1.0);
+    // o->set_radius(0.5);
+    o->set_velocity({0.0, -15});
+    // f->set_parent(o);
     game.add_object(o);
-    pe.add_field(f);
+    // pe.add_field(f);
 
     game.run();
     return 0;

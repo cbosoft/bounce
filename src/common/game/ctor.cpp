@@ -1,11 +1,9 @@
 #include "game.hpp"
 
 Game::Game(int w, int h)
-  : w(w)
-  , h(h)
-  , should_quit(false)
-  , win(nullptr)
-  , renderer(nullptr)
+  : should_quit(false)
+  , physics(PhysicsEngine::engine())
+  , renderer(Renderer::init(w, h, "bounce"))
 {
-  this->render_init();
+    // do nothing
 }

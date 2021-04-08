@@ -4,9 +4,9 @@ void Game::run()
 {
   while (!this->should_quit)
   {
-    PhysicsEngine::engine().timestep();
+    this->physics.timestep();
     this->logic_step();
-    this->render_step();
+    this->renderer.render();
     this->input_step();
   }
 }

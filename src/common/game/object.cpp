@@ -3,5 +3,6 @@
 void Game::add_object(PhysicsObject *obj)
 {
     this->objects.push_back(obj);
-    PhysicsEngine::engine().add_object(obj);
+    this->physics.add_object(obj);
+    this->renderer.add_object(obj);
 }
