@@ -34,6 +34,7 @@ class PhysicsObject : public Transform {
     void set_velocity(const arma::vec2 &&new_position);
     void set_force(const arma::vec2 &force);
     void set_force(const arma::vec2 &&force);
+    void add_force(const arma::vec2 &force);
 
     double get_radius() const;
     void set_radius(double radius);

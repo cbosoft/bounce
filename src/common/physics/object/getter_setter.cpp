@@ -56,6 +56,11 @@ const arma::vec2 &PhysicsObject::get_force() const
     return this->force;
 }
 
+void PhysicsObject::add_force(const arma::vec2 &dforce)
+{
+    this->force += dforce;
+}
+
 bool PhysicsObject::fixed() const
 {
     return this->_fixed;
