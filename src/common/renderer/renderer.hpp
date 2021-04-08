@@ -21,6 +21,10 @@ public:
 
     GLFWwindow *get_window();
 
+    void set_camera_target(Transform *t);
+
+    friend class Game;
+
 private:
     Renderer(int w, int h, const std::string &title);
 

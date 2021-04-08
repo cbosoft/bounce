@@ -16,3 +16,8 @@ double Renderer::world_len_to_screen_len(double l)
     l /= this->camera_size[0];
     return l;
 }
+
+void Renderer::set_camera_target(Transform *t)
+{
+    this->camera_transform.set_parent(t);
+}

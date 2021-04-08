@@ -48,7 +48,7 @@ float star_brightness(vec2 pos)
 }
 
 void main() {
-  vec2 pos = (gl_FragCoord.xy + camera_position);
+  vec2 pos = (gl_FragCoord.xy + camera_position/10000);
 
     pos = -abs(pos);
   if (

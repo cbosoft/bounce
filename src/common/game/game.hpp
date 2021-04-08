@@ -31,6 +31,9 @@ class Game {
 
     PhysicsEngine &physics;
     Renderer &renderer;
+
+    Transform *camera;
+
     std::vector<PhysicsObject *> objects;
 
     Clock::time_point time_of_last_render, physics_epoch;

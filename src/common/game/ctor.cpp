@@ -5,5 +5,5 @@ Game::Game(int w, int h)
   , physics(PhysicsEngine::engine())
   , renderer(Renderer::init(w, h, "bounce"))
 {
-    // do nothing
+    this->camera = &this->renderer.camera_transform;
 }
