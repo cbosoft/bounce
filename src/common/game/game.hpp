@@ -1,16 +1,12 @@
 #pragma once
 #include <armadillo>
 #include <vector>
-#include <chrono>
 
 #include "../transform/transform.hpp"
 #include "../physics/engine/engine.hpp"
 #include "../renderer/renderer.hpp"
 #include "../input/manager.hpp"
 #include "../input/context/context.hpp"
-
-typedef std::chrono::high_resolution_clock Clock;
-typedef std::chrono::duration<double, std::ratio<1, 1>> Duration;
 
 class Game {
   public:
@@ -38,6 +34,4 @@ class Game {
     Transform *camera;
 
     std::vector<PhysicsObject *> objects;
-
-    Clock::time_point time_of_last_render, physics_epoch;
 };
