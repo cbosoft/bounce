@@ -16,6 +16,8 @@ class Game {
     // Logic
     void logic_step();
     void add_object(PhysicsObject *obj);
+    void set_player(PhysicsObject *player);
+    PhysicsObject *get_player() const;
 
     // Loop
     void run();
@@ -32,6 +34,7 @@ class Game {
     InputContext *context;
 
     Transform *camera;
+    PhysicsObject *_player;
 
     std::vector<PhysicsObject *> objects;
 };
