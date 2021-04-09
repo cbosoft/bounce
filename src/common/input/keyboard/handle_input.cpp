@@ -18,6 +18,8 @@ void KeyboardInputManager::handle_input()
     if (KEYPRESSED(GLFW_KEY_LEFT)  || KEYPRESSED(GLFW_KEY_A)) { context->left(); }
     if (KEYPRESSED(GLFW_KEY_DOWN)  || KEYPRESSED(GLFW_KEY_S)) { context->down(); }
     if (KEYPRESSED(GLFW_KEY_RIGHT) || KEYPRESSED(GLFW_KEY_D)) { context->right(); }
+    if (KEYPRESSED(GLFW_KEY_F))  { context->action(); }
+    if (KEYPRESSED(GLFW_KEY_E))  { context->alternate(); }
 
 #undef KEYPRESSED
 

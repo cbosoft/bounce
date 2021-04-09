@@ -10,6 +10,9 @@ public:
     virtual void left() =0;
     virtual void right() =0;
 
+    virtual void action() =0;
+    virtual void alternate() =0;
+
     virtual void back() =0;
 
     // virtual void mouse_position(double x, double y) =0;

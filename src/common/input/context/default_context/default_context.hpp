@@ -11,6 +11,13 @@ public:
     void right() override { this->get_game()->get_player()->add_force({  speed,    0.0}); }
     void up() override    { this->get_game()->get_player()->add_force({    0.0,  speed}); }
     void down() override  { this->get_game()->get_player()->add_force({    0.0, -speed}); }
+
+    void action() override  {  }
+    void alternate() override  {
+        auto *player = this->get_game()->get_player();
+        player->set_velocity(player->get_velocity()*0.9);
+    }
+
     void back() override { this->get_game()->quit(); }
 
 };
