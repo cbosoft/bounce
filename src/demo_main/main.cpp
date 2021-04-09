@@ -8,20 +8,20 @@ int main()
     std::cerr << GitMetadata::version_string() << std::endl;
     auto &pe = PhysicsEngine::init_engine(1e-3, 2.0);
     (void)pe;
-    Game game;
+    Game game(1920, 1080);
 
     PhysicsObject *o = nullptr;
     Transform root;
 
     // platform
-    ForceField *f = new PointSourceForceField(-0.1);
+    // ForceField *f = new PointSourceForceField(-0.1);
     o = new PhysicsObject(&root, {0, 0}, false);
     o->set_radius(10.0);
-    f->set_parent(o);
+    // f->set_parent(o);
     game.add_object(o);
-    pe.add_field(f);
+    // pe.add_field(f);
     o->set_renderable(new CircleRenderable());
-    o->set_colour(Colour::from_rgb_f(0.3, 0.3, 0.4));
+    o->set_colour(Colour::from_rgb_f(.0, .0, 1.0));
 
     // double wrad = 1000, off=45;
     // walls
@@ -68,12 +68,12 @@ int main()
 
     // f = new PointSourceForceField(-0.1);
     o = new PhysicsObject(&root, {30, 0}, false, 0.5);
-    // o->set_radius(0.5);
+    o->set_radius(1.0);
     //o->set_velocity({0.0, -45});
     // f->set_parent(o);
     game.add_object(o);
     // pe.add_field(f);
-    o->set_colour(Colour::from_rgb_f(0.4, 0.2, 0.3));
+    o->set_colour(Colour::from_rgb_f(0.9, 0.5, 0.2));
     o->set_renderable(new CircleRenderable());
     game.set_player(o);
 
