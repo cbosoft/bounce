@@ -15,7 +15,8 @@ void Renderer::render()
     this->set_camera_diagonal(150.0);
 
     this->update_shader_uniforms();
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClear(GL_COLOR_BUFFER_BIT);
     this->render_background();
     for (auto *object : this->objects) {
