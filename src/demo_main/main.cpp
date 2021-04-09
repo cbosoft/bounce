@@ -73,6 +73,7 @@ int main()
     // f->set_parent(o);
     game.add_object(o);
     // pe.add_field(f);
+    o->set_colour(Colour::from_rgb_f(0.4, 0.2, 0.3));
     o->set_renderable(new CircleRenderable());
     game.set_player(o);
 
