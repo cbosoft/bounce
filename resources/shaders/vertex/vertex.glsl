@@ -3,11 +3,13 @@
 uniform vec2 camera_position; // in world units
 uniform vec2 camera_size;     // in world units
 uniform float camera_angle;     // in radians
+uniform vec2 centre;
 
 layout (location = 0) in vec3 pos;
 layout (location = 1) in vec3 colour;
 
 out vec3 rgb;
+out vec2 centre_screen_pos;
 
 vec2 rot(float theta, vec2 pos)
 {
@@ -17,11 +19,21 @@ vec2 rot(float theta, vec2 pos)
   return pos*rotmat;
 }
 
+vec2 world_to_screen(vec2 p)
+{
+  p -= camera_position;
+  p = rot(camera_angle, p);
+  p /= camera_size;
+  return p;
+}
+
+vec3 world_to_screen(vec3 p)
+{
+  return vec3(world_to_screen(p.xy), 0.0);
+}
+
 void main() {
-  vec3 vpos = pos;
-  vpos -= vec3(camera_position, 0.0f);
-  vpos.xy = rot(camera_angle, vpos.xy);
-  vpos.xy /= camera_size;
-  gl_Position = vec4(vpos, 1.0f);
+  gl_Position = vec4(world_to_screen(pos), 1.0f);
   rgb = colour;
+  centre_screen_pos = world_to_screen(centre);
 }

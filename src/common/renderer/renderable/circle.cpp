@@ -9,9 +9,9 @@ void CircleRenderable::draw()
     auto r = float(obj->get_radius());
     float x = cpos[0], y = cpos[1];
 
-    constexpr int n = 100;
-    constexpr double dtheta = 2.0*M_PI/double(n);
-    double theta = 0.0;
+    constexpr int n = 30;
+    constexpr float dtheta = 2.0*M_PI/double(n);
+    float theta = 0.0;
 
     const Colour &colour = obj->get_colour();
     float cr = colour.rf(), cg = colour.gf(), cb = colour.bf();
@@ -34,7 +34,12 @@ void CircleRenderable::draw()
     }
     glBindBuffer(GL_ARRAY_BUFFER, renderer.get_vbuf());
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_DYNAMIC_DRAW);
-    glUseProgram(renderer.get_shader("default"));
+    GLuint shader = renderer.get_shader("default");
+    glUseProgram(shader);
+    int loc = glGetUniformLocation(shader, "centre");
+    if (loc != -1) glUniform2f(loc, x, y);
+    loc = glGetUniformLocation(shader, "radius");
+    if (loc != -1) glUniform1f(loc, r);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void *)(0));
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void *)(3*sizeof(float)));
