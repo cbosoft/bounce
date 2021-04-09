@@ -30,13 +30,24 @@ target_link_libraries(bounce git)
 set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 11)
 
 find_package(Armadillo REQUIRED)
+set(OpenGL_GL_PREFERENCE GLVND)
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 target_link_libraries(${EXE} ${ARMADILLO_LIBRARIES})
 
-find_package(OpenGL REQUIRED)
-find_package(GLFW3 REQUIRED)
-find_package(GLEW REQUIRED)
-target_link_libraries(${EXE} ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} glfw ${GLEW_LIBRARIES})
+if (CMAKE_SYSTEM STREQUAL LINUX)
+  set(EXTRA_LIBS X11)
+endif()
+
+if (CMAKE_SYSTEM STREQUAL WINDOWS)
+  set(GLFW_LIB glfw3)
+else()
+  set(GLFW_LIB glfw)
+endif()
+
+target_link_libraries(${EXE} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${EXTRA_LIBS})
 include_directories(${OPENGL_INCLUDE_DIR} ${GLFW_INCLUDE_DIR} ${GLEW_INCLUDE_DIR})
 
 if(MSVC)
