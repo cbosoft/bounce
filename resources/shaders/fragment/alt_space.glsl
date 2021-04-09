@@ -2,7 +2,7 @@
 uniform float time_delta;
 uniform float time;
 uniform vec2 camera_position;
-out vec3 color;
+out vec4 color;
 in vec3 rgb;
 
 
@@ -56,5 +56,5 @@ void main()
 		s += stepsize;
 	}
 	v = mix(vec3(length(v)), v, saturation); //color adjust
-	color = v*.005;
+	color = vec4(v*.005, 1.0f);
 }
