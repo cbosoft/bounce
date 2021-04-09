@@ -23,6 +23,9 @@ public:
 
     void set_camera_target(Transform *t);
     const Transform *get_camera_transform() const;
+    void set_camera_width(double width);
+    void set_camera_height(double height);
+    void set_camera_diagonal(double diagonal);
 
     friend class Game;
 
@@ -34,8 +37,6 @@ private:
     Renderer(int w, int h, const std::string &title);
 
     void update_shader_uniforms() const;
-    arma::vec2 world_pt_to_screen_pt(arma::vec2 pt);
-    double world_len_to_screen_len(double l);
 
     void render_background();
     void draw_circle(const arma::vec2 &position, double radius);
@@ -45,10 +46,14 @@ private:
     GLuint compile_vertex(const std::string &source);
     GLuint compile_fragment(const std::string &source);
 
+    void set_window_size(int w, int h);
+
     // camera position and size in world units
     Transform camera_transform;
     arma::vec2 camera_size;
-    arma::vec2 window_size;
+    double camera_angle;
+    int w, h;
+    double aspect_ratio; // width over height
 
     GLFWwindow *window;
     std::map<std::string, GLuint> shaders;

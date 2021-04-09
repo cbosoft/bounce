@@ -8,10 +8,11 @@ GLFWwindow  *Renderer::get_window()
 
 void Renderer::render()
 {
-    int h, w;
-    glfwGetWindowSize(this->window, &h, &w);
-    this->window_size[0] = double(w);
-    this->window_size[1] = double(h);
+    int w, h;
+    glfwGetWindowSize(this->window, &w, &h);
+    this->set_window_size(w, h);
+    glViewport(0, 0, w, h);
+    this->set_camera_diagonal(150.0);
 
     this->update_shader_uniforms();
 
@@ -68,5 +69,8 @@ void Renderer::update_shader_uniforms() const
         loc = glGetUniformLocation(shader_id, "camera_size");
         auto cs = this->camera_size;
         if (loc != -1) glUniform2f(loc, float(cs[0]), float(cs[1]));
+
+        loc = glGetUniformLocation(shader_id, "camera_angle");
+        if (loc != -1) glUniform1f(loc, this->camera_angle);
     }
 }

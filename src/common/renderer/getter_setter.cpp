@@ -18,8 +18,3 @@ GLuint Renderer::get_vbuf() const
 {
     return this->vbuf;
 }
-
-const Transform *Renderer::get_camera_transform() const
-{
-    return &this->camera_transform;
-}

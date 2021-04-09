@@ -1,23 +1,42 @@
 #include "renderer.hpp"
 
-arma::vec2 Renderer::world_pt_to_screen_pt(arma::vec2 pt)
+void Renderer::set_window_size(int w, int h)
 {
-    pt = pt - this->camera_transform.get_position();
-    //pt = pt % this->window_size;
-    pt = pt / this->camera_size;
-    //pt = pt + this->window_size*0.5;
-    //pt[1] = this->window_size[0] - pt[1];
-    return pt;
+  this->w = w;
+  this->h = h;
+  this->aspect_ratio = double(w)/double(h);
 }
 
-double Renderer::world_len_to_screen_len(double l)
+const Transform *Renderer::get_camera_transform() const
 {
-    //l *= this->window_size[0];
-    l /= this->camera_size[0];
-    return l;
+    return &this->camera_transform;
 }
 
 void Renderer::set_camera_target(Transform *t)
 {
-    this->camera_transform.set_parent(t);
+  this->camera_transform.set_parent(t);
+}
+
+void Renderer::set_camera_width(double width)
+{
+  this->camera_size[0] = width;
+  this->camera_size[1] = width/this->aspect_ratio;
+}
+
+void Renderer::set_camera_height(double height)
+{
+  this->camera_size[0] = height*this->aspect_ratio;
+  this->camera_size[1] = height;
+}
+
+void Renderer::set_camera_diagonal(double diagonal)
+{
+  // d*d = d2 = h*h + w*w;
+  // w = ar*h
+  // d2 = h*h + ar*ar*h*h;
+  // d2 = h*h*(1 + ar*ar);
+  // h = sqrt(d2/(1 + ar*ar))
+  double h = std::sqrt(diagonal*diagonal / (1 + this->aspect_ratio*this->aspect_ratio));
+  this->camera_size[0] = h*this->aspect_ratio;
+  this->camera_size[1] = h;
 }
