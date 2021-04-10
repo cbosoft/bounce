@@ -9,7 +9,7 @@ uniform vec3 kernel_b;
 uniform vec3 kernel_c;
 uniform float kernel_norm;
 
-const float offset = 1.0 / 200.0;
+const float offset = 1.0 / 400.0;
 const vec2 offsets[9] = vec2[](
     vec2(-offset,  offset), // top-left
     vec2( 0.0f,    offset), // top-center
@@ -30,7 +30,6 @@ void main()
         kernel_c.x, kernel_c.y, kernel_c.z
     );
     vec3 pcolor = vec3(texture(screenTexture, TexCoords));
-    float brightness = (pcolor.x + pcolor.y + pcolor.z)/3.0f;
     vec3 col = vec3(0.0f);
     for (int i = 0; i < 9; i++){
         vec3 sampled = vec3(texture(screenTexture, TexCoords.st + offsets[i]));

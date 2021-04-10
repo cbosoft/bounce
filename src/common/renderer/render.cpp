@@ -112,7 +112,7 @@ void Renderer::set_shader_filter_kernel(GLuint shader_id, float kernel_norm, con
     loc = glGetUniformLocation(shader_id, "kernel_a");
     if (loc != -1) glUniform3f(loc, args[0], args[1], args[2]);
     loc = glGetUniformLocation(shader_id, "kernel_b");
-    if (loc != -1) glUniform3f(loc, args[4], args[5], args[6]);
+    if (loc != -1) glUniform3f(loc, args[3], args[4], args[5]);
     loc = glGetUniformLocation(shader_id, "kernel_c");
-    if (loc != -1) glUniform3f(loc, args[7], args[8], args[9]);
+    if (loc != -1) glUniform3f(loc, args[6], args[7], args[8]);
 }
