@@ -51,16 +51,17 @@ void main() {
   vec2 pos = (gl_FragCoord.xy + camera_position/10000);
 
     pos = -abs(pos);
-  if (
-      is_star(pos)
-      || is_star(pos + vec2( 0, 1))
-      || is_star(pos + vec2( 1, 0))
-      || is_star(pos + vec2(-1, 0))
-      || is_star(pos + vec2( 0,-1))
-      ) {
-    color = vec3(rgb*star_brightness(pos));
-  }
-  else {
-    color = vec3(0.0);
-  }
+    color = vec3(0.0f);
+  // if (
+  //     is_star(pos)
+  //     || is_star(pos + vec2( 0, 1))
+  //     || is_star(pos + vec2( 1, 0))
+  //     || is_star(pos + vec2(-1, 0))
+  //     || is_star(pos + vec2( 0,-1))
+  //     ) {
+  //   color = vec3(rgb*star_brightness(pos));
+  // }
+  // else {
+  //   color = vec3(0.0);
+  // }
 }

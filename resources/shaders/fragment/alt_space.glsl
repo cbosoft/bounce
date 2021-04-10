@@ -11,10 +11,10 @@ in vec3 rgb;
 // This content is under the MIT License.
 
 
-#define iterations 15
+#define iterations 5
 #define formuparam 0.53
 
-#define volsteps 5
+#define volsteps 3
 #define stepsize 0.1
 
 #define zoom   0.900
