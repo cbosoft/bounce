@@ -59,4 +59,5 @@ private:
     std::map<std::string, GLuint> shaders;
     std::vector<PhysicsObject *> objects;
     unsigned int vbuf, varr;
+    unsigned int fbo, txt, qbuf, qarr;
 };

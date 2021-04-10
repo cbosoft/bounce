@@ -15,14 +15,41 @@ void Renderer::render()
     this->set_camera_diagonal(150.0);
 
     this->update_shader_uniforms();
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                           GL_TEXTURE_2D, this->txt, 0);
     glClear(GL_COLOR_BUFFER_BIT);
+    glBindVertexArray(this->varr);
+    glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
     this->render_background();
     for (auto *object : this->objects) {
         auto *rbl = object->get_renderable();
         if (rbl) rbl->draw();
     }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glViewport(0, 0, w*2, h*2);
+    glUseProgram(this->shaders["quad"]);
+    glBindTexture(GL_TEXTURE_2D, this->txt);
+    glBindVertexArray(this->qarr);
+    glBindBuffer(GL_ARRAY_BUFFER, this->qbuf);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void *)(0));
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void *)(2*sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glfwSwapBuffers(this->window);
     glfwPollEvents();
