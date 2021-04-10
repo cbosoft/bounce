@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <array>
 #include <map>
 
 #include <GL/glew.h>
@@ -47,6 +48,7 @@ private:
     GLuint compile_fragment(const std::string &source);
 
     void set_window_size(int w, int h);
+    void set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args);
 
     // camera position and size in world units
     Transform camera_transform;

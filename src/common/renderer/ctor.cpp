@@ -26,9 +26,9 @@ Renderer::Renderer(int w, int h, const std::string &title)
     this->shaders["default"] = this->load_shader_program(
             "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/star.glsl");
     this->shaders["background"] = this->load_shader_program(
-            "../resources/shaders/vertex/notransform.glsl", "../resources/shaders/fragment/space.glsl");
+            "../resources/shaders/vertex/notransform.glsl", "../resources/shaders/fragment/alt_space.glsl");
     this->shaders["quad"] = this->load_shader_program(
-            "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/bloom.glsl");
+            "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/filter33.glsl");
 
     this->camera_size = arma::vec2{100, 100};
 

@@ -11,7 +11,7 @@ void Renderer::render()
     int w, h;
     glfwGetWindowSize(this->window, &w, &h);
     this->set_window_size(w, h);
-    glViewport(0, 0, w, h);
+    glViewport(0, 0, w*2, h*2);
     this->set_camera_diagonal(150.0);
 
     this->update_shader_uniforms();
@@ -19,7 +19,7 @@ void Renderer::render()
     // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w*2, h*2, 0,
                  GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -41,7 +41,9 @@ void Renderer::render()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glViewport(0, 0, w*2, h*2);
-    glUseProgram(this->shaders["quad"]);
+    GLuint shader_id = this->shaders["quad"];
+    glUseProgram(shader_id);
+    this->set_shader_filter_kernel(shader_id, 0.0625, {1, 2, 1, 2, 4, 2, 1, 2, 1});
     glBindTexture(GL_TEXTURE_2D, this->txt);
     glBindVertexArray(this->qarr);
     glBindBuffer(GL_ARRAY_BUFFER, this->qbuf);
@@ -101,4 +103,16 @@ void Renderer::update_shader_uniforms() const
         loc = glGetUniformLocation(shader_id, "camera_angle");
         if (loc != -1) glUniform1f(loc, this->camera_angle);
     }
+}
+
+void Renderer::set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args)
+{
+    int loc = glGetUniformLocation(shader_id, "kernel_norm");
+    if (loc != -1) glUniform1f(loc, kernel_norm);
+    loc = glGetUniformLocation(shader_id, "kernel_a");
+    if (loc != -1) glUniform3f(loc, args[0], args[1], args[2]);
+    loc = glGetUniformLocation(shader_id, "kernel_b");
+    if (loc != -1) glUniform3f(loc, args[4], args[5], args[6]);
+    loc = glGetUniformLocation(shader_id, "kernel_c");
+    if (loc != -1) glUniform3f(loc, args[7], args[8], args[9]);
 }
