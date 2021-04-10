@@ -15,8 +15,6 @@ void Renderer::render()
     this->set_camera_diagonal(150.0);
 
     this->update_shader_uniforms();
-    // glEnable(GL_BLEND);
-    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w*2, h*2, 0,
@@ -39,7 +37,8 @@ void Renderer::render()
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT);
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glViewport(0, 0, w*2, h*2);
     GLuint shader_id = this->shaders["quad"];
     glUseProgram(shader_id);
