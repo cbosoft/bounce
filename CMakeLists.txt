@@ -37,8 +37,16 @@ find_package(GLEW REQUIRED)
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 target_link_libraries(${EXE} ${ARMADILLO_LIBRARIES})
 
-if (CMAKE_SYSTEM STREQUAL LINUX)
+if (${CMAKE_SYSTEM} STREQUAL LINUX)
   set(EXTRA_LIBS X11)
+endif()
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
+    message("DARWIN!")
+    find_package(GLFW3 REQUIRED)
+    include_directories(${GLFW3_INCLUDE_DIRS})
+else()
+    message("Not DARWIN!")
 endif()
 
 if (CMAKE_SYSTEM STREQUAL WINDOWS)
