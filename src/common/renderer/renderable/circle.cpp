@@ -9,7 +9,7 @@ void CircleRenderable::draw()
     auto r = float(obj->get_radius());
     float x = cpos[0], y = cpos[1];
 
-    constexpr int n = 30;
+    constexpr int n = 100;
     constexpr float dtheta = 2.0*M_PI/double(n);
     float theta = 0.0;
 
