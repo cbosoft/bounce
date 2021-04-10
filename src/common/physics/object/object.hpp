@@ -49,6 +49,9 @@ class PhysicsObject : public Transform {
     Renderable *get_renderable() const;
     void set_renderable(Renderable *renderable);
 
+    void set_layer(const std::string &layer);
+    const std::string &get_layer() const;
+
   private:
     arma::vec2 new_position;
     arma::vec2 velocity;
@@ -56,6 +59,7 @@ class PhysicsObject : public Transform {
 
     double mass, inv_mass, cor, _radius;
     static constexpr double COLLISION_THRESH = 1e-2;
+    std::string _layer;
 
     Colour c;
 

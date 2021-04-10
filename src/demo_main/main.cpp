@@ -21,6 +21,7 @@ int main()
     game.add_object(o);
     // pe.add_field(f);
     o->set_renderable(new CircleRenderable());
+    o->set_layer("other");
     // o->set_colour(Colour::from_rgb_f(1.0, 0.5, 0.2));
 
     // double wrad = 1000, off=45;

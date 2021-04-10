@@ -1,5 +1,6 @@
 #include <iostream>
 #include <armadillo>
+#include <map>
 #include "engine.hpp"
 
 
@@ -29,15 +30,20 @@ void PhysicsEngine::timestep_objects()
     }
 
     // Get proposed new positions for objects
+    std::map<std::string, std::vector<PhysicsObject *> > by_layer;
     for (auto *obj : this->objects) {
         obj->timestep(this->dt);
+        by_layer[obj->get_layer()].emplace_back(obj);
     }
 
-    // Check for an resolve any collisions
-    for (size_t i = 0; i < this->objects.size(); i++) {
-        for (size_t j = 0; j < this->objects.size(); j++) {
-            if (j >= i) break;
-            this->resolve_collision(this->objects[i], this->objects[j]);
+    // Check for and resolve any collisions
+    for (const auto &kv : by_layer) {
+        const auto &objs = kv.second;
+        for (size_t i = 0; i < objs.size(); i++) {
+            for (size_t j = 0; j < objs.size(); j++) {
+                if (j >= i) break;
+                this->resolve_collision(objs[i], objs[j]);
+            }
         }
     }
 

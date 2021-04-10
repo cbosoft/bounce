@@ -107,3 +107,13 @@ void PhysicsObject::set_renderable(Renderable *renderable)
     renderable->set_object(this);
     this->_renderable = renderable;
 }
+
+const std::string &PhysicsObject::get_layer() const
+{
+    return this->_layer;
+}
+
+void PhysicsObject::set_layer(const std::string &layer)
+{
+    this->_layer = layer;
+}
