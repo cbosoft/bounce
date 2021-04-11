@@ -1,4 +1,5 @@
 #include <iostream>
+#include "image/image.hpp"
 #include "renderer.hpp"
 
 Renderer::Renderer(Game *game, int w, int h, const std::string &title)
@@ -38,6 +39,8 @@ Renderer::Renderer(Game *game, int w, int h, const std::string &title)
             "../resources/shaders/vertex/notransform.glsl", "../resources/shaders/fragment/alt_space.glsl");
     this->shaders["quad"] = this->load_shader_program(
             "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/quad.glsl");
+    this->shaders["sprite"] = this->load_shader_program(
+            "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/sprite.glsl");
 
     this->camera_size = arma::vec2{100, 100};
 
@@ -92,4 +95,6 @@ Renderer::Renderer(Game *game, int w, int h, const std::string &title)
 
     glBindVertexArray(this->varr);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
+
+    stbi_set_flip_vertically_on_load(true);
 }

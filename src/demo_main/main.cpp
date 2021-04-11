@@ -7,6 +7,7 @@ class DemoScene : public Scene {
 public:
     explicit DemoScene(Game *game)
         : Scene(game, "demo")
+        , player(nullptr)
     {
         auto *o = new PhysicsObject(this, {0, 0}, false);
         o->set_radius(10.0);
@@ -16,7 +17,9 @@ public:
 
         o = new PhysicsObject(this, {30, 0}, false, 0.5);
         o->set_radius(4.0);
-        o->set_renderable(new CircleRenderable());
+        auto c = new CircleRenderable();
+        c->set_texture_name("../218.png");
+        o->set_renderable(c);
         o->set_colour(Colour::from_rgb_f(0.5, 0.5, 0.5));
         this->add_object(o);
         this->set_player(o);
@@ -39,6 +42,7 @@ private:
         this->player = o;
         Renderer::get().set_camera_target(o);
     }
+
     PhysicsObject *player;
 };
 

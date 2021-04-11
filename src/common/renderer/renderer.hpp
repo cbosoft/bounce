@@ -8,6 +8,7 @@
 #include <GLFW/glfw3.h>
 #include <armadillo>
 
+#include "texture/texture.hpp"
 #include "../physics/object/object.hpp"
 
 struct Vertex {
@@ -32,6 +33,9 @@ public:
     void set_camera_width(double width);
     void set_camera_height(double height);
     void set_camera_diagonal(double diagonal);
+
+    void add_texture(const std::string &path);
+    Texture *get_texture(const std::string &name);
 
     GLuint get_shader(const std::string &name) const;
     GLuint get_vbuf() const;
@@ -62,6 +66,7 @@ private:
 
     GLFWwindow *window;
     std::map<std::string, GLuint> shaders;
+    std::map<std::string , Texture *> textures;
     unsigned int vbuf, varr;
     unsigned int fbo, txt, qbuf, qarr;
 };

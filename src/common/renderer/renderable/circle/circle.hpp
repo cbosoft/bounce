@@ -4,6 +4,6 @@
 
 class CircleRenderable : public Renderable {
 
-    void draw() override;
+    void draw() const override;
 
 };

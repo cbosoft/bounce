@@ -18,6 +18,7 @@ void Renderer::render()
     this->update_shader_uniforms();
     glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
 
+    glBindTexture(GL_TEXTURE_2D, this->txt);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w*2, h*2, 0,
                  GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
