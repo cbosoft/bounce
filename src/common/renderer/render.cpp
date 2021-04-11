@@ -44,7 +44,6 @@ void Renderer::render()
     glViewport(0, 0, w*2, h*2);
     GLuint shader_id = this->shaders["quad"];
     glUseProgram(shader_id);
-    this->set_shader_filter_kernel(shader_id, 0.0625, {1, 2, 1, 2, 4, 2, 1, 2, 1});
     glBindTexture(GL_TEXTURE_2D, this->txt);
     glBindVertexArray(this->qarr);
     glBindBuffer(GL_ARRAY_BUFFER, this->qbuf);
