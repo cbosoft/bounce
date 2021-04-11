@@ -6,8 +6,18 @@ void CircleRenderable::draw() const
     Renderer &renderer = Renderer::get();
     auto obj = this->get_object();
     arma::vec2 cpos = obj->get_position();
-    auto r = float(obj->get_radius());
-    float x = cpos[0], y = cpos[1];
+
+    float x, y, r;
+    if (this->is_fixed()) {
+        x = float(this->get_x());
+        y = float(this->get_y());
+        r = float(this->get_first_dimension());
+    }
+    else {
+        r = float(obj->get_radius());
+        x = cpos[0];
+        y = cpos[1];
+    }
 
     constexpr int n = 100;
     constexpr float dtheta = 2.0*M_PI/double(n);
