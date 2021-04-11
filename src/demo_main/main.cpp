@@ -19,7 +19,7 @@ public:
         o->set_renderable(new CircleRenderable());
         o->set_colour(Colour::from_rgb_f(0.5, 0.5, 0.5));
         this->add_object(o);
-        this->player = o;
+        this->set_player(o);
     }
 
     void up() override { this->player->add_force({0, 1e3}); }
@@ -33,6 +33,12 @@ public:
     void back() override { this->get_game()->quit(); }
 
 private:
+
+    void set_player(PhysicsObject *o)
+    {
+        this->player = o;
+        Renderer::get().set_camera_target(o);
+    }
     PhysicsObject *player;
 };
 
