@@ -2,7 +2,7 @@
 
 InputContext *Game::get_context() const
 {
-    return this->active_scene;
+    return this->get_active_scene();
 }
 
 void Game::quit()

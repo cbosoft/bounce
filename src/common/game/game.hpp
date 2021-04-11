@@ -1,6 +1,7 @@
 #pragma once
 #include <armadillo>
 #include <vector>
+#include <stack>
 
 #include "../transform/transform.hpp"
 #include "../physics/engine/engine.hpp"
@@ -15,7 +16,8 @@ class Game {
 
     // Logic
     void logic_step();
-    void set_active_scene(const std::string &scene_name);
+    void push_active_scene(const std::string &scene_name);
+    Scene *pop_active_scene();
     void add_scene(Scene *scene);
     void add_object(PhysicsObject *object);
     const std::vector<PhysicsObject *> &active_objects();
@@ -28,12 +30,13 @@ class Game {
     InputContext *get_context() const;
 
   private:
+    Scene *get_active_scene() const;
     bool should_quit;
 
     PhysicsEngine &physics;
     Renderer &renderer;
 
-    Scene *active_scene;
+    std::stack<Scene *> scene_stack;
 
     std::vector<PhysicsObject *> all_objects;
     std::map<std::string, Scene *> scenes_by_name;
