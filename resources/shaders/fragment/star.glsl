@@ -4,7 +4,7 @@ uniform float time;
 uniform float radius;
 uniform vec2 camera_position;
 
-in vec3 rgb;
+in vec4 rgba;
 in vec2 centre_screen_pos;
 
 out vec4 color;
@@ -17,6 +17,6 @@ void main()
     //float d = 1-clamp(dist/1000, 0, 1);
     float d = exp(-d_r)*2.0;
     //color = vec4(1.0f, 1.0f, 1.0f, 0.5f);
-    color = vec4(rgb, d);
+    color = vec4(rgba.xyz, d);
     // color = rgb*(-exp(-dist*100));
 }

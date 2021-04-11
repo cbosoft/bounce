@@ -10,6 +10,12 @@
 
 #include "../physics/object/object.hpp"
 
+struct Vertex {
+    float x, y, z;
+    float r, g, b, a;
+    float s, t;
+};
+
 class Game;
 class Renderer {
 public:
