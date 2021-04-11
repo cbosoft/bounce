@@ -6,11 +6,6 @@ double PhysicsEngine::get_overall_cor(double cora, double corb)
     return (cora < corb) ? cora : corb;
 }
 
-void PhysicsEngine::add_object(PhysicsObject *obj)
-{
-    this->objects.push_back(obj);
-}
-
 void PhysicsEngine::add_field(ForceField *forceField)
 {
     this->fields.push_back(forceField);

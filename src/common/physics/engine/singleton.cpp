@@ -2,9 +2,9 @@
 
 static PhysicsEngine *engine_singleton = nullptr;
 
-PhysicsEngine &PhysicsEngine::init_engine(double dt, double timescale)
+PhysicsEngine &PhysicsEngine::init_engine(Game *game, double dt, double timescale)
 {
-    engine_singleton = new PhysicsEngine(dt, timescale);
+    engine_singleton = new PhysicsEngine(game, dt, timescale);
     return *engine_singleton;
 }
 

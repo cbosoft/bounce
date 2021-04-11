@@ -1,5 +1,6 @@
 #include "renderer.hpp"
 #include "../physics/engine/engine.hpp"
+#include "../game/game.hpp"
 
 GLFWwindow  *Renderer::get_window()
 {
@@ -31,7 +32,7 @@ void Renderer::render()
     glBindVertexArray(this->varr);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
     this->render_background();
-    for (auto *object : this->objects) {
+    for (auto *object : this->game->active_objects()) {
         auto *rbl = object->get_renderable();
         if (rbl) rbl->draw();
     }

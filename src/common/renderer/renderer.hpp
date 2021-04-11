@@ -10,14 +10,13 @@
 
 #include "../physics/object/object.hpp"
 
+class Game;
 class Renderer {
 public:
     ~Renderer();
     static Renderer &get();
-    static Renderer &init(int w, int h, const std::string &title);
+    static Renderer &init(Game *game, int w, int h, const std::string &title);
 
-    void add_object(PhysicsObject *object);
-    void remove_object(PhysicsObject *object);
     void render();
 
     GLFWwindow *get_window();
@@ -28,19 +27,16 @@ public:
     void set_camera_height(double height);
     void set_camera_diagonal(double diagonal);
 
-    friend class Game;
-
     GLuint get_shader(const std::string &name) const;
     GLuint get_vbuf() const;
     GLuint get_varr() const;
 
 private:
-    Renderer(int w, int h, const std::string &title);
+    Renderer(Game *game, int w, int h, const std::string &title);
 
     void update_shader_uniforms() const;
 
     void render_background();
-    void draw_circle(const arma::vec2 &position, double radius);
 
     GLuint load_shader_program(const std::string &vertex_source, const std::string &fragment_source);
     GLuint compile_shader(const std::string &source, GLint shader_type);
@@ -50,6 +46,7 @@ private:
     void set_window_size(int w, int h);
     void set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args);
 
+    Game *game;
     // camera position and size in world units
     Transform camera_transform;
     arma::vec2 camera_size;
@@ -59,7 +56,6 @@ private:
 
     GLFWwindow *window;
     std::map<std::string, GLuint> shaders;
-    std::vector<PhysicsObject *> objects;
     unsigned int vbuf, varr;
     unsigned int fbo, txt, qbuf, qarr;
 };

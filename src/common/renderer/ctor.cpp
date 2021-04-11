@@ -1,7 +1,16 @@
 #include <iostream>
 #include "renderer.hpp"
 
-Renderer::Renderer(int w, int h, const std::string &title)
+Renderer::Renderer(Game *game, int w, int h, const std::string &title)
+: game(game)
+, camera_angle(0.0)
+, w(w)
+, h(h)
+, aspect_ratio(double(w)/double(h))
+, fbo(0)
+, txt(0)
+, qbuf(0)
+, qarr(0)
 {
     glewExperimental = GL_TRUE;
     if (!glfwInit())
@@ -28,7 +37,7 @@ Renderer::Renderer(int w, int h, const std::string &title)
     this->shaders["background"] = this->load_shader_program(
             "../resources/shaders/vertex/notransform.glsl", "../resources/shaders/fragment/alt_space.glsl");
     this->shaders["quad"] = this->load_shader_program(
-            "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/filter33.glsl");
+            "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/quad.glsl");
 
     this->camera_size = arma::vec2{100, 100};
 

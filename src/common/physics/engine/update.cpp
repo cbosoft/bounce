@@ -1,6 +1,7 @@
 #include <iostream>
 #include <armadillo>
 #include <map>
+#include "../../game/game.hpp"
 #include "engine.hpp"
 
 
@@ -23,7 +24,7 @@ void PhysicsEngine::timestep_objects()
     this->time += this->dt/this->timescale;
 
     // resolve force fields acting on objects
-    for (auto *obj : this->objects) {
+    for (auto *obj : this->game->active_objects()) {
         for (auto *field : this->fields) {
             obj->set_force(obj->get_force() + field->measure_at(obj->get_position()));
         }
@@ -31,7 +32,7 @@ void PhysicsEngine::timestep_objects()
 
     // Get proposed new positions for objects
     std::map<std::string, std::vector<PhysicsObject *> > by_layer;
-    for (auto *obj : this->objects) {
+    for (auto *obj : this->game->active_objects()) {
         obj->timestep(this->dt);
         by_layer[obj->get_layer()].emplace_back(obj);
     }
@@ -48,7 +49,7 @@ void PhysicsEngine::timestep_objects()
     }
 
     // Accept resolved positions; zero forces
-    for (auto *obj : this->objects) {
+    for (auto *obj : this->game->active_objects()) {
         obj->accept_position();
         obj->set_force({0, 0});
     }

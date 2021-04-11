@@ -6,7 +6,7 @@
 #include "../physics/engine/engine.hpp"
 #include "../renderer/renderer.hpp"
 #include "../input/manager.hpp"
-#include "../input/context/context.hpp"
+#include "../scene/scene.hpp"
 
 class Game {
   public:
@@ -15,9 +15,10 @@ class Game {
 
     // Logic
     void logic_step();
-    void add_object(PhysicsObject *obj);
-    void set_player(PhysicsObject *player);
-    PhysicsObject *get_player() const;
+    void set_active_scene(const std::string &scene_name);
+    void add_scene(Scene *scene);
+    void add_object(PhysicsObject *object);
+    const std::vector<PhysicsObject *> &active_objects();
 
     // Loop
     void run();
@@ -31,10 +32,9 @@ class Game {
 
     PhysicsEngine &physics;
     Renderer &renderer;
-    InputContext *context;
 
-    Transform *camera;
-    PhysicsObject *_player;
+    Scene *active_scene;
 
-    std::vector<PhysicsObject *> objects;
+    std::vector<PhysicsObject *> all_objects;
+    std::map<std::string, Scene *> scenes_by_name;
 };

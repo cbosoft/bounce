@@ -14,13 +14,13 @@ typedef struct {
     arma::vec2 at;
 } CollisionInformation;
 
+class Game;
 class PhysicsEngine {
 public:
-    static PhysicsEngine &init_engine(double dt, double timescale);
+    static PhysicsEngine &init_engine(Game *game, double dt, double timescale);
     static PhysicsEngine &engine();
     ~PhysicsEngine();
 
-    void add_object(PhysicsObject *obj);
     void add_field(ForceField *forceField);
 
     void timestep();
@@ -36,9 +36,9 @@ public:
     double get_dt() const;
 
 private:
-    PhysicsEngine(double dt, double timescale);
+    PhysicsEngine(Game *game, double dt, double timescale);
 
-    std::vector<PhysicsObject *> objects;
+    Game *game;
     std::vector<ForceField *> fields;
 
     double dt, time, irl_time, timescale;
