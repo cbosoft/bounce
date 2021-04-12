@@ -12,6 +12,9 @@ public:
     void down() override;
     void right() override;
 
+    void back() override {}
+    void alternate() override {}
+
     void connect_up(MenuItem *o);
     void connect_left(MenuItem *o);
     void connect_down(MenuItem *o);
