@@ -11,16 +11,21 @@ public:
     {
         auto *o = new PhysicsObject(this, {0, 0}, false);
         o->set_radius(10.0);
-        o->set_renderable(new CircleRenderable());
+        //o->set_renderable(new CircleRenderable());
+        o->set_renderable(MeshRenderable::rectangle(10, 5));
         o->set_layer("other");
+        this->add_object(o);
+
+        o = new PhysicsObject(this, {0, 0}, false, 0.5);
+        o->set_radius(4.0);
+        o->set_colour(Colour::from_rgb_f(0.5, 0.5, 0.5));
+        o->set_renderable(MeshRenderable::regular_polygon(5));
         this->add_object(o);
 
         o = new PhysicsObject(this, {30, 0}, false, 0.5);
         o->set_radius(4.0);
-        auto c = new CircleRenderable();
-        c->set_texture_name("../218.png");
-        o->set_renderable(c);
         o->set_colour(Colour::from_rgb_f(0.5, 0.5, 0.5));
+        o->set_renderable(MeshRenderable::filleted_rectangle(5, 10, 1));
         this->add_object(o);
         this->set_player(o);
     }
