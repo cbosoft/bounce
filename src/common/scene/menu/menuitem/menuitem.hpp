@@ -1,8 +1,9 @@
 #pragma once
 
+#include "../../../physics/object/object.hpp"
 #include "../menu.hpp"
 
-class MenuItem : public InputContext, public Transform {
+class MenuItem : public InputContext, public PhysicsObject {
 public:
     explicit MenuItem(Menu *parent);
 
