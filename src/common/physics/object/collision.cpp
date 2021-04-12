@@ -2,7 +2,8 @@
 
 void PhysicsObject::accept_position()
 {
-    this->set_position(this->new_position);
+    if (!this->fixed())
+        this->set_position(this->new_position);
 }
 
 bool PhysicsObject::will_collide_with(const PhysicsObject *other)
