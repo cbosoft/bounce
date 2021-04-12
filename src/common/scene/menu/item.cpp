@@ -4,6 +4,13 @@
 void Menu::set_selected(MenuItem *item)
 {
     this->selected = item;
+
+
+
+void Menu::add_item(MenuItem *item)
+{
+    this->items.push_back(item);
+    this->add_object(item);
 }
 
 void Menu::up() { if (this->selected) this->selected->up(); }

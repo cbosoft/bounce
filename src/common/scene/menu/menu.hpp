@@ -8,6 +8,7 @@ public:
     Menu(Game *game, const std::string &name);
 
     void set_selected(MenuItem *item);
+    void add_item(MenuItem *item);
 
     void up() override;
     void left() override;
