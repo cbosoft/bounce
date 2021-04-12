@@ -1,12 +1,47 @@
 #include "../common/game/game.hpp"
 #include "../common/scene/scene.hpp"
+#include "../common/scene/menu/menu.hpp"
+#include "../common/scene/menu/menuitem/menuitem.hpp"
 #include "../common/renderer/renderables.hpp"
 #include "../version.hpp"
+
+class MenuButton : public MenuItem
+{
+public:
+    explicit MenuButton(Menu *parent)
+        : MenuItem(parent)
+    {
+        this->set_renderable(MeshRenderable::filleted_rectangle(1, 1, 0.1));
+    }
+
+    void action() override {};
+};
+
+class DemoMenu : public Menu {
+public:
+    explicit DemoMenu(Game *game)
+        : Menu(game, "menu")
+    {
+        auto *a = new MenuButton(this);
+        this->add_item(a);
+
+        auto *b = new MenuButton(this);
+        b->set_position({3, -3});
+        this->add_item(b);
+
+        b->connect_down(a);
+        a->connect_down(b);
+        this->set_selected(b);
+
+    }
+
+    void back() override { this->get_game()->quit(); };
+};
 
 class DemoScene : public Scene {
 public:
     explicit DemoScene(Game *game)
-        : Scene(game, "demo")
+        : Scene(game, "scene")
         , player(nullptr)
     {
         auto *o = new PhysicsObject(this, {0, 0}, false);
@@ -55,7 +90,9 @@ int main()
 {
     std::cerr << GitMetadata::version_string() << std::endl;
     Game game(1280, 960);
-    auto *scene = new DemoScene(&game);
+    Scene *scene = new DemoMenu(&game);
+    game.add_scene(scene);
+    scene = new DemoScene(&game);
     game.add_scene(scene);
     game.run();
     return 0;
