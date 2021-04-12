@@ -11,3 +11,8 @@ MenuItem::MenuItem(Menu *parent)
 {
 
 }
+
+Menu *MenuItem::get_parent_menu()
+{
+    return this->parent;
+}

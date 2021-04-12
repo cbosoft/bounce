@@ -20,6 +20,8 @@ public:
     void connect_down(MenuItem *o);
     void connect_right(MenuItem *o);
 
+    Menu *get_parent_menu();
+
 private:
     MenuItem *item_above, *item_left, *item_below, *item_right;
     Menu *parent;
