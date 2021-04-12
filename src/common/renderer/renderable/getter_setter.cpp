@@ -1,4 +1,5 @@
 #include "renderable.hpp"
+#include "../../physics/object/object.hpp"
 
 bool Renderable::is_fixed() const
 {
@@ -17,12 +18,22 @@ double Renderable::get_y() const
 
 double Renderable::get_scale() const
 {
-    return this->s;
+    if (this->is_fixed()) {
+        return this->s;
+    }
+    else {
+        return this->_object->get_radius();
+    }
 }
 
 void Renderable::set_scale(double v)
 {
-    this->s = v;
+    if (this->is_fixed()) {
+        this->s = v;
+    }
+    else {
+        this->_object->set_radius(v);
+    }
 }
 
 void Renderable::set_x(double v)
