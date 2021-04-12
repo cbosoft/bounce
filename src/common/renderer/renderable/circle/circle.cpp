@@ -11,7 +11,7 @@ void CircleRenderable::draw() const
     if (this->is_fixed()) {
         x = float(this->get_x());
         y = float(this->get_y());
-        r = float(this->get_first_dimension());
+        r = float(this->get_scale());
     }
     else {
         r = float(obj->get_radius());
