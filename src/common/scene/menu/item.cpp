@@ -3,9 +3,25 @@
 
 void Menu::set_selected(MenuItem *item)
 {
+    if (this->selected)
+        this->style_unselected(this->selected);
     this->selected = item;
+    this->style_selected(this->selected);
+}
 
+void Menu::style_selected(MenuItem *item)
+{
+    static const double dr = 0.5;
+    double r = item->get_radius();
+    item->set_radius(r + dr);
+}
 
+void Menu::style_unselected(MenuItem *item)
+{
+    static const double dr = 0.5;
+    double r = item->get_radius();
+    item->set_radius(r - dr);
+}
 
 void Menu::add_item(MenuItem *item)
 {
@@ -20,5 +36,5 @@ void Menu::right() { if (this->selected) this->selected->right(); }
 
 void Menu::action() { if (this->selected) this->selected->action(); }
 
-void Menu::alternate() {}
-void Menu::back() {}
+void Menu::alternate() { if (this->selected) this->selected->alternate(); }
+void Menu::back() { if (this->selected) this->selected->back(); }
