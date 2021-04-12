@@ -1,7 +1,15 @@
 #pragma once
 #include "context/context.hpp"
+#include <map>
+#include <chrono>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
+struct InputState
+{
+    bool up, left, down, right;
+    bool action, alternative, back;
+};
 
 class Game;
 class InputManager {
@@ -10,14 +18,19 @@ public:
 
     static InputManager *get_active(Game *game);
 
-    virtual void handle_input() =0;
+    virtual InputState read_input_state() =0;
 
     InputContext *get_context() const;
     GLFWwindow *get_window() const;
+    void handle_input();
 
 private:
 
     void set_game(Game *game);
 
+    bool check_input_rate(unsigned int key);
+
+    std::map<unsigned int, std::chrono::time_point<std::chrono::system_clock>> previous_press;
+    InputState previous_state;
     Game *_game;
 };

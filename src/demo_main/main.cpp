@@ -11,7 +11,9 @@ public:
     explicit MenuButton(Menu *parent)
         : MenuItem(parent)
     {
-        this->set_renderable(MeshRenderable::filleted_rectangle(1, 1, 0.1));
+        auto *rbl = MeshRenderable::filleted_rectangle(10, 5, 1);
+        rbl->set_scale(5);
+        this->set_renderable(rbl);
     }
 
     void action() override {};
@@ -22,16 +24,22 @@ public:
     explicit DemoMenu(Game *game)
         : Menu(game, "menu")
     {
+        this->set_repeat_delay(300);
         auto *a = new MenuButton(this);
         this->add_item(a);
 
         auto *b = new MenuButton(this);
-        b->set_position({3, -3});
+        b->set_position({0, -3});
         this->add_item(b);
+        b->connect_up(a);
 
-        b->connect_down(a);
-        a->connect_down(b);
-        this->set_selected(b);
+        auto *c = new MenuButton(this);
+        c->set_position({0, -6});
+        this->add_item(c);
+        c->connect_up(b);
+
+        c->connect_down(a);
+        this->set_selected(a);
 
     }
 

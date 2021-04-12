@@ -20,6 +20,13 @@ public:
     // virtual void right_click() =0;
 
     Game *get_game() const;
+
+    void set_repeat_delay(int v);
+    int get_repeat_delay() const;
+    void set_repeat_rate(int v);
+    int get_repeat_rate() const;
 private:
+
+    int repeat_delay, repeat_rate;
     Game *_game;
 };

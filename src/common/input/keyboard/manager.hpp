@@ -4,5 +4,5 @@
 
 class KeyboardInputManager : public InputManager {
 public:
-    void handle_input() override;
+    InputState read_input_state() override;
 };
