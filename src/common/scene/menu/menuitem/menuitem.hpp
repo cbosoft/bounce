@@ -22,6 +22,9 @@ public:
 
     Menu *get_parent_menu();
 
+    virtual void highlight();
+    virtual void unhighlight();
+
 private:
     MenuItem *item_above, *item_left, *item_below, *item_right;
     Menu *parent;

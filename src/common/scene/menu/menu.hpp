@@ -9,8 +9,6 @@ public:
 
     void set_selected(MenuItem *item);
     void add_item(MenuItem *item);
-    virtual void style_selected(MenuItem *item);
-    virtual void style_unselected(MenuItem *item);
 
     void up() override;
     void left() override;
