@@ -11,9 +11,17 @@ public:
     explicit MenuButton(Menu *parent)
         : MenuItem(parent)
     {
-        auto *rbl = MeshRenderable::filleted_rectangle(10, 5, 1);
-        rbl->set_scale(5);
+        auto *rbl = MeshRenderable::filleted_rectangle(20, 5, 3);
+        this->set_radius(50);
         this->set_renderable(rbl);
+    }
+
+    void highlight() override {
+        this->set_colour(Colour::from_rgb(155, 200, 250));
+    }
+
+    void unhighlight() override {
+        this->set_colour(Colour::from_rgb(127, 127, 127));
     }
 
     void action() override {};
@@ -25,16 +33,18 @@ public:
         : Menu(game, "menu")
     {
         this->set_repeat_delay(300);
+        Renderer::get().set_camera_target(this);
         auto *a = new MenuButton(this);
+        a->set_position({50, 50});
         this->add_item(a);
 
         auto *b = new MenuButton(this);
-        b->set_position({0, -3});
+        b->set_position({50, 0});
         this->add_item(b);
         b->connect_up(a);
 
         auto *c = new MenuButton(this);
-        c->set_position({0, -6});
+        c->set_position({50, -50});
         this->add_item(c);
         c->connect_up(b);
 
@@ -88,7 +98,7 @@ private:
     void set_player(PhysicsObject *o)
     {
         this->player = o;
-        Renderer::get().set_camera_target(o);
+        //Renderer::get().set_camera_target(o);
     }
 
     PhysicsObject *player;
