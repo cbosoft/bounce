@@ -4,26 +4,17 @@
 void CircleRenderable::draw() const
 {
     Renderer &renderer = Renderer::get();
-    auto obj = this->get_object();
-    arma::vec2 cpos = obj->get_position();
+    arma::vec2 opos = this->get_position();
 
-    float x, y, r;
-    if (this->is_fixed()) {
-        x = float(this->get_x());
-        y = float(this->get_y());
-        r = float(this->get_scale());
-    }
-    else {
-        r = float(obj->get_radius());
-        x = cpos[0];
-        y = cpos[1];
-    }
+    float x = float(opos[0]);
+    float y = float(opos[1]);
+    float r = float(this->get_scale());
 
     constexpr int n = 100;
     constexpr float dtheta = 2.0*M_PI/double(n);
     float theta = 0.0;
 
-    const Colour &colour = obj->get_colour();
+    const Colour &colour = this->get_colour();
     float cr = colour.rf(), cg = colour.gf(), cb = colour.bf();
 
     Vertex vertices[(n + 1)];

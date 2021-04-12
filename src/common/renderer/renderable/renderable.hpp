@@ -1,22 +1,25 @@
 #pragma once
 #include <string>
 
+#include "../../colour/colour.hpp"
+#include "../../transform/transform.hpp"
+
 class PhysicsObject;
-class Renderable {
+class Renderable : public Transform {
 public:
     Renderable();
 
     virtual void draw() const =0;
 
     bool is_fixed() const;
-    double get_x() const;
-    double get_y() const;
     double get_scale() const;
-    void set_scale(double v);
-    void set_x(double v);
-    void set_y(double v);
+    void set_scale(double scale);
+
     void set_object(PhysicsObject *object);
     PhysicsObject *get_object() const;
+
+    const Colour &get_colour() const;
+    void set_colour(const Colour &colour);
 
     bool has_texture() const;
     const std::string &get_texture_name() const;
@@ -24,7 +27,8 @@ public:
 
 private:
 
-    double x, y, s;
+    Colour _colour;
+    double _scale;
     PhysicsObject *_object;
     std::string texture_name;
 };

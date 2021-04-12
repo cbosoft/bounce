@@ -11,29 +11,21 @@ void MeshRenderable::draw() const
 {
     Renderer &renderer = Renderer::get();
     auto obj = this->get_object();
-    arma::vec2 cpos = obj->get_position();
+    arma::vec2 opos = this->get_position();
 
-    float x, y, r;
-    if (this->is_fixed()) {
-        x = float(this->get_x());
-        y = float(this->get_y());
-        r = float(this->get_scale());
-    }
-    else {
-        r = float(obj->get_radius());
-        x = cpos[0];
-        y = cpos[1];
-    }
+    auto x = float(opos[0]);
+    auto y = float(opos[1]);
+    auto r = float(this->get_scale());
 
-    const int n = this->points.size();
+    const int n = int(this->points.size());
 
     const Colour &colour = obj->get_colour();
     float cr = colour.rf(), cg = colour.gf(), cb = colour.bf();
 
     std::vector<Vertex> vertices;
     for (int i = 0; i < n; i++) {
-        const float dx = this->points[i][0];
-        const float dy = this->points[i][1];
+        const auto dx = float(this->points[i][0]);
+        const auto dy = float(this->points[i][1]);
         vertices.push_back({
                 x + dx*r, y + dy*r, 0.0f,
                 cr, cg, cb, 1.0f,
