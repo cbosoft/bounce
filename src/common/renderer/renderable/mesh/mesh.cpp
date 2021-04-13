@@ -10,7 +10,6 @@ MeshRenderable::MeshRenderable(const std::vector<arma::vec2> &points)
 void MeshRenderable::draw() const
 {
     Renderer &renderer = Renderer::get();
-    auto obj = this->get_object();
     arma::vec2 opos = this->get_position();
 
     auto x = float(opos[0]);
@@ -19,7 +18,7 @@ void MeshRenderable::draw() const
 
     const int n = int(this->points.size());
 
-    const Colour &colour = obj->get_colour();
+    const Colour &colour = this->get_colour();
     float cr = colour.rf(), cg = colour.gf(), cb = colour.bf();
 
     std::vector<Vertex> vertices;
