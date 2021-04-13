@@ -32,8 +32,6 @@ public:
         this->bg->set_colour(Colour::from_rgb(127, 127, 127));
     }
 
-    void action() override {};
-
 private:
     Renderable *bg;
 };
@@ -58,10 +56,16 @@ public:
         c->set_position({50, -50});
         this->add_item(c);
         c->connect_up(b);
+        c->set_callback_action(DemoMenu::quit_callback);
 
         c->connect_down(a);
         this->set_selected(a);
 
+    }
+
+    static void quit_callback(MenuItem *i)
+    {
+        i->get_game()->quit();
     }
 
     void back() override { this->get_game()->quit(); };
