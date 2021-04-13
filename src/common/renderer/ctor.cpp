@@ -41,6 +41,8 @@ Renderer::Renderer(Game *game, int w, int h, const std::string &title)
             "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/1bit_dithered.glsl");
     this->shaders["sprite"] = this->load_shader_program(
             "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/sprite.glsl");
+    this->shaders["font"] = this->load_shader_program(
+            "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/font.glsl");
 
     this->camera_size = arma::vec2{100, 100};
 

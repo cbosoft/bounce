@@ -37,6 +37,10 @@ find_package(GLEW REQUIRED)
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 target_link_libraries(${EXE} ${ARMADILLO_LIBRARIES})
 
+find_package(Freetype REQUIRED)
+include_directories(${FREETYPE_INCLUDE_DIRS})
+target_link_libraries(${EXE} ${FREETYPE_LIBRARIES})
+
 if (${CMAKE_SYSTEM} STREQUAL LINUX)
   set(EXTRA_LIBS X11)
 endif()
