@@ -18,6 +18,7 @@ class Game {
     void logic_step();
     void push_active_scene(const std::string &scene_name);
     Scene *pop_active_scene();
+    Scene *get_active_scene() const;
     void add_scene(Scene *scene);
     void add_object(PhysicsObject *object);
     const std::vector<PhysicsObject *> &active_objects();
@@ -30,7 +31,6 @@ class Game {
     InputContext *get_context() const;
 
   private:
-    Scene *get_active_scene() const;
     bool should_quit;
 
     PhysicsEngine &physics;
