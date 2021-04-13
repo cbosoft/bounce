@@ -3,6 +3,9 @@ tags
 .idea
 *.un~
 
+# OS
+.DS_Store
+
 # Python
 __pycache__
 *.pyc
@@ -19,3 +22,7 @@ obj
 bounce
 build
 cmake-build-debug
+
+# Resources
+*.ttf
+*.png
