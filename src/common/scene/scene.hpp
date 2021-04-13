@@ -10,8 +10,11 @@ public:
     const std::string &get_name() const;
     const std::vector<PhysicsObject *> &get_objects() const;
     void add_object(PhysicsObject *object);
+    const std::vector<Renderable *> &get_floating_renderables() const;
+    void add_floating_renderable(Renderable *rbl);
 
 private:
+    std::vector<Renderable *> _floating_renderables;
     std::vector<PhysicsObject *> _objects;
     std::string _name;
 };

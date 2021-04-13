@@ -33,9 +33,15 @@ void Renderer::render()
     glBindVertexArray(this->varr);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
     this->render_background();
-    for (auto *object : this->game->active_objects()) {
-        auto *rbl = object->get_renderable();
-        if (rbl) rbl->draw();
+    Scene *scene = this->game->get_active_scene();
+    if (scene) {
+        for (auto *rbl : scene->get_floating_renderables()) {
+            rbl->draw();
+        }
+        for (auto *object : scene->get_objects()) {
+            auto *rbl = object->get_renderable();
+            if (rbl) rbl->draw();
+        }
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT);
