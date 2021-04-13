@@ -8,23 +8,34 @@
 class MenuButton : public MenuItem
 {
 public:
-    explicit MenuButton(Menu *parent)
+    MenuButton(Menu *parent, const std::string &label)
         : MenuItem(parent)
     {
-        auto *rbl = MeshRenderable::filleted_rectangle(20, 5, 3);
-        this->set_radius(50);
-        this->set_renderable(rbl);
+        auto *col = new CollectionRenderable();
+        this->bg = MeshRenderable::filleted_rectangle(20, 5, 3);
+        col->add_child(bg);
+        auto *msh= MeshRenderable::filleted_rectangle(21, 5, 3);
+        msh->set_scale(19.0);
+        msh->set_colour(Colour::from_rgb(0, 0, 0));
+        col->add_child(msh);
+        auto *txt = new TextRenderable(label, "../resources/BebasNeue-Regular.ttf", 80);
+        col->add_child(txt);
+        txt->set_relative_position({-15, -3});
+        this->set_renderable(col);
     }
 
     void highlight() override {
-        this->set_colour(Colour::from_rgb(155, 200, 250));
+        this->bg->set_colour(Colour::from_rgb(155, 200, 250));
     }
 
     void unhighlight() override {
-        this->set_colour(Colour::from_rgb(127, 127, 127));
+        this->bg->set_colour(Colour::from_rgb(127, 127, 127));
     }
 
     void action() override {};
+
+private:
+    Renderable *bg;
 };
 
 class DemoMenu : public Menu {
@@ -34,16 +45,16 @@ public:
     {
         this->set_repeat_delay(300);
         Renderer::get().set_camera_target(this);
-        auto *a = new MenuButton(this);
+        auto *a = new MenuButton(this, "continue");
         a->set_position({50, 50});
         this->add_item(a);
 
-        auto *b = new MenuButton(this);
+        auto *b = new MenuButton(this, "new");
         b->set_position({50, 0});
         this->add_item(b);
         b->connect_up(a);
 
-        auto *c = new MenuButton(this);
+        auto *c = new MenuButton(this, "quit");
         c->set_position({50, -50});
         this->add_item(c);
         c->connect_up(b);

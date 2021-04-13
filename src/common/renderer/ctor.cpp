@@ -38,7 +38,7 @@ Renderer::Renderer(Game *game, int w, int h, const std::string &title)
     this->shaders["background"] = this->load_shader_program(
             "../resources/shaders/vertex/notransform.glsl", "../resources/shaders/fragment/alt_space.glsl");
     this->shaders["quad"] = this->load_shader_program(
-            "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/1bit_dithered.glsl");
+            "../resources/shaders/vertex/quad.glsl", "../resources/shaders/fragment/ordered_dithering.glsl");
     this->shaders["sprite"] = this->load_shader_program(
             "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/sprite.glsl");
     this->shaders["font"] = this->load_shader_program(
