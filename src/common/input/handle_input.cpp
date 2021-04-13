@@ -17,7 +17,7 @@ void InputManager::handle_input()
         if (current_state.left) context->left();
         if (current_state.down) context->down();
         if (current_state.right) context->right();
-        if (current_state.action) context->left();
+        if (current_state.action) context->action();
         if (current_state.alternative) context->alternate();
         if (current_state.back) context->back();
     }
