@@ -54,20 +54,23 @@ void TextRenderable::draw() const
         auto ch = this->_font->get_char(c);
         float h = ch->h, w = ch->w;
         float dy = ch->bearing_y - h, dx = ch->bearing_x;
-        Vertex vertices[4];
+        Vertex vertices[6];
         float xm = x+dx, ym = y+dy;
 
-        vertices[0] = {xm,   ym,   0.0f, cr, cg, cb, 1.0f, 0.f, 1.f};
-        vertices[1] = {xm,   ym+h, 0.0f, cr, cg, cb, 1.0f, 0.f, 0.f};
-        vertices[2] = {xm+w, ym+h, 0.0f, cr, cg, cb, 1.0f, 1.f, 0.f};
+        vertices[0] = {xm,   ym+h, 0.0f, cr, cg, cb, 1.0f, 0.f, 0.f};
+        vertices[1] = {xm,   ym,   0.0f, cr, cg, cb, 1.0f, 0.f, 1.f};
+        vertices[2] = {xm+w, ym,   0.0f, cr, cg, cb, 1.0f, 1.f, 1.f};
+
         vertices[3] = {xm+w, ym,   0.0f, cr, cg, cb, 1.0f, 1.f, 1.f};
+        vertices[4] = {xm+w, ym+h, 0.0f, cr, cg, cb, 1.0f, 1.f, 0.f};
+        vertices[5] = {xm,   ym+h, 0.0f, cr, cg, cb, 1.0f, 0.f, 0.f};
 
         x += ch->advance;
 
         glBindTexture(GL_TEXTURE_2D, ch->texture_id);
         glBindBuffer(GL_ARRAY_BUFFER, renderer.get_vbuf());
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_DYNAMIC_DRAW);
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
     glDisableVertexAttribArray(0);
