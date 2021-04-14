@@ -6778,6 +6778,10 @@ static void *stbi__load_gif_main(stbi__context *s, int **delays, int *x, int *y,
       int stride;
       int out_size = 0;
       int delays_size = 0;
+
+      (void) out_size;
+      (void) delays_size;
+
       memset(&g, 0, sizeof(g));
       if (delays) {
          *delays = 0;
