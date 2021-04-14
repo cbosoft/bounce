@@ -77,3 +77,65 @@ GLuint Renderer::load_shader_program(
 
     return program_id;
 }
+
+void Renderer::define_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path)
+{
+    GLuint shader = this->load_shader_program(vertex_path, frag_path);
+    this->shaders[name] = shader;
+}
+
+void Renderer::define_screen_effect_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path)
+{
+    GLuint shader = this->load_shader_program(vertex_path, frag_path);
+    this->effects[name] = shader;
+}
+
+GLuint Renderer::get_screen_effect() const
+{
+    auto it = this->effects.find(this->_screen_effect);
+    if (it == this->effects.end()) {
+        std::cerr << "w) Cannot find effect shader \"" << this->_screen_effect << "\"; falling back to default." << std::endl;
+        return this->effects.at("default");
+    }
+    return it->second;
+}
+
+void Renderer::set_screen_effect(const std::string &name)
+{
+    if (this->effects.find(name) != this->effects.end()) {
+        this->_screen_effect = name;
+    }
+    else {
+        std::cerr << "w) Cannot find effect shader \"" << name << "\"; not changing effect." << std::endl;
+    }
+}
+
+GLuint Renderer::get_shader(const std::string &name) const
+{
+    auto it = this->shaders.find(name);
+    if (it != this->shaders.end()) {
+        return it->second;
+    }
+
+    std::cerr << "w) Cannot find shader \"" << name << "\"; falling back to default." << std::endl;
+    return this->shaders.at(name);
+}
+
+void Renderer::check_shaders() const
+{
+    if (this->shaders.empty()) {
+        throw std::runtime_error("E) Cannot render without shaders defined; must define at least a \"default\" shader.");
+    }
+
+    if (this->shaders.find("default") == this->shaders.end()) {
+        throw std::runtime_error("E) Cannot find default shader.");
+    }
+
+    if (this->effects.empty()) {
+        throw std::runtime_error("E) Cannot render without screen effect shaders defined; must define at least a \"default\" shader.");
+    }
+
+    if (this->effects.find("default") == this->effects.end()) {
+        throw std::runtime_error("E) Cannot find default screen effect shader.");
+    }
+}

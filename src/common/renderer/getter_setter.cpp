@@ -1,14 +1,5 @@
 #include "renderer.hpp"
 
-GLuint Renderer::get_shader(const std::string &name) const
-{
-   auto it = this->shaders.find(name);
-   if (it != this->shaders.end()) {
-       return it->second;
-   }
-   return -1;
-}
-
 GLuint Renderer::get_varr() const
 {
     return this->varr;

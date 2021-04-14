@@ -2,6 +2,7 @@
 
 void Game::run()
 {
+    this->renderer.check_shaders();
     while (!this->should_quit)
     {
         this->logic_step();

@@ -32,7 +32,6 @@ void Renderer::render()
     glClear(GL_COLOR_BUFFER_BIT);
     glBindVertexArray(this->varr);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
-    this->render_background();
     Scene *scene = this->game->get_active_scene();
     if (scene) {
         for (auto *rbl : scene->get_floating_renderables()) {
@@ -48,7 +47,7 @@ void Renderer::render()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glViewport(0, 0, w*2, h*2);
-    GLuint shader_id = this->shaders["quad"];
+    GLuint shader_id = this->get_screen_effect();
     glUseProgram(shader_id);
     glBindTexture(GL_TEXTURE_2D, this->txt);
     glBindVertexArray(this->qarr);
@@ -61,32 +60,6 @@ void Renderer::render()
 
     glfwSwapBuffers(this->window);
     glfwPollEvents();
-}
-
-void Renderer::render_background()
-{
-    GLfloat vertex_buffer_data[] = {
-            -1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-             1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-             1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-
-             1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-            -1.0f,-1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-    };
-
-    glUseProgram(this->shaders["background"]);
-    glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void *)(0));
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void *)(3*sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDrawArrays(GL_TRIANGLES, 3, 3);
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-
 }
 
 

@@ -30,6 +30,10 @@ public:
 
     GLFWwindow *get_window();
 
+    void define_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path);
+    void define_screen_effect_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path);
+    void set_screen_effect(const std::string &name);
+
     void set_camera_target(Transform *t);
     const Transform *get_camera_transform() const;
     void set_camera_width(double width);
@@ -43,12 +47,14 @@ public:
     GLuint get_vbuf() const;
     GLuint get_varr() const;
 
+    void check_shaders() const;
+
 private:
     Renderer();
 
     void update_shader_uniforms() const;
 
-    void render_background();
+    GLuint get_screen_effect() const;
 
     GLuint load_shader_program(const std::string &vertex_source, const std::string &fragment_source);
     GLuint compile_shader(const std::string &source, GLint shader_type);
@@ -67,7 +73,8 @@ private:
     double aspect_ratio; // width over height
 
     GLFWwindow *window;
-    std::map<std::string, GLuint> shaders;
+    std::string _screen_effect;
+    std::map<std::string, GLuint> shaders, effects;
     std::map<std::string , Texture *> textures;
     unsigned int vbuf, varr;
     unsigned int fbo, txt, qbuf, qarr;
