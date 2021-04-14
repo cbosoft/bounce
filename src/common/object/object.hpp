@@ -15,6 +15,9 @@ class Object : public Transform {
     Object(Transform *parent, const arma::vec2 &position, double mass, double cor=1.0);
     virtual ~Object() =default;
 
+    virtual void update() {}
+    virtual void physics_update() {}
+
     void timestep(double dt);
 
     void accept_position();
