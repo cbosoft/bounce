@@ -1,8 +1,4 @@
-#include "../common/game/game.hpp"
-#include "../common/scene/scene.hpp"
-#include "../common/scene/menu/menu.hpp"
-#include "../common/scene/menu/menuitem/menuitem.hpp"
-#include "../common/renderer/renderables.hpp"
+#include "../common/bounce.hpp"
 #include "../version.hpp"
 
 class MenuButton : public MenuItem
@@ -50,6 +46,7 @@ public:
         b->set_position({50, 0});
         this->add_item(b);
         b->connect_up(a);
+        b->set_callback_action(DemoMenu::new_callback);
 
         auto *c = new MenuButton(this, "quit");
         c->set_position({50, -20});
@@ -79,6 +76,11 @@ public:
     static void quit_callback(MenuItem *i)
     {
         i->get_game()->quit();
+    }
+
+    static void new_callback(MenuItem *i)
+    {
+        i->get_game()->add_event(new PushSceneTransitionEvent("scene"));
     }
 
     void back() override { this->get_game()->quit(); };
@@ -119,7 +121,7 @@ public:
     void action() override {}
     void alternate() override {}
 
-    void back() override { this->get_game()->quit(); }
+    void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
 
 private:
 
@@ -138,7 +140,6 @@ int main()
     Game game(1280, 960);
     Renderer &r = Renderer::get();
     r.define_shader("default", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/fragment.glsl");
-    //r.define_shader("background", "../resources/shaders/vertex/notransform.glsl", "../resources/shaders/fragment/alt_space.glsl");
     r.define_shader("sprite", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/sprite.glsl");
     r.define_shader("font", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/font.glsl");
 
