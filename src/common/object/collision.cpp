@@ -10,8 +10,8 @@ bool Object::will_collide_with(const Object *other)
 {
     arma::vec2 dp = other->get_new_position() - this->get_new_position();
     double dist = arma::norm(dp);
-    double tdist = other->get_radius() + this->get_radius() + Object::COLLISION_THRESH;
-    return dist <= tdist;
+    double tdist = other->get_radius() + this->get_radius();
+    return std::abs(dist - tdist) < Object::COLLISION_THRESH;
 }
 
 bool Object::will_collide_with(const Object *other, arma::vec2 &normal)
@@ -24,8 +24,8 @@ bool Object::will_collide_with(const Object *other, arma::vec2 &normal, arma::ve
 {
     arma::vec2 dp = other->get_new_position() - this->get_new_position();
     double dist = arma::norm(dp);
-    double tdist = other->get_radius() + this->get_radius() + Object::COLLISION_THRESH;
-    if (dist <= tdist) {
+    double tdist = other->get_radius() + this->get_radius();
+    if (std::abs(dist - tdist) <= Object::COLLISION_THRESH) {
         normal = arma::normalise(dp);
         at = this->get_position() + normal*this->_radius;
         return true;
