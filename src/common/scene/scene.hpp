@@ -18,6 +18,7 @@ public:
     void add_object(Object *object);
     const std::vector<Renderable *> &get_floating_renderables() const;
     void add_floating_renderable(Renderable *rbl);
+    std::vector<Object *> find_objects_near_to(Transform *t, double radius) const;
 
     void set_active_camera(const std::string &name);
     void add_camera(const std::string &name, RectTransform *t);
