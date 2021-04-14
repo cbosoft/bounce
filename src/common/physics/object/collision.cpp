@@ -33,3 +33,14 @@ bool PhysicsObject::will_collide_with(const PhysicsObject *other, arma::vec2 &no
 
     return false;
 }
+
+void PhysicsObject::run_collision(PhysicsObject *other)
+{
+    if (this->_collision_callback)
+        this->_collision_callback(this, other);
+}
+
+void PhysicsObject::set_collision_callback(collision_callback cb)
+{
+    this->_collision_callback = cb;
+}

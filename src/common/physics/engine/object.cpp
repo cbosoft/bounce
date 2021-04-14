@@ -1,4 +1,6 @@
 #include "engine.hpp"
+#include "../../game/game.hpp"
+#include "../../events.hpp"
 #include <iostream>
 
 double PhysicsEngine::get_overall_cor(double cora, double corb)
@@ -23,7 +25,10 @@ CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, Physics
         this->_cached_collision.happens = false;
         return this->_cached_collision;
     }
-    else if (a->fixed() || b->fixed()) {
+
+    // objects collide
+    this->game->add_event(new CollisionEvent(a, b));
+    if (a->fixed() || b->fixed()) {
         return this->resolve_collision_one_fixed(b->fixed()?a:b, b->fixed()?b:a);
     }
 

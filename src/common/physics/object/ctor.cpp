@@ -13,6 +13,7 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, bool
         , c(Colour::from_grayscale(255))
         , _fixed(fixed)
         , _renderable(nullptr)
+        , _collision_callback(nullptr)
 {
     this->set_position(position);
     this->set_mass(1.0);
@@ -31,6 +32,7 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, doub
         , c(Colour::from_grayscale(255))
         , _fixed(false)
         , _renderable(nullptr)
+        , _collision_callback(nullptr)
 {
     this->set_position(position);
     this->set_mass(mass);

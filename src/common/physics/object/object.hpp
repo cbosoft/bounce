@@ -6,6 +6,9 @@
 #include "../../colour/colour.hpp"
 #include "../../renderer/renderable/renderable.hpp"
 
+class PhysicsObject;
+typedef void (*collision_callback)(PhysicsObject *self, PhysicsObject *other);
+
 class PhysicsObject : public Transform {
   public:
     PhysicsObject(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
@@ -52,6 +55,9 @@ class PhysicsObject : public Transform {
     void set_layer(const std::string &layer);
     const std::string &get_layer() const;
 
+    void run_collision(PhysicsObject *other);
+    void set_collision_callback(collision_callback cb);
+
   private:
     arma::vec2 new_position;
     arma::vec2 velocity;
@@ -65,4 +71,5 @@ class PhysicsObject : public Transform {
 
     bool _fixed;
     Renderable *_renderable;
+    collision_callback _collision_callback;
 };

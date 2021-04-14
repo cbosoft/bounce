@@ -1,6 +1,7 @@
 #pragma once
 #include <armadillo>
 #include <vector>
+#include <list>
 #include <stack>
 
 #include "../transform/transform.hpp"
@@ -8,6 +9,7 @@
 #include "../renderer/renderer.hpp"
 #include "../input/manager.hpp"
 #include "../scene/scene.hpp"
+#include "../event/event.hpp"
 
 class Game {
   public:
@@ -16,6 +18,7 @@ class Game {
 
     // Logic
     void logic_step();
+    void add_event(Event *event);
     void push_active_scene(const std::string &scene_name);
     Scene *pop_active_scene();
     Scene *get_active_scene() const;
@@ -37,7 +40,7 @@ class Game {
     Renderer &renderer;
 
     std::stack<Scene *> scene_stack;
-
+    std::list<Event *> events;
     std::vector<PhysicsObject *> all_objects;
     std::map<std::string, Scene *> scenes_by_name;
 };
