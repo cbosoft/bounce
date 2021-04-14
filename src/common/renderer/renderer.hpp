@@ -34,12 +34,6 @@ public:
     void define_screen_effect_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path);
     void set_screen_effect(const std::string &name);
 
-    void set_camera_target(Transform *t);
-    const Transform *get_camera_transform() const;
-    void set_camera_width(double width);
-    void set_camera_height(double height);
-    void set_camera_diagonal(double diagonal);
-
     void add_texture(const std::string &path);
     Texture *get_texture(const std::string &name);
 
@@ -65,11 +59,7 @@ private:
     void set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args);
 
     Game *game;
-    // camera position and size in world units
-    Transform camera_transform;
-    arma::vec2 camera_size;
-    double camera_angle;
-    int w, h;
+    arma::vec2 window_size;
     double aspect_ratio; // width over height
 
     GLFWwindow *window;

@@ -4,8 +4,8 @@
 void Renderer::init(Game *game, int w, int h, const std::string &title)
 {
     this->game = game;
-    this->w = w;
-    this->h = h;
+    this->window_size[0] = w;
+    this->window_size[1] = h;
 
     glewExperimental = GL_TRUE;
     if (!glfwInit())
@@ -27,8 +27,6 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
 
 
     glfwSetInputMode(this->window, GLFW_STICKY_KEYS, GL_TRUE);
-
-    this->camera_size = arma::vec2{100, 100};
 
     this->varr = 0;
     glGenVertexArrays(1, &this->varr);

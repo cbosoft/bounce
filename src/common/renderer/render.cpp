@@ -13,7 +13,6 @@ void Renderer::render()
     glfwGetWindowSize(this->window, &w, &h);
     this->set_window_size(w, h);
     glViewport(0, 0, w*2, h*2);
-    this->set_camera_diagonal(150.0);
 
     this->update_shader_uniforms();
     glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
@@ -65,6 +64,8 @@ void Renderer::render()
 
 void Renderer::update_shader_uniforms() const
 {
+    RectTransform *camera = this->game->get_active_scene()->get_active_camera();
+    arma::vec2 position = camera->get_position(), size = camera->get_size();
     for (const auto &kv : this->shaders) {
         GLuint shader_id = kv.second;
         glUseProgram(shader_id);
@@ -72,15 +73,15 @@ void Renderer::update_shader_uniforms() const
         if (loc != -1) glUniform1f(loc, float(PhysicsEngine::engine().get_time()));
 
         loc = glGetUniformLocation(shader_id, "camera_position");
-        auto cp = this->camera_transform.get_position();
+        auto cp = position;
         if (loc != -1) glUniform2f(loc, float(cp[0]), float(cp[1]));
 
         loc = glGetUniformLocation(shader_id, "camera_size");
-        auto cs = this->camera_size;
+        auto cs = size;
         if (loc != -1) glUniform2f(loc, float(cs[0]), float(cs[1]));
 
         loc = glGetUniformLocation(shader_id, "camera_angle");
-        if (loc != -1) glUniform1f(loc, this->camera_angle);
+        if (loc != -1) glUniform1f(loc, 0.0 /* TODO */);
     }
 }
 

@@ -3,6 +3,7 @@
 Scene::Scene(Game *game, const std::string &name)
 : InputContext(game)
 , _name(name)
+, _active_camera(nullptr)
 {
-    // do nothing
+    this->_active_camera = this->new_camera("default");
 }
