@@ -34,13 +34,14 @@ Font::Font(FT_Face face, int height)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+        constexpr float mult = 0.1f;
         this->chars[c] = new Character({
                 texture,
-                face->glyph->bitmap.width,
-                face->glyph->bitmap.rows,
-                (unsigned int)face->glyph->bitmap_left,
-                (unsigned int)face->glyph->bitmap_top,
-                (unsigned int)face->glyph->advance.x
+                float(face->glyph->bitmap.width)*mult,
+                float(face->glyph->bitmap.rows)*mult,
+                float(face->glyph->bitmap_left)*mult,
+                float(face->glyph->bitmap_top)*mult,
+                float(face->glyph->advance.x)*mult / float(1 << 6)
         });
     }
 

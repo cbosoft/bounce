@@ -22,18 +22,19 @@ void TextRenderable::draw() const
     const Colour &colour = this->get_colour();
     float cr = colour.rf(), cg = colour.gf(), cb = colour.bf();
 
-    constexpr float mult = 0.1;
     for (auto c : this->_text) {
         auto ch = this->_font->get_char(c);
-        auto h = float(ch->h)*mult;
-        auto w = float(ch->w)*mult;
+        float h = ch->h, w = ch->w;
+        float dy = ch->bearing_y - h, dx = ch->bearing_x;
         Vertex vertices[4];
-        vertices[0] = {x,   y,   0.0f, cr, cg, cb, 1.0f, 0.f, 1.f};
-        vertices[1] = {x,   y+h, 0.0f, cr, cg, cb, 1.0f, 0.f, 0.f};
-        vertices[2] = {x+w, y+h, 0.0f, cr, cg, cb, 1.0f, 1.f, 0.f};
-        vertices[3] = {x+w, y,   0.0f, cr, cg, cb, 1.0f, 1.f, 1.f};
+        float xm = x+dx, ym = y+dy;
 
-        x += float(w*1.5);
+        vertices[0] = {xm,   ym,   0.0f, cr, cg, cb, 1.0f, 0.f, 1.f};
+        vertices[1] = {xm,   ym+h, 0.0f, cr, cg, cb, 1.0f, 0.f, 0.f};
+        vertices[2] = {xm+w, ym+h, 0.0f, cr, cg, cb, 1.0f, 1.f, 0.f};
+        vertices[3] = {xm+w, ym,   0.0f, cr, cg, cb, 1.0f, 1.f, 1.f};
+
+        x += ch->advance;
 
         glBindTexture(GL_TEXTURE_2D, ch->texture_id);
         glBindBuffer(GL_ARRAY_BUFFER, renderer.get_vbuf());

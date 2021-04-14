@@ -7,11 +7,11 @@
 
 struct Character {
     unsigned int texture_id;
-    unsigned int w;
-    unsigned int h;
-    unsigned int bearing_x;
-    unsigned int bearing_y;
-    unsigned int advance;
+    float w;
+    float h;
+    float bearing_x;
+    float bearing_y;
+    float advance;
 };
 
 class TextRenderable;
