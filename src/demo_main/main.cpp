@@ -154,11 +154,19 @@ public:
     explicit BoidScene(Game *game)
     : Scene(game, "boids")
     {
+        auto *bg = new Object(this, {0.0, 0.0}, true);
+        //bg->set_renderable(MeshRenderable::rectangle(100, 100));
+        bg->set_renderable(new CircleRenderable());
+        bg->set_radius(200);
+        bg->set_colour(Colour::from_grayscale(255));
+        this->add_object(bg);
+
         auto *bound = new Object(this, {0.0, 0.0}, true);
         bound->set_renderable(new CircleRenderable());
         bound->set_radius(100);
-        bound->set_colour(Colour::from_grayscale(100));
+        bound->set_colour(Colour::from_grayscale(0));
         this->add_object(bound);
+
         // pass
         const int n = 20;
         for (int i = 0; i < n; i ++) {
