@@ -1,6 +1,6 @@
 #include "collision.hpp"
 
-CollisionEvent::CollisionEvent(PhysicsObject *a, PhysicsObject *b)
+CollisionEvent::CollisionEvent(Object *a, Object *b)
 :   _a(a)
 ,   _b(b)
 {

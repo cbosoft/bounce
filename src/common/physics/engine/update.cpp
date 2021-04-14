@@ -31,7 +31,7 @@ void PhysicsEngine::timestep_objects()
     }
 
     // Get proposed new positions for objects
-    std::map<std::string, std::vector<PhysicsObject *> > by_layer;
+    std::map<std::string, std::vector<Object *> > by_layer;
     for (auto *obj : this->game->active_objects()) {
         obj->timestep(this->dt);
         by_layer[obj->get_layer()].emplace_back(obj);

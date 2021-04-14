@@ -2,7 +2,7 @@
 #include <chrono>
 #include <vector>
 
-#include "../object/object.hpp"
+#include "../../object/object.hpp"
 #include "../field/field.hpp"
 
 typedef std::chrono::high_resolution_clock Clock;
@@ -25,9 +25,9 @@ public:
 
     void timestep();
     void timestep_objects();
-    CollisionInformation &resolve_collision(PhysicsObject *a, PhysicsObject *b);
-    CollisionInformation &resolve_collision_free_bodies(PhysicsObject *a, PhysicsObject *b);
-    CollisionInformation &resolve_collision_one_fixed(PhysicsObject *free_body, PhysicsObject *fixed_body);
+    CollisionInformation &resolve_collision(Object *a, Object *b);
+    CollisionInformation &resolve_collision_free_bodies(Object *a, Object *b);
+    CollisionInformation &resolve_collision_one_fixed(Object *free_body, Object *fixed_body);
 
     static double get_overall_cor(double cora, double corb);
     void check_set_time();

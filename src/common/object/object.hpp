@@ -2,18 +2,18 @@
 #include <armadillo>
 #include <vector>
 
-#include "../../transform/transform.hpp"
-#include "../../colour/colour.hpp"
-#include "../../renderer/renderable/renderable.hpp"
+#include "../transform/transform.hpp"
+#include "../colour/colour.hpp"
+#include "../renderer/renderable/renderable.hpp"
 
-class PhysicsObject;
-typedef void (*collision_callback)(PhysicsObject *self, PhysicsObject *other);
+class Object;
+typedef void (*collision_callback)(Object *self, Object *other);
 
-class PhysicsObject : public Transform {
+class Object : public Transform {
   public:
-    PhysicsObject(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
-    PhysicsObject(Transform *parent, const arma::vec2 &position, double mass, double cor=1.0);
-    virtual ~PhysicsObject() =default;
+    Object(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
+    Object(Transform *parent, const arma::vec2 &position, double mass, double cor=1.0);
+    virtual ~Object() =default;
 
     void timestep(double dt);
 
@@ -42,9 +42,9 @@ class PhysicsObject : public Transform {
     double get_radius() const;
     void set_radius(double radius);
 
-    bool will_collide_with(const PhysicsObject *other);
-    bool will_collide_with(const PhysicsObject *other, arma::vec2 &normal);
-    bool will_collide_with(const PhysicsObject *other, arma::vec2 &normal, arma::vec2 &at);
+    bool will_collide_with(const Object *other);
+    bool will_collide_with(const Object *other, arma::vec2 &normal);
+    bool will_collide_with(const Object *other, arma::vec2 &normal, arma::vec2 &at);
 
     double get_cor() const;
     void set_cor(double _cor);
@@ -55,7 +55,7 @@ class PhysicsObject : public Transform {
     void set_layer(const std::string &layer);
     const std::string &get_layer() const;
 
-    void run_collision(PhysicsObject *other);
+    void run_collision(Object *other);
     void set_collision_callback(collision_callback cb);
 
   private:

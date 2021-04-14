@@ -9,7 +9,7 @@
 #include <armadillo>
 
 #include "texture/texture.hpp"
-#include "../physics/object/object.hpp"
+#include "../object/object.hpp"
 
 struct Vertex {
     float x, y, z;

@@ -1,7 +1,6 @@
 #include "engine.hpp"
 #include "../../game/game.hpp"
 #include "../../events.hpp"
-#include <iostream>
 
 double PhysicsEngine::get_overall_cor(double cora, double corb)
 {
@@ -13,7 +12,7 @@ void PhysicsEngine::add_field(ForceField *forceField)
     this->fields.push_back(forceField);
 }
 
-CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, PhysicsObject *b)
+CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
 {
     // If both are fixed, don't resolve collision
     if (a->fixed() && b->fixed()) {
@@ -35,7 +34,7 @@ CollisionInformation &PhysicsEngine::resolve_collision(PhysicsObject *a, Physics
     return this->resolve_collision_free_bodies(a, b);
 }
 
-CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *free_body, PhysicsObject *fixed_body)
+CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed_body)
 {
     const arma::vec &norm = this->_cached_collision.normal;
     const arma::vec &v = free_body->get_velocity();
@@ -51,7 +50,7 @@ CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(PhysicsObject *
     return this->_cached_collision;
 }
 
-CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(PhysicsObject *a, PhysicsObject *b)
+CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(Object *a, Object *b)
 {
     const arma::vec2 &norm = this->_cached_collision.normal;
     if (norm.has_nan())

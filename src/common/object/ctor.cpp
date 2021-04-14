@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, bool fixed, double cor)
+Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double cor)
         : Transform(parent)
         , new_position(position)
         , velocity({0, 0})
@@ -19,7 +19,7 @@ PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, bool
     this->set_mass(1.0);
 }
 
-PhysicsObject::PhysicsObject(Transform *parent, const arma::vec2 &position, double mass, double cor)
+Object::Object(Transform *parent, const arma::vec2 &position, double mass, double cor)
         : Transform(parent)
         , new_position(position)
         , velocity({0, 0})

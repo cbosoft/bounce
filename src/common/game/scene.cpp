@@ -25,13 +25,13 @@ void Game::push_active_scene(const std::string &scene_name)
     }
 }
 
-const std::vector<PhysicsObject *> &Game::active_objects()
+const std::vector<Object *> &Game::active_objects()
 {
     auto *s = this->get_active_scene();
     if (s != nullptr) {
         return s->get_objects();
     }
-    const static std::vector<PhysicsObject *> empty_list(0);
+    const static std::vector<Object *> empty_list(0);
     return empty_list;
 }
 

@@ -2,12 +2,12 @@
 
 #include "../event.hpp"
 
-class PhysicsObject;
+class Object;
 class CollisionEvent : public ImmediateEvent {
 public:
-    CollisionEvent(PhysicsObject *a, PhysicsObject *b);
+    CollisionEvent(Object *a, Object *b);
 
     void run(Game *game) override;
 
-    PhysicsObject *_a, *_b;
+    Object *_a, *_b;
 };

@@ -1,5 +1,5 @@
 #include "renderable.hpp"
-#include "../../physics/object/object.hpp"
+#include "../../object/object.hpp"
 
 bool Renderable::is_fixed() const
 {
@@ -26,13 +26,13 @@ void Renderable::set_scale(double scale)
     }
 }
 
-void Renderable::set_object(PhysicsObject *object)
+void Renderable::set_object(Object *object)
 {
     this->_object = object;
     this->set_parent(object);
 }
 
-PhysicsObject *Renderable::get_object() const
+Object *Renderable::get_object() const
 {
     return this->_object;
 }

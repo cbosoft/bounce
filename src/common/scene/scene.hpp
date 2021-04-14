@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include "../input/context/context.hpp"
-#include "../physics/object/object.hpp"
+#include "../object/object.hpp"
 #include "../transform/transform.hpp"
 #include "../transform/rect/rect.hpp"
 
@@ -14,8 +14,8 @@ public:
     virtual void on_activate() {}
 
     const std::string &get_name() const;
-    const std::vector<PhysicsObject *> &get_objects() const;
-    void add_object(PhysicsObject *object);
+    const std::vector<Object *> &get_objects() const;
+    void add_object(Object *object);
     const std::vector<Renderable *> &get_floating_renderables() const;
     void add_floating_renderable(Renderable *rbl);
 
@@ -27,7 +27,7 @@ public:
 
 private:
     std::vector<Renderable *> _floating_renderables;
-    std::vector<PhysicsObject *> _objects;
+    std::vector<Object *> _objects;
     std::string _name;
     std::map<std::string, RectTransform *> _cameras;
     RectTransform *_active_camera;

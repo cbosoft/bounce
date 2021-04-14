@@ -23,8 +23,8 @@ class Game {
     Scene *pop_active_scene();
     Scene *get_active_scene() const;
     void add_scene(Scene *scene);
-    void add_object(PhysicsObject *object);
-    const std::vector<PhysicsObject *> &active_objects();
+    void add_object(Object *object);
+    const std::vector<Object *> &active_objects();
 
     // Loop
     void run();
@@ -41,6 +41,6 @@ class Game {
 
     std::stack<Scene *> scene_stack;
     std::list<Event *> events;
-    std::vector<PhysicsObject *> all_objects;
+    std::vector<Object *> all_objects;
     std::map<std::string, Scene *> scenes_by_name;
 };

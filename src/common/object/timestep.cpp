@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-void PhysicsObject::timestep(double dt)
+void Object::timestep(double dt)
 {
     if (this->_fixed)
         return;

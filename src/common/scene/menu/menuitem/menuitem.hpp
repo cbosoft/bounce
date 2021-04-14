@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../../../physics/object/object.hpp"
+#include "../../../object/object.hpp"
 #include "../menu.hpp"
 
 class MenuItem;
 typedef void (*menu_callback)(MenuItem *item);
 
-class MenuItem : public InputContext, public PhysicsObject {
+class MenuItem : public InputContext, public Object {
 public:
     explicit MenuItem(Menu *parent);
 

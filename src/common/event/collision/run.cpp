@@ -1,5 +1,5 @@
 #include "collision.hpp"
-#include "../../physics/object/object.hpp"
+#include "../../object/object.hpp"
 
 void CollisionEvent::run(Game *game)
 {
