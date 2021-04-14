@@ -20,10 +20,12 @@ struct Vertex {
 class Game;
 class Renderer {
 public:
+    Renderer(const Renderer &other) =delete;
+    Renderer &operator=(const Renderer &other) =delete;
     ~Renderer();
     static Renderer &get();
-    static Renderer &init(Game *game, int w, int h, const std::string &title);
 
+    void init(Game *game, int w, int h, const std::string &title);
     void render();
 
     GLFWwindow *get_window();
@@ -42,7 +44,7 @@ public:
     GLuint get_varr() const;
 
 private:
-    Renderer(Game *game, int w, int h, const std::string &title);
+    Renderer();
 
     void update_shader_uniforms() const;
 
