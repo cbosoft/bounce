@@ -1,6 +1,34 @@
 #include "text.hpp"
-#include "../../font/font/font.hpp"
 #include "../../font/manager/manager.hpp"
+
+arma::vec2 TextRenderable::aligned_origin() const
+{
+    arma::vec2 rv = this->get_position();
+    arma::vec2 text_size = this->measure();
+    switch (this->_h_align) {
+        case HA_left:
+            // nothing to do
+            break;
+        case HA_centre:
+            rv[0] -= text_size[0]/2;
+            break;
+        case HA_right:
+            rv[0] -= text_size[0];
+            break;
+    }
+    switch (this->_v_align) {
+        case VA_bottom:
+            // nothing to do
+            break;
+        case VA_centre:
+            rv[1] -= text_size[1]/2;
+            break;
+        case VA_top:
+            rv[1] -= text_size[1];
+            break;
+    }
+    return rv;
+}
 
 void TextRenderable::draw() const
 {
@@ -15,9 +43,9 @@ void TextRenderable::draw() const
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(offsetof(Vertex, s)));
     glEnableVertexAttribArray(2);
 
-    arma::vec2 bl = this->get_position();
-    auto x = float(bl[0]);
-    auto y = float(bl[1]);
+    arma::vec2 origin = this->aligned_origin();
+    auto x = float(origin[0]);
+    auto y = float(origin[1]);
 
     const Colour &colour = this->get_colour();
     float cr = colour.rf(), cg = colour.gf(), cb = colour.bf();

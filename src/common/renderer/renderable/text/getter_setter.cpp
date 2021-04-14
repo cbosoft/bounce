@@ -31,3 +31,9 @@ int TextRenderable::get_font_size() const
 {
     return this->_font_size;
 }
+
+void TextRenderable::set_alignment(TextHAlign h_align, TextVAlign v_align)
+{
+    this->_h_align = h_align;
+    this->_v_align = v_align;
+}

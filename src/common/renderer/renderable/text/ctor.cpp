@@ -6,6 +6,8 @@ TextRenderable::TextRenderable(const std::string &text, const std::string &font_
 ,   _text(text)
 ,   _font_name(font_name)
 ,   _font_size(font_size)
+,   _v_align(VA_centre)
+,   _h_align(HA_centre)
 {
     this->refresh_font();
 }
