@@ -123,6 +123,14 @@ int main()
 {
     std::cerr << GitMetadata::version_string() << std::endl;
     Game game(1280, 960);
+    Renderer &r = Renderer::get();
+    r.define_shader("default", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/fragment.glsl");
+    //r.define_shader("background", "../resources/shaders/vertex/notransform.glsl", "../resources/shaders/fragment/alt_space.glsl");
+    r.define_shader("sprite", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/sprite.glsl");
+    r.define_shader("font", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/font.glsl");
+
+    r.define_screen_effect_shader("default", "../resources/shaders/vertex/quad.glsl",
+                                  "../resources/shaders/fragment/ordered_dithering.glsl");
     Scene *scene = new DemoMenu(&game);
     game.add_scene(scene);
     scene = new DemoScene(&game);
