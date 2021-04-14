@@ -12,15 +12,14 @@ public:
         : MenuItem(parent)
     {
         auto *col = new CollectionRenderable();
-        this->bg = MeshRenderable::filleted_rectangle(20, 5, 3);
+        this->bg = MeshRenderable::rectangle(20, 5);
         col->add_child(bg);
-        auto *msh= MeshRenderable::filleted_rectangle(21, 5, 3);
+        auto *msh= MeshRenderable::rectangle(21, 5);
         msh->set_scale(19.0);
         msh->set_colour(Colour::from_rgb(0, 0, 0));
         col->add_child(msh);
         auto *txt = new TextRenderable(label, "../resources/BebasNeue-Regular.ttf", 80);
         col->add_child(txt);
-        txt->set_relative_position({-15, -3});
         this->set_renderable(col);
     }
 
@@ -44,7 +43,7 @@ public:
         this->set_repeat_delay(300);
         Renderer::get().set_camera_target(this);
         auto *a = new MenuButton(this, "continue");
-        a->set_position({50, 50});
+        a->set_position({50, 20});
         this->add_item(a);
 
         auto *b = new MenuButton(this, "new");
@@ -53,13 +52,27 @@ public:
         b->connect_up(a);
 
         auto *c = new MenuButton(this, "quit");
-        c->set_position({50, -50});
+        c->set_position({50, -20});
         this->add_item(c);
         c->connect_up(b);
         c->set_callback_action(DemoMenu::quit_callback);
 
         c->connect_down(a);
         this->set_selected(a);
+
+        auto *ttl = new TextRenderable("Bounce", "../resources/BebasNeue-Regular.ttf", 150);
+        ttl->set_position({-50, 0});
+        ttl->set_alignment(HA_right, VA_bottom);
+        ttl->set_colour(Colour::from_grayscale(40));
+        this->add_floating_renderable(ttl);
+        auto *ttl2 = new TextRenderable("Bounce", "../resources/BebasNeue-Regular.ttf", 175);
+        ttl2->set_position({-50, 0});
+        ttl2->set_colour(Colour::from_grayscale(80));
+        this->add_floating_renderable(ttl2);
+        auto *ttl3 = new TextRenderable("Bounce", "../resources/BebasNeue-Regular.ttf", 200);
+        ttl3->set_position({-50, 0});
+        ttl3->set_alignment(HA_left, VA_top);
+        this->add_floating_renderable(ttl3);
 
     }
 
