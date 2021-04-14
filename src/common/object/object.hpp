@@ -67,7 +67,7 @@ class Object : public Transform {
     arma::vec2 force;
 
     double mass, inv_mass, cor, _radius;
-    static constexpr double COLLISION_THRESH = 1e-2;
+    static constexpr double COLLISION_THRESH = 5e-2;
     std::string _layer;
 
     Colour c;
