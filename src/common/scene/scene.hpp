@@ -7,6 +7,8 @@ class Scene: public InputContext, public Transform {
 public:
     Scene(Game *game, const std::string &name);
 
+    virtual void on_activate() {}
+
     const std::string &get_name() const;
     const std::vector<PhysicsObject *> &get_objects() const;
     void add_object(PhysicsObject *object);
