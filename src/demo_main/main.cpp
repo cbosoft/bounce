@@ -37,7 +37,6 @@ public:
         : Menu(game, "menu")
     {
         this->set_repeat_delay(300);
-        Renderer::get().set_camera_target(this);
         auto *a = new MenuButton(this, "continue");
         a->set_position({50, 20});
         this->add_item(a);
@@ -111,6 +110,7 @@ public:
         o->set_renderable(MeshRenderable::filleted_rectangle(5, 10, 1));
         this->add_object(o);
         this->set_player(o);
+        this->get_active_camera()->set_parent(o);
     }
 
     void up() override { this->player->add_force({0, 1e3}); }
@@ -128,7 +128,6 @@ private:
     void set_player(PhysicsObject *o)
     {
         this->player = o;
-        //Renderer::get().set_camera_target(o);
     }
 
     PhysicsObject *player;
