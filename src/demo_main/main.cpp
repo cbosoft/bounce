@@ -79,7 +79,7 @@ public:
 
     static void new_callback(MenuItem *i)
     {
-        i->get_game()->add_event(new PushSceneTransitionEvent("scene"));
+        i->get_game()->add_event(new PushSceneTransitionEvent("boids"));
     }
 
     void back() override { this->get_game()->quit(); };
@@ -133,6 +133,61 @@ private:
     Object *player;
 };
 
+
+class Observer : public Object {
+public:
+    explicit Observer(Transform *parent)
+    : Object(parent, {0, 0}, false)
+    {
+        this->set_layer("observation");
+    }
+
+    // void update() override {
+    //     this->set_velocity(this->get_velocity()*0.9);
+    // }
+};
+
+
+class BoidScene : public Scene {
+public:
+
+    explicit BoidScene(Game *game)
+    : Scene(game, "boids")
+    {
+        auto *bound = new Object(this, {0.0, 0.0}, true);
+        bound->set_renderable(new CircleRenderable());
+        bound->set_radius(100);
+        bound->set_colour(Colour::from_grayscale(100));
+        this->add_object(bound);
+        // pass
+        const int n = 20;
+        for (int i = 0; i < n; i ++) {
+            auto di = double(i - n/2)*5.0;
+            auto *boid = new Object(this, {di, di}, false);
+            boid->set_renderable(new CircleRenderable());
+            boid->set_velocity({di, -di});
+            this->add_object(boid);
+        }
+
+        this->observer = new Observer(this);
+    }
+
+    void up() override { this->observer->add_force({0, 1e3}); }
+    void left() override { this->observer->add_force({-1e3, 0}); }
+    void down() override { this->observer->add_force({0, -1e3}); }
+    void right() override { this->observer->add_force({1e3, 0}); }
+
+    void action() override {}
+    void alternate() override {}
+
+    void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
+
+private:
+
+    Observer *observer;
+
+};
+
 int main()
 {
     std::cerr << GitMetadata::version_string() << std::endl;
@@ -147,6 +202,8 @@ int main()
     Scene *scene = new DemoMenu(&game);
     game.add_scene(scene);
     scene = new DemoScene(&game);
+    game.add_scene(scene);
+    scene = new BoidScene(&game);
     game.add_scene(scene);
     game.run();
     return 0;
