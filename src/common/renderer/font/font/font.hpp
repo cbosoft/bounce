@@ -18,9 +18,14 @@ class TextRenderable;
 class Font {
 public:
     Font(FT_Face face, int height);
+    ~Font();
 
-    Character *get_char(char c);
+    Character *get_char(unsigned long c);
 
 private:
-    std::map<char, Character *> chars;
+
+    void load_char_from_font(unsigned long charcode);
+
+    std::map<unsigned long, Character *> chars;
+    FT_Face _face;
 };
