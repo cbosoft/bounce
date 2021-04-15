@@ -1,7 +1,7 @@
 #include "../common/bounce.hpp"
 #include "../version.hpp"
 
-#define DEFAULT_FONT "BebasNeue-Regular"
+#define DEFAULT_FONT "DOS_VGA_437"
 
 class MenuButton : public MenuItem
 {
@@ -113,6 +113,50 @@ public:
     void back() override { this->get_game()->quit(); };
 };
 
+class Player : public Object {
+public:
+    Player(Transform *parent, const arma::vec2 &position)
+    :   Object(parent, position, false, 1.0)
+    ,   _command_state({false, false, false, false})
+    ,   _speed(1000.0)
+    {
+
+    }
+
+    void up() { this->_command_state.move_up = true; }
+    void left() { this->_command_state.move_left = true; }
+    void down() { this->_command_state.move_down = true; }
+    void right() { this->_command_state.move_right = true; }
+
+    void update() override
+    {
+        arma::vec2 dir{0,0};
+        if (this->_command_state.move_up)    dir[1] += 1.0;
+        if (this->_command_state.move_down)  dir[1] -= 1.0;
+        if (this->_command_state.move_left)  dir[0] -= 1.0;
+        if (this->_command_state.move_right) dir[0] += 1.0;
+
+        // this->set_velocity(dir*this->_speed);
+        // or
+        this->add_force(dir*this->_speed);
+
+        arma::vec2 f = this->get_velocity();
+        this->add_force(-f);
+
+        this->_command_state = {false, false, false, false};
+
+    }
+
+private:
+    struct {
+        bool move_up;
+        bool move_left;
+        bool move_down;
+        bool move_right;
+    } _command_state;
+    double _speed;
+};
+
 class DemoScene : public Scene {
 public:
     explicit DemoScene(Game *game)
@@ -132,25 +176,30 @@ public:
         o->set_renderable(MeshRenderable::regular_polygon(5));
         this->add_object(o);
 
-        o = new Object(this, {30, 0}, false, 0.5);
-        o->set_radius(4.0);
-        o->set_colour(Colours::gray);
-        o->set_renderable(MeshRenderable::filleted_rectangle(5, 10, 1));
-        this->add_object(o);
-        this->set_player(o);
+        this->player = new Player(this, {30, 0});
+        this->player->set_radius(4.0);
+        this->player->set_colour(Colours::blue);
+        this->player->set_renderable(new CircleRenderable());
+        this->add_object(this->player);
         auto *cam = this->get_active_camera();
-        cam->set_parent(o);
+        cam->set_parent(this->player);
 
-        this->fpscntr = new TextRenderable(L"FPS: ", DEFAULT_FONT, 40);
-        this->fpscntr->set_position({0, -60});
+        this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 100);
+        this->fpscntr->set_alignment(HA_left, VA_bottom);
+        this->fpscntr->set_position({1, 1});
         this->add_floating_renderable(this->fpscntr);
-        this->fpscntr->set_parent(cam);
+        this->fpscntr->set_parent(cam->get_bl());
+
+        this->pos = new TextRenderable("<pos>", DEFAULT_FONT, 100);
+        this->pos->set_alignment(HA_right, VA_bottom);
+        this->pos->set_parent(cam->get_br());
+        this->add_floating_renderable(this->pos);
     }
 
-    void up() override { this->player->add_force({0, 1e1}); }
-    void left() override { this->player->add_force({-1e1, 0}); }
-    void down() override { this->player->add_force({0, -1e1}); }
-    void right() override { this->player->add_force({1e1, }); }
+    void up() override { this->player->up(); }
+    void left() override { this->player->left(); }
+    void down() override { this->player->down(); }
+    void right() override { this->player->right(); }
 
     void action() override {}
     void alternate() override {}
@@ -159,21 +208,23 @@ public:
 
     void on_update() override
     {
-        std::wstringstream ss;
+        std::stringstream ss;
         ss << "FPS: " << Renderer::get().get_fps();
-        std::wstring s = ss.str();
+        std::string s = ss.str();
         this->fpscntr->set_text(s);
+
+        auto p = this->player->get_position();
+        auto v = this->player->get_velocity();
+        ss.str("");
+        ss << int(p[0]) << "." << int(p[1]) << ">>" << int(v[0]) << "." << int(v[1]);
+        s = ss.str();
+        this->pos->set_text(s);
     }
 
 private:
 
-    void set_player(Object *o)
-    {
-        this->player = o;
-    }
-
-    Object *player;
-    TextRenderable *fpscntr;
+    Player *player;
+    TextRenderable *fpscntr, *pos;
 };
 
 
@@ -300,14 +351,14 @@ public:
                 origin[1] -= line_height;
                 continue;
             }
-            auto *txt = new TextRenderable(line, "BebasNeue-Regular", 80);
+            auto *txt = new TextRenderable(line, DEFAULT_FONT, 80);
             txt->set_position(origin);
             txt->set_alignment(HA_left, VA_bottom);
             this->add_floating_renderable(txt);
             origin[1] -= line_height;
         }
 
-        this->fpscntr = new TextRenderable(L"FPS: ", "BebasNeue-Regular", 40);
+        this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 40);
         this->fpscntr->set_position({0, -60});
         this->add_floating_renderable(this->fpscntr);
         this->get_active_camera()->set_position({-50, 0});
