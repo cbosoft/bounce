@@ -18,6 +18,12 @@ void Renderer::render()
     this->_actual_fps = (this->_actual_fps + (1000/us))/2;
     this->time_last_render = now;
 
+    auto *active = this->game->get_active_scene();
+    active->on_update();
+    for (auto *object : active->get_objects()) {
+        object->update();
+    }
+
     int w, h;
     glfwGetWindowSize(this->window, &w, &h);
     this->set_window_size(w, h);

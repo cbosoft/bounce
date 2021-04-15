@@ -18,10 +18,4 @@ void Game::logic_step()
         }
     }
     this->events = surviving_events;
-
-    auto *active = this->get_active_scene();
-    active->on_update();
-    for (auto *object : active->get_objects()) {
-        object->update();
-    }
 }
