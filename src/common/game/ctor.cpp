@@ -2,7 +2,7 @@
 
 Game::Game(int w, int h)
   : should_quit(false)
-  , physics(PhysicsEngine::init_engine(this, 1e-3, 1.0))
+  , physics(PhysicsEngine::init_engine(this, 5e-3, 1.0))
   , renderer(Renderer::get())
 {
     // do nothing
