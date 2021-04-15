@@ -21,13 +21,20 @@ void Renderer::render()
     int w, h;
     glfwGetWindowSize(this->window, &w, &h);
     this->set_window_size(w, h);
-    glViewport(0, 0, w*2, h*2);
+
+    // high dpi displays scale up contents; need to take that into accound.
+    float xscale, yscale;
+    glfwGetWindowContentScale(window, &xscale, &yscale);
+    w = int(float(w)*xscale);
+    h = int(float(h)*yscale);
+
+    glViewport(0, 0, w, h);
 
     this->update_shader_uniforms();
     glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
 
     glBindTexture(GL_TEXTURE_2D, this->txt);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w*2, h*2, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0,
                  GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -50,11 +57,12 @@ void Renderer::render()
             if (rbl) rbl->draw();
         }
     }
+
+    // draw quad to screen
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glViewport(0, 0, w*2, h*2);
     GLuint shader_id = this->get_screen_effect();
     glUseProgram(shader_id);
     glBindTexture(GL_TEXTURE_2D, this->txt);
