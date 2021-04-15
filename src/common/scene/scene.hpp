@@ -12,6 +12,7 @@ public:
     Scene(Game *game, const std::string &name);
 
     virtual void on_activate() {}
+    virtual void on_update() {};
 
     const std::string &get_name() const;
     const std::vector<Object *> &get_objects() const;
