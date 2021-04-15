@@ -27,7 +27,7 @@ file(GLOB_RECURSE COMMON_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/common/*.cpp"
 add_executable(${EXE} src/demo_main/main.cpp ${COMMON_SOURCES})
 target_link_libraries(bounce git)
 
-set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 17)
 
 find_package(Armadillo REQUIRED)
 set(OpenGL_GL_PREFERENCE GLVND)
@@ -78,7 +78,7 @@ find_package(GTest REQUIRED)
 include(GoogleTest)
 file(GLOB_RECURSE TEST_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "tests/*.cpp")
 add_executable(bounce_tests ${TEST_SOURCES} ${COMMON_SOURCES})
-set_property(TARGET bounce_tests PROPERTY CXX_STANDARD 11)
+set_property(TARGET bounce_tests PROPERTY CXX_STANDARD 17)
 target_link_libraries(bounce_tests ${GTEST_LIBRARIES})
 target_link_libraries(bounce_tests ${ARMADILLO_LIBRARIES})
 gtest_discover_tests(bounce_tests)
