@@ -37,6 +37,7 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
             1.0f, -1.0f, 0.0f,
             1.0f,  1.0f, 0.0f,
     };
+    glEnable(GL_MULTISAMPLE);
     this->vbuf = 0;
     glGenBuffers(1, &this->vbuf);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
