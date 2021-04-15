@@ -14,6 +14,8 @@ void Menu::add_item(MenuItem *item)
     this->items.push_back(item);
     this->add_object(item);
     item->unhighlight();
+    if (!this->selected)
+        this->set_selected(item);
 }
 
 void Menu::up() { if (this->selected) this->selected->up(); }
@@ -25,3 +27,25 @@ void Menu::action() { if (this->selected) this->selected->action(); }
 
 void Menu::alternate() { if (this->selected) this->selected->alternate(); }
 void Menu::back() { if (this->selected) this->selected->back(); }
+
+void Menu::connect_vertical()
+{
+    int sz = int(this->items.size());
+    for (int i = 0; i < sz; i++) {
+        int j = (i + 1) % sz;
+        auto *next = this->items[j];
+        auto *prev = this->items[i];
+        prev->connect_down(next);
+    }
+}
+
+void Menu::connect_horizontal()
+{
+    int sz = int(this->items.size());
+    for (int i = 0; i < sz; i++) {
+        int j = (i + 1) % sz;
+        auto *next = this->items[j];
+        auto *prev = this->items[i];
+        prev->connect_left(next);
+    }
+}

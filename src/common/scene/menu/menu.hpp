@@ -19,7 +19,10 @@ public:
     void alternate() override;
     void back() override;
 
+    void connect_vertical();
+    void connect_horizontal();
+
 private:
-    std::list<MenuItem *> items;
+    std::vector<MenuItem *> items;
     MenuItem *selected;
 };
