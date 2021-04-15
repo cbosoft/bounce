@@ -12,6 +12,12 @@ public:
     void set_size(const arma::vec2 &size);
     const arma::vec2 &get_size() const;
 
+    Transform *get_bl();
+    Transform *get_br();
+    Transform *get_tl();
+    Transform *get_tr();
+
 private:
     arma::vec2 _size;
+    Transform *_bl, *_br, *_tl, *_tr;
 };
