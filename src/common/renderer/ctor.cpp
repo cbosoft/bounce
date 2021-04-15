@@ -12,6 +12,10 @@ Renderer::Renderer()
 , txt(0)
 , qbuf(0)
 , qarr(0)
+, _max_fps(1)
+, _min_mspf(1)
+, _actual_fps(1)
 {
     // do nothing
+    this->set_max_fps(30);
 }

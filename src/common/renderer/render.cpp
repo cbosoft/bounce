@@ -9,6 +9,15 @@ GLFWwindow  *Renderer::get_window()
 
 void Renderer::render()
 {
+    auto now = _RDR_CLOCK_T::now();
+    auto time_since = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->time_last_render);
+    int us = int(time_since.count());
+    if (us < this->_min_mspf) {
+        return;
+    }
+    this->_actual_fps = (this->_actual_fps + (1000/us))/2;
+    this->time_last_render = now;
+
     int w, h;
     glfwGetWindowSize(this->window, &w, &h);
     this->set_window_size(w, h);

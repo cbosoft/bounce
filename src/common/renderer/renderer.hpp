@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include <map>
+#include <chrono>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -16,6 +17,9 @@ struct Vertex {
     float r, g, b, a;
     float s, t;
 };
+
+typedef std::chrono::system_clock _RDR_CLOCK_T;
+typedef _RDR_CLOCK_T::time_point _RDR_TIME_PT_T;
 
 class Game;
 class Renderer {
@@ -43,6 +47,9 @@ public:
 
     void check_shaders() const;
 
+    int get_fps() const;
+    void set_max_fps(int max_fps);
+
 private:
     Renderer();
 
@@ -68,4 +75,7 @@ private:
     std::map<std::string , Texture *> textures;
     unsigned int vbuf, varr;
     unsigned int fbo, txt, qbuf, qarr;
+
+    int _max_fps, _min_mspf, _actual_fps;
+    _RDR_TIME_PT_T time_last_render;
 };
