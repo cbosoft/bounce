@@ -8,3 +8,4 @@
 #include "scene/menu/menuitem/menuitem.hpp"
 #include "renderer/renderables.hpp"
 #include "renderer/renderer.hpp"
+#include "physics/field/force_fields.hpp"
