@@ -3,12 +3,12 @@
 class Colour {
 public:
 
-    static Colour from_hsv(int h, int s, int v);
-    static Colour from_hsv_f(double h, double s, double v);
-    static Colour from_rgb(int r, int g, int b);
-    static Colour from_rgb_f(double r, double g, double b);
-    static Colour from_grayscale(int gy);
-    static Colour from_grayscale_f(double gy);
+    static Colour from_hsv(int h, int s, int v) noexcept;
+    static Colour from_hsv_f(double h, double s, double v) noexcept;
+    static Colour from_rgb(int r, int g, int b) noexcept;
+    static Colour from_rgb_f(double r, double g, double b) noexcept;
+    static Colour from_grayscale(int gy) noexcept;
+    static Colour from_grayscale_f(double gy) noexcept;
 
     float rf() const;
     float gf() const;

@@ -1,12 +1,12 @@
 #include "colour.hpp"
 #include <cmath>
 
-Colour Colour::from_rgb(int r, int g, int b)
+Colour Colour::from_rgb(int r, int g, int b) noexcept
 {
     return {r, g, b};
 }
 
-Colour Colour::from_rgb_f(double r_f, double g_f, double b_f)
+Colour Colour::from_rgb_f(double r_f, double g_f, double b_f) noexcept
 {
     int r = int(255.0*r_f);
     int g = int(255.0*g_f);
@@ -14,7 +14,7 @@ Colour Colour::from_rgb_f(double r_f, double g_f, double b_f)
     return {r, g, b};
 }
 
-Colour Colour::from_hsv(int h, int s, int v)
+Colour Colour::from_hsv(int h, int s, int v) noexcept
 {
     double c = double(s*v)/255.0/255.0;
     double h60 = double(h)*60.0/255.0;
@@ -57,17 +57,17 @@ Colour Colour::from_hsv(int h, int s, int v)
     return {r, g, b};
 }
 
-Colour Colour::from_hsv_f(double h, double s, double v)
+Colour Colour::from_hsv_f(double h, double s, double v) noexcept
 {
     return Colour::from_hsv(int(h*255.0), int(s*255.0), int(v*255.0));
 }
 
-Colour Colour::from_grayscale(int gy)
+Colour Colour::from_grayscale(int gy) noexcept
 {
     return {gy, gy, gy};
 }
 
-Colour Colour::from_grayscale_f(double gy)
+Colour Colour::from_grayscale_f(double gy) noexcept
 {
     return Colour::from_grayscale(int(gy*255));
 }
