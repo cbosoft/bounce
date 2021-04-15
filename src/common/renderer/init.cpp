@@ -82,5 +82,7 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
 
     stbi_set_flip_vertically_on_load(true);
+
+    glfwSwapInterval(0);
     this->time_last_render = _RDR_CLOCK_T::now();
 }
