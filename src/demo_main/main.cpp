@@ -60,20 +60,39 @@ public:
         this->connect_vertical();
 
         // draw logo
-        auto *ttl = new TextRenderable("Bounce", DEFAULT_FONT, 150);
-        ttl->set_position({-50, 0});
-        ttl->set_alignment(HA_right, VA_bottom);
-        ttl->set_colour(Colour::from_grayscale(40));
-        this->add_floating_renderable(ttl);
-        auto *ttl2 = new TextRenderable("Bounce", DEFAULT_FONT, 175);
-        ttl2->set_position({-50, 0});
-        ttl2->set_colour(Colour::from_grayscale(80));
-        this->add_floating_renderable(ttl2);
-        auto *ttl3 = new TextRenderable("Bounce", DEFAULT_FONT, 200);
-        ttl3->set_position({-50, 0});
-        ttl3->set_alignment(HA_left, VA_top);
-        this->add_floating_renderable(ttl3);
+        {
+            auto *ttl = new Object(this, {-60, 10});
+            ttl->set_renderable(new TextRenderable("Bounce", DEFAULT_FONT, 150));
+            ttl->set_colour(Colour::from_grayscale(40));
+            ttl->set_layer("title 1");
+            this->add_object(ttl);
+            auto *brk = new Object(this, {-60, 0}, true);
+            brk->set_layer("title 1");
+            this->add_object(brk);
+        }
+        {
+            auto *ttl = new Object(this, {-55, 5});
+            ttl->set_renderable(new TextRenderable("Bounce", DEFAULT_FONT, 175));
+            ttl->set_colour(Colour::from_grayscale(127));
+            ttl->set_layer("title 2");
+            this->add_object(ttl);
+            auto *brk = new Object(this, {-55, -5}, true);
+            brk->set_layer("title 2");
+            this->add_object(brk);
+        }
+        {
+            auto *ttl = new Object(this, {-50, 0});
+            ttl->set_renderable(new TextRenderable("Bounce", DEFAULT_FONT, 200));
+            ttl->set_colour(Colour::from_grayscale(255));
+            ttl->set_layer("title 3");
+            this->add_object(ttl);
+            auto *brk = new Object(this, {-50, -10}, true);
+            brk->set_layer("title 3");
+            this->add_object(brk);
+        }
 
+        auto *gravity = new UnboundedLinearForceField(0, 0, 0, -10);
+        this->add_field(gravity);
     }
 
     static void quit_callback(MenuItem *i)
