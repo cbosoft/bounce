@@ -4,5 +4,5 @@ Menu::Menu(Game *game, const std::string &name)
 :   Scene(game, name)
 ,   selected(nullptr)
 {
-    // do nothing
+    this->set_repeat_delay(300);
 }
