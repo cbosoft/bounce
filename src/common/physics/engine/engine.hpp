@@ -21,8 +21,6 @@ public:
     static PhysicsEngine &engine();
     ~PhysicsEngine();
 
-    void add_field(ForceField *forceField);
-
     void timestep();
     void timestep_objects();
     CollisionInformation &resolve_collision(Object *a, Object *b);
@@ -39,7 +37,6 @@ private:
     PhysicsEngine(Game *game, double dt, double timescale);
 
     Game *game;
-    std::vector<ForceField *> fields;
 
     double dt, time, irl_time, timescale;
     Clock::time_point epoch;

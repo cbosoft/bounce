@@ -2,7 +2,5 @@
 
 PhysicsEngine::~PhysicsEngine()
 {
-    for (auto *field : this->fields) {
-        delete field;
-    }
+    // do nothing
 }

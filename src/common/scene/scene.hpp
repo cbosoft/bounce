@@ -6,6 +6,7 @@
 #include "../object/object.hpp"
 #include "../transform/transform.hpp"
 #include "../transform/rect/rect.hpp"
+#include "../physics/field/field.hpp"
 
 class Scene: public InputContext, public Transform {
 public:
@@ -21,6 +22,9 @@ public:
     void add_floating_renderable(Renderable *rbl);
     std::vector<Object *> find_objects_near_to(Transform *t, double radius) const;
 
+    void add_field(ForceField *field);
+    const std::vector<ForceField *> &get_fields() const;
+
     void set_active_camera(const std::string &name);
     void add_camera(const std::string &name, RectTransform *t);
     RectTransform *new_camera(const std::string &name);
@@ -30,6 +34,7 @@ public:
 private:
     std::vector<Renderable *> _floating_renderables;
     std::vector<Object *> _objects;
+    std::vector<ForceField *> _fields;
     std::string _name;
     std::map<std::string, RectTransform *> _cameras;
     RectTransform *_active_camera;

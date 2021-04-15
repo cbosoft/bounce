@@ -7,11 +7,6 @@ double PhysicsEngine::get_overall_cor(double cora, double corb)
     return (cora < corb) ? cora : corb;
 }
 
-void PhysicsEngine::add_field(ForceField *forceField)
-{
-    this->fields.push_back(forceField);
-}
-
 CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
 {
     // If both are fixed, don't resolve collision
