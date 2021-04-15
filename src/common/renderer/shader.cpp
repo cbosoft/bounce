@@ -1,11 +1,13 @@
 #include <fstream>
 #include <sstream>
+#include "../resources/manager.hpp"
 #include "renderer.hpp"
 
 GLuint Renderer::compile_shader(
-        const std::string &source,
+        const std::string &name,
         GLint shader_type)
 {
+    std::string source = ResourceManager::ref().get_path("shaders", name, ".glsl");
     GLuint shader_id = glCreateShader(shader_type);
     std::ifstream f(source);
     if (!f)
@@ -37,23 +39,23 @@ GLuint Renderer::compile_shader(
     return shader_id;
 }
 
-GLuint Renderer::compile_vertex(const std::string &source)
+GLuint Renderer::compile_vertex(const std::string &name)
 {
-    return this->compile_shader(source, GL_VERTEX_SHADER);
+    return this->compile_shader(name, GL_VERTEX_SHADER);
 }
 
-GLuint Renderer::compile_fragment(const std::string &source)
+GLuint Renderer::compile_fragment(const std::string &name)
 {
-    return this->compile_shader(source, GL_FRAGMENT_SHADER);
+    return this->compile_shader(name, GL_FRAGMENT_SHADER);
 }
 
 GLuint Renderer::load_shader_program(
-        const std::string &vertex_source,
-        const std::string &fragment_source)
+        const std::string &vertex_name,
+        const std::string &fragment_name)
 {
-    std::cerr << "Loading shaders\n" << vertex_source << std::endl << fragment_source << std::endl;
-    GLuint vertex_id = this->compile_vertex(vertex_source);
-    GLuint fragment_id = this->compile_fragment(fragment_source);
+    std::cerr << "Loading shaders\n" << vertex_name << std::endl << fragment_name << std::endl;
+    GLuint vertex_id = this->compile_vertex(vertex_name);
+    GLuint fragment_id = this->compile_fragment(fragment_name);
     GLuint program_id = glCreateProgram();
     glAttachShader(program_id, vertex_id);
     glAttachShader(program_id, fragment_id);
@@ -78,15 +80,15 @@ GLuint Renderer::load_shader_program(
     return program_id;
 }
 
-void Renderer::define_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path)
+void Renderer::define_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name)
 {
-    GLuint shader = this->load_shader_program(vertex_path, frag_path);
+    GLuint shader = this->load_shader_program(vertex_name, frag_name);
     this->shaders[name] = shader;
 }
 
-void Renderer::define_screen_effect_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path)
+void Renderer::define_screen_effect_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name)
 {
-    GLuint shader = this->load_shader_program(vertex_path, frag_path);
+    GLuint shader = this->load_shader_program(vertex_name, frag_name);
     this->effects[name] = shader;
 }
 

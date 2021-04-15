@@ -2,9 +2,11 @@
 #include <sstream>
 
 #include "manager.hpp"
+#include "../../../resources/manager.hpp"
 
-Font *FontManager::create_front(const std::string &path, int size)
+Font *FontManager::create_front(const std::string &name, int size)
 {
+    std::string path = ResourceManager::ref().get_path("fonts", name, ".ttf");
     FT_Face face;
     if (FT_New_Face(this->_ft_lib, path.c_str(), 0, &face)) {
         std::cerr << "Could not load font \"" << path << "\"" << std::endl;
@@ -14,10 +16,10 @@ Font *FontManager::create_front(const std::string &path, int size)
     return new Font(face, size);
 }
 
-Font *FontManager::get_font(const std::string &font_name, int font_size)
+Font *FontManager::get_font(const std::string &name, int font_size)
 {
     std::stringstream ss;
-    ss << font_name << "@" << font_size;
+    ss << name << "@" << font_size;
     std::string key = ss.str();
 
     auto it = this->font_cache.find(key);
@@ -25,7 +27,7 @@ Font *FontManager::get_font(const std::string &font_name, int font_size)
         return it->second;
     }
 
-    Font *font = this->create_front(font_name, font_size);
+    Font *font = this->create_front(name, font_size);
     if (font) {
         this->font_cache[key] = font;
     }

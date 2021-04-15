@@ -1,11 +1,13 @@
 #include "texture.hpp"
 #include "../image/image.hpp"
+#include "../../resources/manager.hpp"
 
-Texture::Texture(const std::string &path)
+Texture::Texture(const std::string &texture_name)
 : w(0)
 , h(0)
 , c(0)
 {
+    std::string path = ResourceManager::ref().get_path("textures", texture_name, ".png");
     auto cpath = path.c_str();
     unsigned char *data = stbi_load(
             cpath,

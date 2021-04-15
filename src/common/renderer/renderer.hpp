@@ -34,8 +34,8 @@ public:
 
     GLFWwindow *get_window();
 
-    void define_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path);
-    void define_screen_effect_shader(const std::string &name, const std::string &vertex_path, const std::string &frag_path);
+    void define_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name);
+    void define_screen_effect_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name);
     void set_screen_effect(const std::string &name);
 
     void add_texture(const std::string &path);
@@ -57,10 +57,10 @@ private:
 
     GLuint get_screen_effect() const;
 
-    GLuint load_shader_program(const std::string &vertex_source, const std::string &fragment_source);
-    GLuint compile_shader(const std::string &source, GLint shader_type);
-    GLuint compile_vertex(const std::string &source);
-    GLuint compile_fragment(const std::string &source);
+    GLuint load_shader_program(const std::string &vertex_name, const std::string &fragment_name);
+    GLuint compile_shader(const std::string &name, GLint shader_type);
+    GLuint compile_vertex(const std::string &name);
+    GLuint compile_fragment(const std::string &name);
 
     void set_window_size(int w, int h);
     void set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args);
