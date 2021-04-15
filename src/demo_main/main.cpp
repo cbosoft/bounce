@@ -229,7 +229,7 @@ public:
         // this->add_object(bound);
 
         // pass
-        const int n = 2;
+        const int n = 15;
         const double dtheta = M_PI * 2.0 / double(n);
         const double dr = 50.0 / double(n);
         double theta = 0.0;
