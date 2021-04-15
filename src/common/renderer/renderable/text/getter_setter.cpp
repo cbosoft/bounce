@@ -12,9 +12,14 @@ void TextRenderable::set_font_size(int font_size)
     this->refresh_font();
 }
 
-void TextRenderable::set_text(const std::string &text)
+void TextRenderable::set_text(const std::wstring &text)
 {
     this->_text = text;
+}
+
+void TextRenderable::set_text(const std::string &text)
+{
+    this->_text = std::wstring(text.begin(), text.end());
 }
 
 const std::string &TextRenderable::get_font_name() const
@@ -22,7 +27,7 @@ const std::string &TextRenderable::get_font_name() const
     return this->_font_name;
 }
 
-const std::string &TextRenderable::get_text() const
+const std::wstring &TextRenderable::get_text() const
 {
     return this->_text;
 }

@@ -4,7 +4,7 @@ arma::vec2 TextRenderable::measure() const
 {
     float width = 0.0f, height = 0.0f;
 
-    for (const char &c : this->_text) {
+    for (const wchar_t &c : this->_text) {
         Character *ch = this->_font->get_char(c);
         width += ch->advance;
 
