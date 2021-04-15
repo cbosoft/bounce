@@ -3,6 +3,7 @@
 void CollectionRenderable::draw() const
 {
     for (const auto rbl : this->children) {
-        rbl->draw();
+        if (rbl && rbl->get_visible())
+            rbl->draw();
     }
 }

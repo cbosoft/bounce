@@ -56,7 +56,8 @@ void Renderer::render()
         }
         std::sort(rbls.begin(), rbls.end(), Renderable::z_sort);
         for (auto *rbl : rbls) {
-            rbl->draw();
+            if (rbl && rbl->get_visible())
+                rbl->draw();
         }
     }
 

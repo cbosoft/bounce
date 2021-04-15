@@ -6,6 +6,7 @@ Renderable::Renderable()
 , _scale(1.0)
 , _object(nullptr)
 , _z(0)
+, _visible(true)
 {
     // do nothing
 }

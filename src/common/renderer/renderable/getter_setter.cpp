@@ -81,3 +81,23 @@ int Renderable::get_z() const
 {
     return this->_z;
 }
+
+void Renderable::set_visible(bool visibility)
+{
+    this->_visible = visibility;
+}
+
+bool Renderable::get_visible() const
+{
+    return this->_visible;
+}
+
+void Renderable::hide()
+{
+    this->set_visible(false);
+}
+
+void Renderable::show()
+{
+    this->set_visible(true);
+}

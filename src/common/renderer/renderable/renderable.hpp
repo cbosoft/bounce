@@ -25,6 +25,11 @@ public:
     const std::string &get_texture_name() const;
     void set_texture_name(const std::string &name);
 
+    bool get_visible() const;
+    void set_visible(bool visibility);
+    void hide();
+    void show();
+
     void set_z(int z);
     int get_z() const;
 
@@ -36,4 +41,5 @@ private:
     Object *_object;
     std::string texture_name;
     int _z;
+    bool _visible;
 };
