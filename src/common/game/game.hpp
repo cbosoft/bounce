@@ -13,7 +13,7 @@
 
 class Game {
   public:
-    explicit Game(int w=960, int h=960);
+    explicit Game(int w, int h);
     ~Game();
 
     // Logic
