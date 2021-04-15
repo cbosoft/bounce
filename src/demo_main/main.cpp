@@ -12,7 +12,7 @@ public:
         col->add_child(bg);
         auto *msh= MeshRenderable::rectangle(21, 5);
         msh->set_scale(19.0);
-        msh->set_colour(Colour::from_rgb(0, 0, 0));
+        msh->set_colour(Colours::black);
         col->add_child(msh);
         auto *txt = new TextRenderable(label, "../resources/BebasNeue-Regular.ttf", 80);
         col->add_child(txt);
@@ -20,11 +20,11 @@ public:
     }
 
     void highlight() override {
-        this->bg->set_colour(Colour::from_rgb(155, 200, 250));
+        this->bg->set_colour(Colours::light_gray);
     }
 
     void unhighlight() override {
-        this->bg->set_colour(Colour::from_rgb(127, 127, 127));
+        this->bg->set_colour(Colours::gray);
     }
 
 private:
@@ -100,13 +100,13 @@ public:
 
         o = new Object(this, {0, 0}, false, 0.5);
         o->set_radius(4.0);
-        o->set_colour(Colour::from_rgb_f(0.5, 0.5, 0.5));
+        o->set_colour(Colours::gray);
         o->set_renderable(MeshRenderable::regular_polygon(5));
         this->add_object(o);
 
         o = new Object(this, {30, 0}, false, 0.5);
         o->set_radius(4.0);
-        o->set_colour(Colour::from_rgb_f(0.5, 0.5, 0.5));
+        o->set_colour(Colours::gray);
         o->set_renderable(MeshRenderable::filleted_rectangle(5, 10, 1));
         this->add_object(o);
         this->set_player(o);
@@ -332,8 +332,12 @@ int main()
     r.define_shader("sprite", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/sprite.glsl");
     r.define_shader("font", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/font.glsl");
 
-    r.define_screen_effect_shader("default", "../resources/shaders/vertex/quad.glsl",
-                                  "../resources/shaders/fragment/ordered_dithering.glsl");
+    r.define_screen_effect_shader(
+            "default",
+            "../resources/shaders/vertex/quad.glsl",
+            "../resources/shaders/fragment/quad.glsl"
+            //"../resources/shaders/fragment/ordered_dithering.glsl"
+    );
     Scene *scene = new DemoMenu(&game);
     game.add_scene(scene);
     scene = new DemoScene(&game);
