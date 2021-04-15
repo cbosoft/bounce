@@ -18,3 +18,19 @@ public:
 private:
     Colour(int r, int g, int b);
 };
+
+class Colours {
+public:
+    static const Colour red;
+    static const Colour blue;
+    static const Colour green;
+    static const Colour yellow;
+    static const Colour magenta;
+    static const Colour cyan;
+
+    static const Colour white;
+    static const Colour light_gray;
+    static const Colour gray;
+    static const Colour dark_gray;
+    static const Colour black;
+};
