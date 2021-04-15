@@ -147,6 +147,68 @@ public:
     // }
 };
 
+class Boid : public Object {
+public:
+    explicit Boid(Scene *location, const arma::vec2 &position, double search_radius)
+    : Object(location, position, false)
+    , _loc(location)
+    , _search_radius(search_radius)
+    , _max_velocity(5.0)
+    {
+        double theta = M_2_PI * arma::randu();
+        this->set_velocity( {this->_max_velocity*std::cos(theta), this->_max_velocity*std::sin(theta)} );
+        this->set_renderable(new CircleRenderable());
+        this->set_radius(0.5);
+        this->set_layer("boids");
+    }
+
+    void update() override {
+        std::vector<Object *> nearby = this->_loc->find_objects_near_to(this, this->_search_radius);
+        if (nearby.empty())
+            return;
+
+        arma::vec2 f_sep, pos = this->get_position(), tot{0.0, 0.0};
+        double n = 0.0;
+        for (auto *obj : nearby) {
+            if (obj == this)
+                continue;
+            if (obj->get_layer() != this->get_layer())
+                continue;
+            // separation - change direction to avoid collisions
+            arma::vec2 dr = (obj->get_position() - pos);
+            f_sep -= dr;
+            tot += obj->get_velocity();
+            n += 1.0;
+        }
+        this->set_force(f_sep);
+
+        if (n >= 1.0) {
+            // alignment - align velocity with nearby
+            // cohesion - head for the centre of mass of boids
+            arma::vec2 av = tot / n;
+            //const double split = 0.9;
+            //av = av*(1.0 - split) + this->get_velocity()*split;
+
+            // av = av - 0.0001*this->get_position();
+            //if (arma::norm(av) > this->_max_velocity)
+            //    av  = this->_max_velocity*arma::normalise(av);
+            this->set_velocity(av);
+        }
+
+        // bounds
+        const double size = 100, hsize = size/2.;
+        double x = pos[0], y = pos[1];
+        if (x > hsize)  x -= size;
+        if (x < -hsize) x += size;
+        if (y > hsize)  y -= size;
+        if (y < -hsize) y += size;
+        this->set_position({x, y});
+    }
+private:
+    Scene *_loc;
+    double _search_radius, _max_velocity;
+};
+
 
 class BoidScene : public Scene {
 public:
@@ -154,30 +216,85 @@ public:
     explicit BoidScene(Game *game)
     : Scene(game, "boids")
     {
-        auto *bg = new Object(this, {0.0, 0.0}, true);
-        //bg->set_renderable(MeshRenderable::rectangle(100, 100));
-        bg->set_renderable(new CircleRenderable());
-        bg->set_radius(200);
-        bg->set_colour(Colour::from_grayscale(255));
-        this->add_object(bg);
+        // auto *bg = new Object(this, {0.0, 0.0}, true);
+        // bg->set_renderable(new CircleRenderable());
+        // bg->set_radius(200);
+        // bg->set_colour(Colour::from_grayscale(255));
+        // this->add_object(bg);
 
-        auto *bound = new Object(this, {0.0, 0.0}, true);
-        bound->set_renderable(new CircleRenderable());
-        bound->set_radius(100);
-        bound->set_colour(Colour::from_grayscale(0));
-        this->add_object(bound);
+        // auto *bound = new Object(this, {0.0, 0.0}, true);
+        // bound->set_renderable(new CircleRenderable());
+        // bound->set_radius(100);
+        // bound->set_colour(Colour::from_grayscale(0));
+        // this->add_object(bound);
 
         // pass
-        const int n = 20;
-        for (int i = 0; i < n; i ++) {
-            auto di = double(i - n/2)*5.0;
-            auto *boid = new Object(this, {di, di}, false);
-            boid->set_renderable(new CircleRenderable());
-            boid->set_velocity({di, -di});
-            this->add_object(boid);
+        const int n = 2;
+        const double dtheta = M_PI * 2.0 / double(n);
+        const double dr = 50.0 / double(n);
+        double theta = 0.0;
+        // for (int j = 0; j < n; j++) {
+        //     double r = dr;
+        //     for (int i = 0; i < n; i++) {
+        //         double x = r*std::cos(theta);
+        //         double y = r*std::sin(theta);
+        //         auto *boid = new Boid(this, {x, y}, 5.);
+        //         boid->set_colour(Colour::from_grayscale(127));
+        //         boid->set_layer("alt_boids");
+        //         this->add_object(boid);
+        //         r += dr;
+        //     }
+        //     theta += dtheta;
+        // }
+        // theta = dtheta/2.;
+        for (int j = 0; j < n; j++) {
+            double r = dr;
+            for (int i = 0; i < n; i++) {
+                double x = r*std::cos(theta);
+                double y = r*std::sin(theta);
+                auto *boid = new Boid(this, {x, y}, 5.);
+                this->add_object(boid);
+                r += dr;
+            }
+            theta += dtheta;
         }
 
         this->observer = new Observer(this);
+
+        auto *rct = MeshRenderable::rectangle(50, 50);
+        rct->set_colour(Colour::from_grayscale(32));
+        this->add_floating_renderable(rct);
+
+        std::stringstream ss;
+        ss << n*n << " objects";
+        std::string s = ss.str();
+
+        std::vector<std::string> lines = {
+                s,
+                "",
+                "Behaviour rules:",
+                " - Don't bump into each other",
+                " - Align with each other",
+        };
+        constexpr double line_height = 10.0;
+        double y = double(lines.size() - 1)*line_height/2.0;
+        arma::vec2 origin{-150, y};
+        for (const auto &line : lines) {
+            if (line.empty()) {
+                origin[1] -= line_height;
+                continue;
+            }
+            auto *txt = new TextRenderable(line, "../resources/BebasNeue-Regular.ttf", 80);
+            txt->set_position(origin);
+            txt->set_alignment(HA_left, VA_bottom);
+            this->add_floating_renderable(txt);
+            origin[1] -= line_height;
+        }
+
+        this->fpscntr = new TextRenderable("FPS: ", "../resources/BebasNeue-Regular.ttf", 40);
+        this->fpscntr->set_position({0, -60});
+        this->add_floating_renderable(this->fpscntr);
+        this->get_active_camera()->set_position({-50, 0});
     }
 
     void up() override { this->observer->add_force({0, 1e3}); }
@@ -190,9 +307,18 @@ public:
 
     void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
 
+    void on_update() override
+    {
+        std::stringstream ss;
+        ss << "FPS: " << Renderer::get().get_fps();
+        std::string s = ss.str();
+        this->fpscntr->set_text(s);
+    }
+
 private:
 
     Observer *observer;
+    TextRenderable *fpscntr;
 
 };
 
@@ -201,6 +327,7 @@ int main()
     std::cerr << GitMetadata::version_string() << std::endl;
     Game game(1280, 960);
     Renderer &r = Renderer::get();
+    r.set_max_fps(100);
     r.define_shader("default", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/fragment.glsl");
     r.define_shader("sprite", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/sprite.glsl");
     r.define_shader("font", "../resources/shaders/vertex/vertex.glsl", "../resources/shaders/fragment/font.glsl");
