@@ -66,7 +66,7 @@ include_directories(${OPENGL_INCLUDE_DIR} ${GLFW_INCLUDE_DIR} ${GLEW_INCLUDE_DIR
 if(MSVC)
     target_compile_options(${EXE} PRIVATE /W4 /WX)
 else()
-    target_compile_options(${EXE} PRIVATE -Wall -Wextra -pedantic -Werror -Wno-unused-parameter)
+    target_compile_options(${EXE} PRIVATE -O2 -Wall -Wextra -pedantic -Werror -Wno-unused-parameter)
 endif()
 
 enable_testing()
