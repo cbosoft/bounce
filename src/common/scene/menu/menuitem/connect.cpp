@@ -18,7 +18,7 @@ void MenuItem::connect_left(MenuItem *o)
     this->item_left = o;
     this->set_callback_left(MenuItem::select_left);
     o->item_right = this;
-    this->set_callback_right(MenuItem::select_right);
+    o->set_callback_right(MenuItem::select_right);
 }
 
 void MenuItem::connect_down(MenuItem *o)
@@ -26,7 +26,7 @@ void MenuItem::connect_down(MenuItem *o)
     this->item_below = o;
     this->set_callback_down(MenuItem::select_down);
     o->item_above = this;
-    this->set_callback_up(MenuItem::select_up);
+    o->set_callback_up(MenuItem::select_up);
 }
 
 void MenuItem::connect_right(MenuItem *o)
@@ -34,5 +34,5 @@ void MenuItem::connect_right(MenuItem *o)
     this->item_right = o;
     this->set_callback_right(MenuItem::select_right);
     o->item_left = this;
-    this->set_callback_left(MenuItem::select_left);
+    o->set_callback_left(MenuItem::select_left);
 }
