@@ -25,10 +25,15 @@ public:
     const std::string &get_texture_name() const;
     void set_texture_name(const std::string &name);
 
+    void set_z(int z);
+    int get_z() const;
+
+    static bool z_sort(const Renderable *left, const Renderable *right) { return left->get_z() < right->get_z(); }
 private:
 
     Colour _colour;
     double _scale;
     Object *_object;
     std::string texture_name;
+    int _z;
 };

@@ -71,3 +71,13 @@ void Renderable::set_colour(const Colour &colour)
         this->_object->set_colour(colour);
     }
 }
+
+void Renderable::set_z(int z)
+{
+    this->_z = z;
+}
+
+int Renderable::get_z() const
+{
+    return this->_z;
+}

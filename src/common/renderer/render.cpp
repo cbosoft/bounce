@@ -49,12 +49,14 @@ void Renderer::render()
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
     Scene *scene = this->game->get_active_scene();
     if (scene) {
-        for (auto *rbl : scene->get_floating_renderables()) {
-            rbl->draw();
-        }
+        std::vector<Renderable *> rbls = scene->get_floating_renderables();
         for (auto *object : scene->get_objects()) {
             auto *rbl = object->get_renderable();
-            if (rbl) rbl->draw();
+            if (rbl) rbls.push_back(rbl);
+        }
+        std::sort(rbls.begin(), rbls.end(), Renderable::z_sort);
+        for (auto *rbl : rbls) {
+            rbl->draw();
         }
     }
 
