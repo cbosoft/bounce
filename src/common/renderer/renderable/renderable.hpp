@@ -24,6 +24,8 @@ public:
     bool has_texture() const;
     const std::string &get_texture_name() const;
     void set_texture_name(const std::string &name);
+    const std::string &get_shader_name() const;
+    void set_shader_name(const std::string &name);
 
     bool get_visible() const;
     void set_visible(bool visibility);
@@ -39,7 +41,7 @@ private:
     Colour _colour;
     double _scale;
     Object *_object;
-    std::string texture_name;
+    std::string texture_name, _shader_name;
     int _z;
     bool _visible;
 };

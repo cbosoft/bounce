@@ -37,7 +37,7 @@ void CircleRenderable::draw() const
     glBindBuffer(GL_ARRAY_BUFFER, renderer.get_vbuf());
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_DYNAMIC_DRAW);
 
-    GLuint shader = renderer.get_shader("default");
+    GLuint shader = renderer.get_shader(this->get_shader_name());
     if (this->has_texture()) {
         renderer.get_texture(this->get_texture_name())->use();
         shader = renderer.get_shader("sprite");

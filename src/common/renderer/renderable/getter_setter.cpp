@@ -101,3 +101,13 @@ void Renderable::show()
 {
     this->set_visible(true);
 }
+
+void Renderable::set_shader_name(const std::string &name)
+{
+    this->_shader_name = name;
+}
+
+const std::string &Renderable::get_shader_name() const
+{
+    return this->_shader_name;
+}
