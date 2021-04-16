@@ -33,6 +33,7 @@ public:
     void render();
 
     GLFWwindow *get_window();
+    const arma::vec2 &get_window_size() const;
 
     void define_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name);
     void define_screen_effect_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name);
@@ -49,6 +50,8 @@ public:
 
     int get_fps() const;
     void set_max_fps(int max_fps);
+
+    arma::vec2 screen_pos_to_world_pos(const arma::vec2 &screen_pos) const;
 
 private:
     Renderer();

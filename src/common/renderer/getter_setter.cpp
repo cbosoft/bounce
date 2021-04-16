@@ -28,3 +28,8 @@ void Renderer::set_max_fps(int fps)
 {
     this->_min_mspf = 1000/fps;
 }
+
+const arma::vec2 &Renderer::get_window_size() const
+{
+    return this->window_size;
+}
