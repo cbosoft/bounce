@@ -31,6 +31,15 @@ private:
     double _saturation, _hue;
 };
 
+class Cursor final: public CircleRenderable {
+public:
+    Cursor(Transform *parent)
+    : CircleRenderable()
+    {
+        this->set_parent(parent);
+    }
+};
+
 class FreeRoamScene final: public Scene {
 public:
     explicit FreeRoamScene(Game *game)
@@ -57,6 +66,9 @@ public:
         auto *cam = this->get_active_camera();
         cam->set_parent(this->player);
 
+        this->cursor = new Cursor(this);
+        this->add_floating_renderable(this->cursor);
+
         this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 100);
         this->fpscntr->set_alignment(HA_left, VA_bottom);
         this->fpscntr->set_position({1, 1});
@@ -82,6 +94,12 @@ public:
 
     void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
 
+    void mouse_position(double x, double y) override
+    {
+        arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos({x, y});
+        this->cursor->set_position(wrld);
+    }
+
     void on_update() override
     {
         std::stringstream ss;
@@ -105,5 +123,6 @@ private:
     }
 
     Player *player;
+    Cursor *cursor;
     TextRenderable *fpscntr, *pos;
 };
