@@ -111,3 +111,13 @@ const std::string &Renderable::get_shader_name() const
 {
     return this->_shader_name;
 }
+
+double Renderable::get_angle() const
+{
+    return this->_angle;
+}
+
+void Renderable::set_angle(double angle)
+{
+    this->_angle = angle;
+}

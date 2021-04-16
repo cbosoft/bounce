@@ -56,6 +56,8 @@ void CircleRenderable::draw() const
     if (loc != -1) glUniform2f(loc, x, y);
     loc = glGetUniformLocation(shader, "radius");
     if (loc != -1) glUniform1f(loc, r);
+    loc = glGetUniformLocation(shader, "object_angle");
+    if (loc != -1) glUniform1f(loc, float(this->get_angle()));
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, n+1);
     glDisableVertexAttribArray(0);

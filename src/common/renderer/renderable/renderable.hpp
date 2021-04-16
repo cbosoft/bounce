@@ -14,6 +14,8 @@ public:
     bool is_fixed() const;
     double get_scale() const;
     void set_scale(double scale);
+    double get_angle() const;
+    void set_angle(double angle);
 
     void set_object(Object *object);
     Object *get_object() const;
@@ -39,7 +41,7 @@ public:
 private:
 
     Colour _colour;
-    double _scale;
+    double _scale, _angle;
     Object *_object;
     std::string texture_name, _shader_name;
     int _z;
