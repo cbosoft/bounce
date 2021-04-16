@@ -17,7 +17,10 @@ int main()
     r.define_shader("font", "vertex/vertex", "fragment/font");
     r.define_shader("star", "vertex/vertex", "fragment/star");
 
-    r.define_screen_effect_shader("default", "vertex/quad", "fragment/ordered_dithering");
+    r.define_screen_effect_shader("default", "vertex/quad", "fragment/quad");
+    r.define_screen_effect_shader("1bit", "vertex/quad", "fragment/ordered_dithering");
+
+    //r.set_screen_effect("1bit");
 
     game.add_scene(new MainMenu(&game));
     game.add_scene(new FreeRoamScene(&game));

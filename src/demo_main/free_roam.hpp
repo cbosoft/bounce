@@ -13,7 +13,7 @@ public:
         this->set_position(position);
         this->set_shader_name("star");
         this->set_z(-1);
-        this->set_scale(0.5 + arma::randu()*3);
+        this->set_scale(0.5 + std::abs(arma::randn()*3));
         constexpr double max_sat = 0.5;
         this->_saturation = arma::randu()*max_sat;
         this->_hue = arma::randu();
@@ -37,6 +37,9 @@ public:
     : CircleRenderable()
     {
         this->set_parent(parent);
+        this->set_scale(3.0);
+        this->set_z(100);
+        this->set_texture_name("crosshair");
     }
 };
 
@@ -44,29 +47,20 @@ class FreeRoamScene final: public Scene {
 public:
     explicit FreeRoamScene(Game *game)
             : Scene(game, "free roam")
-            , player(nullptr)
     {
-        auto *o = new Object(this, {0, 0}, false);
-        o->set_radius(10.0);
-        o->set_renderable(MeshRenderable::rectangle(10, 5));
-        o->set_layer("other");
-        this->add_object(o);
-
-        o = new Object(this, {0, 0}, false, 0.5);
-        o->set_radius(4.0);
-        o->set_colour(Colours::gray);
-        o->set_renderable(MeshRenderable::regular_polygon(5));
-        this->add_object(o);
-
         this->player = new Player(this, {30, 0});
-        this->player->set_radius(4.0);
-        this->player->set_colour(Colours::blue);
-        this->player->set_renderable(new CircleRenderable());
         this->add_object(this->player);
         auto *cam = this->get_active_camera();
         cam->set_parent(this->player);
 
+        // auto *bg = MeshRenderable::rectangle(200, 200);
+        // bg->set_shader_name("starfield");
+        // this->add_floating_renderable(bg);
+        // bg->set_parent(this->player);
+        // bg->set_z(-100);
+
         this->cursor = new Cursor(this);
+        this->cursor->set_position({10, 0});
         this->add_floating_renderable(this->cursor);
 
         this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 100);
@@ -80,8 +74,6 @@ public:
         this->pos->set_parent(cam->get_br());
         this->add_floating_renderable(this->pos);
 
-        for (int i = 0; i < 100; i++)
-            this->place_star(200 * (2.*arma::vec2(arma::fill::randu) - 1.));
     }
 
     void up() override { this->player->up(); }
@@ -98,6 +90,11 @@ public:
     {
         arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos({x, y});
         this->cursor->set_position(wrld);
+        const arma::vec2 &d = wrld - this->player->get_position();
+        double len = arma::norm(d);
+        double angle = std::acos(d[0]/len);
+        if (d[1] < 0.0) angle = -angle;
+        this->player->aim(angle);
     }
 
     void on_update() override
@@ -113,6 +110,22 @@ public:
         ss << int(p[0]) << "." << int(p[1]) << ">>" << int(v[0]) << "." << int(v[1]);
         s = ss.str();
         this->pos->set_text(s);
+
+        int pcx = std::floor(p[0]/this->cell_size + 0.5);
+        int pcy = std::floor(p[1]/this->cell_size + 0.5);
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                auto tpl = std::make_tuple(pcx+dx, pcy+dy);
+                if (this->_cell_generated.find(tpl) == this->_cell_generated.end()) {
+                    arma::vec2 cell_centre{double(pcx+dx), double(pcy+dy)};
+                    cell_centre *= this->cell_size;
+                    for (int i = 0; i < 100; i++)
+                        this->place_star(
+                                cell_centre + this->cell_size * (2. * arma::vec2(arma::fill::randu) - 1.) * 0.5);
+                    this->_cell_generated[tpl] = true;
+                }
+            }
+        }
     }
 
 private:
@@ -121,6 +134,9 @@ private:
         auto *star = new Star(this, at);
         this->add_floating_renderable(star);
     }
+
+    double cell_size = 500.0;
+    std::map<std::tuple<int, int>, bool> _cell_generated;
 
     Player *player;
     Cursor *cursor;

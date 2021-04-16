@@ -10,7 +10,21 @@ public:
             ,   _command_state({false, false, false, false})
             ,   _speed(1000.0)
     {
+        auto *col = new CollectionRenderable();
+        this->set_renderable(col);
+        this->gun = new CircleRenderable();
+        this->gun->set_texture_name("gun");
+        this->gun->set_scale(5.0);
+        this->body = new CircleRenderable();
+        this->body->set_texture_name("body");
+        this->body->set_scale(10.0);
+        col->add_child(body);
+        col->add_child(gun);
+    }
 
+    void aim(double angle)
+    {
+        this->gun->set_angle(angle);
     }
 
     void up() { this->_command_state.move_up = true; }
@@ -36,6 +50,13 @@ public:
 
         this->_command_state = {false, false, false, false};
 
+        double len = arma::norm(vd);
+        if (len > 0.0) {
+            double angle = std::acos(vd[0] / len);
+            if (vd[1] < 0.0) angle *= -1.0;
+            this->body->set_angle(angle);
+        }
+
     }
 
 private:
@@ -46,4 +67,6 @@ private:
         bool move_right;
     } _command_state;
     double _speed;
+
+    Renderable *gun, *body;
 };
