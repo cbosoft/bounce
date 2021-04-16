@@ -91,7 +91,7 @@ void Renderer::render()
 void Renderer::update_shader_uniforms() const
 {
     RectTransform *camera = this->game->get_active_scene()->get_active_camera();
-    arma::vec2 position = camera->get_position(), size = camera->get_size();
+    arma::vec2 position = camera->get_position(), size = camera->get_size(), w = this->window_size;
     for (const auto &kv : this->shaders) {
         GLuint shader_id = kv.second;
         glUseProgram(shader_id);
@@ -108,6 +108,9 @@ void Renderer::update_shader_uniforms() const
 
         loc = glGetUniformLocation(shader_id, "camera_angle");
         if (loc != -1) glUniform1f(loc, 0.0 /* TODO */);
+
+        loc = glGetUniformLocation(shader_id, "window_size");
+        if (loc != -1) glUniform2f(loc, float(w[0]), float(w[1]));
     }
 }
 
