@@ -4,6 +4,33 @@
 
 #include "player.hpp"
 
+class Star final: public CircleRenderable {
+public:
+    Star(Transform *parent, const arma::vec2 &position)
+    :   CircleRenderable()
+    {
+        this->set_parent(parent);
+        this->set_position(position);
+        this->set_shader_name("star");
+        this->set_z(-1);
+        this->set_scale(0.5 + arma::randu()*3);
+        constexpr double max_sat = 0.5;
+        this->_saturation = arma::randu()*max_sat;
+        this->_hue = arma::randu();
+    }
+
+    // void update() override
+    // {
+    //     double time = PhysicsEngine::engine().get_time();
+    //     constexpr double min_brightness = 0.7;
+    //     double brightness = (std::sin(time*0.1) + 1.0)*0.5*(1.0 - min_brightness) + min_brightness;
+    //     this->set_colour(Colour::from_hsv_f(this->_hue, this->_saturation, brightness));
+    // }
+
+private:
+    double _saturation, _hue;
+};
+
 class FreeRoamScene final: public Scene {
 public:
     explicit FreeRoamScene(Game *game)
@@ -40,6 +67,9 @@ public:
         this->pos->set_alignment(HA_right, VA_bottom);
         this->pos->set_parent(cam->get_br());
         this->add_floating_renderable(this->pos);
+
+        for (int i = 0; i < 100; i++)
+            this->place_star(200 * (2.*arma::vec2(arma::fill::randu) - 1.));
     }
 
     void up() override { this->player->up(); }
@@ -68,6 +98,11 @@ public:
     }
 
 private:
+
+    void place_star(const arma::vec2 &at) {
+        auto *star = new Star(this, at);
+        this->add_floating_renderable(star);
+    }
 
     Player *player;
     TextRenderable *fpscntr, *pos;

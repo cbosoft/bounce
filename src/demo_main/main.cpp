@@ -15,8 +15,9 @@ int main()
     r.define_shader("default", "vertex/vertex", "fragment/fragment");
     r.define_shader("sprite", "vertex/vertex", "fragment/sprite");
     r.define_shader("font", "vertex/vertex", "fragment/font");
+    r.define_shader("star", "vertex/vertex", "fragment/star");
 
-    r.define_screen_effect_shader("default", "vertex/quad", "fragment/quad");
+    r.define_screen_effect_shader("default", "vertex/quad", "fragment/ordered_dithering");
 
     game.add_scene(new MainMenu(&game));
     game.add_scene(new FreeRoamScene(&game));
