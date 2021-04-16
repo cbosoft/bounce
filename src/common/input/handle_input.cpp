@@ -1,4 +1,5 @@
 #include "manager.hpp"
+#include "../renderer/renderer.hpp"
 
 void InputManager::handle_input()
 {
@@ -20,6 +21,17 @@ void InputManager::handle_input()
         if (current_state.action) context->action();
         if (current_state.alternative) context->alternate();
         if (current_state.back) context->back();
+
+        double mouse_x, mouse_y;
+        glfwGetCursorPos(this->get_window(), &mouse_x, &mouse_y);
+        arma::vec2 w = Renderer::get().get_window_size();
+
+        if (mouse_x < 0.0) mouse_x = 0.0;
+        if (mouse_y < 0.0) mouse_y = 0.0;
+        if (mouse_x > w[0]) mouse_x = w[0];
+        if (mouse_y > w[1]) mouse_y = w[1];
+
+        context->mouse_position(mouse_x, mouse_y);
     }
 
     this->previous_state = current_copy;

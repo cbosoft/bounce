@@ -3,7 +3,7 @@
 class Game;
 class InputContext {
 public:
-    InputContext(Game *game);
+    explicit InputContext(Game *game);
 
     virtual void up() =0;
     virtual void down() =0;
@@ -15,7 +15,7 @@ public:
 
     virtual void back() =0;
 
-    // virtual void mouse_position(double x, double y) =0;
+    virtual void mouse_position(double x, double y) { (void) x; (void) y; }
     // virtual void left_click() =0;
     // virtual void right_click() =0;
 

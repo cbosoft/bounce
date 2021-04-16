@@ -27,6 +27,7 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
 
 
     glfwSetInputMode(this->window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     this->varr = 0;
     glGenVertexArrays(1, &this->varr);
