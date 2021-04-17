@@ -33,6 +33,9 @@ public:
     double get_time() const;
     double get_dt() const;
 
+    void register_object(Object *obj);
+    std::list<Object *> get_active_objects() const;
+
 private:
     PhysicsEngine(Game *game, double dt, double timescale);
 
@@ -41,4 +44,5 @@ private:
     double dt, time, irl_time, timescale;
     Clock::time_point epoch;
     CollisionInformation _cached_collision;
+    std::list<Object *> _all_objects;
 };

@@ -6,7 +6,7 @@
 class MenuItem;
 typedef void (*menu_callback)(MenuItem *item);
 
-class MenuItem : public InputContext, public Object {
+class MenuItem : public InputContext, public Transform {
 public:
     explicit MenuItem(Menu *parent);
 

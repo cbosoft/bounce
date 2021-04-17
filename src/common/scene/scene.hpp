@@ -16,10 +16,6 @@ public:
     virtual void on_update() {};
 
     const std::string &get_name() const;
-    const std::vector<Object *> &get_objects() const;
-    void add_object(Object *object);
-    const std::vector<Renderable *> &get_floating_renderables() const;
-    void add_floating_renderable(Renderable *rbl);
     std::vector<Object *> find_objects_near_to(Transform *t, double radius) const;
 
     void add_field(ForceField *field);
@@ -32,8 +28,6 @@ public:
     RectTransform *get_active_camera() const;
 
 private:
-    std::vector<Renderable *> _floating_renderables;
-    std::vector<Object *> _objects;
     std::vector<ForceField *> _fields;
     std::string _name;
     std::map<std::string, RectTransform *> _cameras;

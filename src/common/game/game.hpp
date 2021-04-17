@@ -23,8 +23,6 @@ class Game {
     Scene *pop_active_scene();
     Scene *get_active_scene() const;
     void add_scene(Scene *scene);
-    void add_object(Object *object);
-    const std::vector<Object *> &active_objects();
 
     // Loop
     void run();

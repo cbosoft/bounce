@@ -18,11 +18,7 @@ void Renderer::render()
     this->_actual_fps = (this->_actual_fps + (1000/us))/2;
     this->time_last_render = now;
 
-    auto *active = this->game->get_active_scene();
-    active->on_update();
-    for (auto *object : active->get_objects()) {
-        object->update();
-    }
+    this->game->get_active_scene()->update();
 
     int w, h;
     glfwGetWindowSize(this->window, &w, &h);
@@ -55,12 +51,9 @@ void Renderer::render()
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
     Scene *scene = this->game->get_active_scene();
     if (scene) {
-        std::vector<Renderable *> rbls = scene->get_floating_renderables();
-        for (auto *object : scene->get_objects()) {
-            auto *rbl = object->get_renderable();
-            if (rbl) rbls.push_back(rbl);
-        }
-        std::sort(rbls.begin(), rbls.end(), Renderable::z_sort);
+        std::list<const Renderable *> rbls;
+        scene->get_renderables(rbls);
+        //std::sort(rbls.begin(), rbls.end(), Renderable::z_sort);
         for (auto *rbl : rbls) {
             if (rbl && rbl->get_visible())
                 rbl->draw();

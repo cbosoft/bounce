@@ -1,4 +1,5 @@
 #include "object.hpp"
+#include "../physics/engine/engine.hpp"
 
 Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double cor)
         : Transform(parent)
@@ -12,11 +13,11 @@ Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double
         , _layer("unset")
         , c(Colour::from_grayscale(255))
         , _fixed(fixed)
-        , _renderable(nullptr)
         , _collision_callback(nullptr)
 {
     this->set_position(position);
     this->set_mass(1.0);
+    PhysicsEngine::engine().register_object(this);
 }
 
 Object::Object(Transform *parent, const arma::vec2 &position, double mass, double cor)
@@ -31,9 +32,9 @@ Object::Object(Transform *parent, const arma::vec2 &position, double mass, doubl
         , _layer("unset")
         , c(Colour::from_grayscale(255))
         , _fixed(false)
-        , _renderable(nullptr)
         , _collision_callback(nullptr)
 {
     this->set_position(position);
     this->set_mass(mass);
+    PhysicsEngine::engine().register_object(this);
 }

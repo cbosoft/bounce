@@ -2,7 +2,7 @@
 
 MenuItem::MenuItem(Menu *parent)
 :   InputContext(parent->get_game())
-,   Object(parent, {0, 0}, true, 1.0)
+,   Transform(parent)
 ,   _cb_up(nullptr)
 ,   _cb_left(nullptr)
 ,   _cb_down(nullptr)

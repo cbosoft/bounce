@@ -12,7 +12,6 @@ void Menu::set_selected(MenuItem *item)
 void Menu::add_item(MenuItem *item)
 {
     this->items.push_back(item);
-    this->add_object(item);
     item->unhighlight();
     if (!this->selected)
         this->set_selected(item);

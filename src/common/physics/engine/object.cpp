@@ -79,3 +79,19 @@ CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(Object *a, Ob
 
     return this->_cached_collision;
 }
+
+void PhysicsEngine::register_object(Object *obj)
+{
+    this->_all_objects.push_back(obj);
+}
+
+std::list<Object *> PhysicsEngine::get_active_objects() const
+{
+    const Transform *root = this->game->get_active_scene();
+    std::list<Object *> rv;
+    for (Object *obj : this->_all_objects) {
+        if (root == obj->get_root())
+            rv.push_back(obj);
+    }
+    return rv;
+}

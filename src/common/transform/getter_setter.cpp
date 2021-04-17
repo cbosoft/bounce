@@ -5,9 +5,31 @@ Transform * Transform::get_parent() const
     return this->_parent;
 }
 
+const Transform *Transform::get_root() const
+{
+    if (this->_parent) {
+        return this->_parent->get_root();
+    }
+    return this;
+}
+
+void Transform::remove_child(Transform *child)
+{
+    this->_children.remove(child);
+}
+
+void Transform::add_child(Transform *child)
+{
+    this->_children.push_back(child);
+}
+
 void Transform::set_parent(Transform *parent)
 {
+    if (this->_parent) {
+        this->_parent->remove_child(this);
+    }
     this->_parent = parent;
+    this->_parent->add_child(this);
 }
 
 const arma::vec2 & Transform::get_relative_position() const
