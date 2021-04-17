@@ -52,8 +52,8 @@ class Object : public Transform {
     double get_cor() const;
     void set_cor(double _cor);
 
-    Renderable *get_renderable() const;
-    void set_renderable(Renderable *renderable);
+    void attach_renderable(const std::string &name, Renderable *rbl) override;
+    void attach_renderable(Renderable *rbl) override;
 
     void set_layer(const std::string &layer);
     const std::string &get_layer() const;
@@ -73,6 +73,5 @@ class Object : public Transform {
     Colour c;
 
     bool _fixed;
-    Renderable *_renderable;
     collision_callback _collision_callback;
 };
