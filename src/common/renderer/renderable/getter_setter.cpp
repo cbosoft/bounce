@@ -12,18 +12,13 @@ double Renderable::get_scale() const
         return this->_scale;
     }
     else {
-        return this->_object->get_radius();
+        return this->_object->get_radius()*this->_scale;
     }
 }
 
 void Renderable::set_scale(double scale)
 {
-    if (this->is_fixed()) {
-        this->_scale = scale;
-    }
-    else {
-        this->_object->set_radius(scale);
-    }
+    this->_scale = scale;
 }
 
 void Renderable::set_object(Object *object)
@@ -70,6 +65,26 @@ void Renderable::set_colour(const Colour &colour)
     else {
         this->_object->set_colour(colour);
     }
+}
+
+const Colour &Renderable::get_border_colour() const
+{
+    return this->_border_colour;
+}
+
+void Renderable::set_border_colour(const Colour &colour)
+{
+    this->_border_colour = colour;
+}
+
+double Renderable::get_border_size() const
+{
+    return this->_border_size;
+}
+
+void Renderable::set_border_size(double border_size)
+{
+    this->_border_size = border_size;
 }
 
 void Renderable::set_z(int z)

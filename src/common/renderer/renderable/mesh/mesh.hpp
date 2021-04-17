@@ -6,7 +6,7 @@
 
 class MeshRenderable : public Renderable {
 public:
-    MeshRenderable(const std::vector<arma::vec2> &points);
+    explicit MeshRenderable(const std::vector<arma::vec2> &points);
 
     void draw() const override;
 
@@ -15,5 +15,6 @@ public:
     static MeshRenderable *regular_polygon(int n, double angle=M_PI_2);
 
 private:
+
     std::vector<arma::vec2> points;
 };

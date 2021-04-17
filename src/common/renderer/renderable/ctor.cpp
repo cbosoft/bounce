@@ -2,7 +2,8 @@
 
 Renderable::Renderable()
 : Transform()
-, _colour(Colour::from_rgb(255, 255, 255))
+, _colour(Colours::white)
+, _border_colour(Colours::white)
 , _scale(1.0)
 , _angle(0.0)
 , _object(nullptr)

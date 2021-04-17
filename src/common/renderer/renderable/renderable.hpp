@@ -22,6 +22,10 @@ public:
 
     const Colour &get_colour() const;
     void set_colour(const Colour &colour);
+    const Colour &get_border_colour() const;
+    void set_border_colour(const Colour &colour);
+    void set_border_size(double border_size);
+    double get_border_size() const;
 
     bool has_texture() const;
     const std::string &get_texture_name() const;
@@ -40,8 +44,8 @@ public:
     static bool z_sort(const Renderable *left, const Renderable *right) { return left->get_z() < right->get_z(); }
 private:
 
-    Colour _colour;
-    double _scale, _angle;
+    Colour _colour, _border_colour;
+    double _scale, _angle, _border_size;
     Object *_object;
     std::string texture_name, _shader_name;
     int _z;
