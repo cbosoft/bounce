@@ -9,26 +9,26 @@ public:
     MenuButton(Menu *parent, const std::string &label)
             : MenuItem(parent)
     {
-        auto *col = new CollectionRenderable();
-        this->bg = MeshRenderable::rectangle(25, 5);
-        col->add_child(bg);
-        auto *msh= MeshRenderable::rectangle(26, 5);
-        msh->set_scale(24);
-        msh->set_colour(Colours::black);
-        col->add_child(msh);
-        auto *txt = new TextRenderable(label, DEFAULT_FONT, 80);
-        col->add_child(txt);
-        this->set_renderable(col);
+        this->bg = MeshRenderable::rectangle(30, 5);
+        this->bg->set_colour(Colours::black);
+        this->attach_renderable("bg", this->bg);
+
+        this->txt = new TextRenderable(label, DEFAULT_FONT, 80);
+        this->attach_renderable("text", this->txt);
+
+        this->bg->set_border_size(0.01);
     }
 
     void highlight() override {
-        this->bg->show();
+        this->bg->set_colour(Colours::white);
+        this->txt->set_colour(Colours::black);
     }
 
     void unhighlight() override {
-        this->bg->hide();
+        this->bg->set_colour(Colours::black);
+        this->txt->set_colour(Colours::white);
     }
 
 private:
-    Renderable *bg;
+    Renderable *bg, *txt;
 };

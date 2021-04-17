@@ -13,6 +13,7 @@ public:
             b->set_position({50, 15});
             this->add_item(b);
             b->set_callback_action(MainMenu::sim_callback);
+            std::cerr << b->get_position() << std::endl;
         }
         {
             auto *b = new MenuButton(this, "free roam");
@@ -32,33 +33,27 @@ public:
         // draw logo
         {
             auto *ttl = new Object(this, {-60, 10});
-            ttl->set_renderable(new TextRenderable("Bounce", DEFAULT_FONT, 150));
+            ttl->attach_renderable("bounce1", new TextRenderable("Bounce", DEFAULT_FONT, 150));
             ttl->set_colour(Colour::from_grayscale(40));
             ttl->set_layer("title 1");
-            this->add_object(ttl);
             auto *brk = new Object(this, {-60, 0}, true);
             brk->set_layer("title 1");
-            this->add_object(brk);
         }
         {
             auto *ttl = new Object(this, {-55, 5});
-            ttl->set_renderable(new TextRenderable("Bounce", DEFAULT_FONT, 175));
+            ttl->attach_renderable("bounce2", new TextRenderable("Bounce", DEFAULT_FONT, 175));
             ttl->set_colour(Colour::from_grayscale(127));
             ttl->set_layer("title 2");
-            this->add_object(ttl);
             auto *brk = new Object(this, {-55, -5}, true);
             brk->set_layer("title 2");
-            this->add_object(brk);
         }
         {
             auto *ttl = new Object(this, {-50, 0});
-            ttl->set_renderable(new TextRenderable("Bounce", DEFAULT_FONT, 200));
+            ttl->attach_renderable("bounce3", new TextRenderable("Bounce", DEFAULT_FONT, 200));
             ttl->set_colour(Colour::from_grayscale(255));
             ttl->set_layer("title 3");
-            this->add_object(ttl);
             auto *brk = new Object(this, {-50, -10}, true);
             brk->set_layer("title 3");
-            this->add_object(brk);
         }
 
         auto *gravity = new UnboundedLinearForceField(0, 0, 0, -10);
@@ -80,5 +75,27 @@ public:
         i->get_game()->add_event(new PushSceneTransitionEvent("free roam"));
     }
 
+    void mouse_position(double x, double y) override
+    {
+        double dx = x - this->_px;
+        if (std::abs(dx) > 100) {
+            if (dx > 0.0) this->right();
+            else this->left();
+
+            this->_px = x;
+        }
+
+        double dy = y - this->_py;
+        if (std::abs(dy) > 100) {
+            if (dy > 0.0) this->down();
+            else this->up();
+
+            this->_py = y;
+        }
+    }
+
     void back() override { this->get_game()->quit(); };
+
+private:
+    double _py, _px;
 };

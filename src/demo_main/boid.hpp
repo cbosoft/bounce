@@ -5,21 +5,21 @@
 
 class Boid final: public Object {
 public:
-    explicit Boid(Scene *location, const arma::vec2 &position, double search_radius)
-            : Object(location, position, false)
-            , _loc(location)
+    explicit Boid(Scene *parent, const arma::vec2 &position, double search_radius)
+            : Object(parent, position, false)
+            , _scene(parent)
             , _search_radius(search_radius)
             , _max_velocity(5.0)
     {
         double theta = M_2_PI * arma::randu();
         this->set_velocity( {this->_max_velocity*std::cos(theta), this->_max_velocity*std::sin(theta)} );
-        this->set_renderable(new CircleRenderable());
+        this->attach_renderable("circle", new CircleRenderable());
         this->set_radius(0.5);
         this->set_layer("boids");
     }
 
     void update() override {
-        std::vector<Object *> nearby = this->_loc->find_objects_near_to(this, this->_search_radius);
+        std::vector<Object *> nearby = this->_scene->find_objects_near_to(this, this->_search_radius);
         if (nearby.empty())
             return;
 
@@ -61,6 +61,6 @@ public:
         this->set_position({x, y});
     }
 private:
-    Scene *_loc;
+    Scene *_scene;
     double _search_radius, _max_velocity;
 };

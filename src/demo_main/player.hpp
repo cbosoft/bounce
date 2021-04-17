@@ -1,25 +1,45 @@
 #pragma once
+#include <chrono>
 
 #include "../common/bounce.hpp"
 #include "settings.hpp"
 
+class Projectile final: public Object {
+public:
+    Projectile(Transform *parent, const arma::vec2 &pos)
+    :   Object(parent, pos, false, 1.0)
+    {
+        this->attach_renderable("proj", new CircleRenderable());
+        this->set_colour(Colours::cyan);
+    }
+
+    void update() override
+    {
+        double dist = arma::norm(this->get_relative_position());
+        if (dist > 10.0) {
+            // do something?
+        }
+    }
+};
+
 class Player final: public Object {
 public:
-    Player(Transform *parent, const arma::vec2 &position)
+    Player(Scene *parent, const arma::vec2 &position)
             :   Object(parent, position, false, 1.0)
             ,   _command_state({false, false, false, false})
             ,   _speed(1000.0)
+            ,   _last_shot(std::chrono::system_clock::now())
+            ,   _cooldown_ms(100)
     {
-        auto *col = new CollectionRenderable();
-        this->set_renderable(col);
-        this->gun = new CircleRenderable();
-        this->gun->set_texture_name("gun");
-        this->gun->set_scale(5.0);
         this->body = new CircleRenderable();
         this->body->set_texture_name("body");
         this->body->set_scale(10.0);
-        col->add_child(body);
-        col->add_child(gun);
+        this->attach_renderable("body", body);
+
+        this->gun = new CircleRenderable();
+        this->gun->set_texture_name("gun");
+        this->gun->set_scale(5.0);
+        this->attach_renderable("gun", gun);
     }
 
     void aim(double angle)
@@ -27,12 +47,25 @@ public:
         this->gun->set_angle(angle);
     }
 
+    void shoot()
+    {
+        auto now = std::chrono::system_clock::now();
+        long dt_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->_last_shot).count();
+        if (dt_ms < this->_cooldown_ms) { return; }
+        this->_last_shot = now;
+        double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
+        arma::vec2 pos = arma::mat22{{c, -s}, {s, c}}*arma::vec2{1, 0};
+        auto *projectile = new Projectile(this, pos*this->gun->get_scale() + this->get_position());
+        arma::vec2 v = pos*100 + this->get_velocity();
+        projectile->set_velocity(v);
+    }
+
     void up() { this->_command_state.move_up = true; }
     void left() { this->_command_state.move_left = true; }
     void down() { this->_command_state.move_down = true; }
     void right() { this->_command_state.move_right = true; }
 
-    void update() override
+    void on_update() override
     {
         arma::vec2 dir{0,0};
         if (this->_command_state.move_up)    dir[1] += 1.0;
@@ -69,4 +102,6 @@ private:
     double _speed;
 
     Renderable *gun, *body;
+    std::chrono::system_clock::time_point _last_shot;
+    long _cooldown_ms;
 };

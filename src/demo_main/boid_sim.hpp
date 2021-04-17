@@ -20,7 +20,7 @@ public:
                 double x = r*std::cos(theta);
                 double y = r*std::sin(theta);
                 auto *boid = new Boid(this, {x, y}, 5.);
-                this->add_object(boid);
+                (void) boid;
                 r += dr;
             }
             theta += dtheta;
@@ -28,7 +28,6 @@ public:
 
         auto *rct = MeshRenderable::rectangle(50, 50);
         rct->set_colour(Colour::from_grayscale(32));
-        this->add_floating_renderable(rct);
 
         std::stringstream ss;
         ss << n*n << " objects";
@@ -52,13 +51,13 @@ public:
             auto *txt = new TextRenderable(line, DEFAULT_FONT, 80);
             txt->set_position(origin);
             txt->set_alignment(HA_left, VA_bottom);
-            this->add_floating_renderable(txt);
+            this->attach_renderable(txt);
             origin[1] -= line_height;
         }
 
         this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 40);
         this->fpscntr->set_position({0, -60});
-        this->add_floating_renderable(this->fpscntr);
+        this->attach_renderable(this->fpscntr);
         this->get_active_camera()->set_position({-50, 0});
     }
 

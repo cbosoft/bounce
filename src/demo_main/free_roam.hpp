@@ -49,7 +49,6 @@ public:
             : Scene(game, "free roam")
     {
         this->player = new Player(this, {30, 0});
-        this->add_object(this->player);
         auto *cam = this->get_active_camera();
         cam->set_parent(this->player);
 
@@ -61,18 +60,18 @@ public:
 
         this->cursor = new Cursor(this);
         this->cursor->set_position({10, 0});
-        this->add_floating_renderable(this->cursor);
+        this->attach_renderable("cursor", this->cursor);
 
         this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 100);
         this->fpscntr->set_alignment(HA_left, VA_bottom);
         this->fpscntr->set_position({1, 1});
-        this->add_floating_renderable(this->fpscntr);
+        this->attach_renderable("FPS counter", this->fpscntr);
         this->fpscntr->set_parent(cam->get_bl());
 
         this->pos = new TextRenderable("<pos>", DEFAULT_FONT, 100);
         this->pos->set_alignment(HA_right, VA_bottom);
+        this->attach_renderable("position counter", this->pos);
         this->pos->set_parent(cam->get_br());
-        this->add_floating_renderable(this->pos);
 
     }
 
@@ -81,7 +80,7 @@ public:
     void down() override { this->player->down(); }
     void right() override { this->player->right(); }
 
-    void action() override {}
+    void action() override {this->player->shoot(); }
     void alternate() override {}
 
     void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
@@ -132,7 +131,7 @@ private:
 
     void place_star(const arma::vec2 &at) {
         auto *star = new Star(this, at);
-        this->add_floating_renderable(star);
+        this->attach_renderable(star);
     }
 
     double cell_size = 500.0;
