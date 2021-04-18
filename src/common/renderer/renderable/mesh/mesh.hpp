@@ -17,4 +17,6 @@ public:
 private:
 
     std::vector<arma::vec2> points;
+
+    friend class AnimatedMeshRenderable;
 };
