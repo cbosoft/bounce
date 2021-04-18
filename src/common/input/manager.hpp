@@ -2,6 +2,7 @@
 #include "context/context.hpp"
 #include <map>
 #include <chrono>
+#include <armadillo>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -9,6 +10,7 @@ struct InputState
 {
     bool up, left, down, right;
     bool action, alternative, back;
+    arma::vec2 cursor, zoom;
 };
 
 class Game;

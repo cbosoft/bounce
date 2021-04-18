@@ -1,5 +1,7 @@
 #pragma once
 
+#include <armadillo>
+
 class Game;
 class InputContext {
 public:
@@ -15,9 +17,8 @@ public:
 
     virtual void back() =0;
 
-    virtual void mouse_position(double x, double y) { (void) x; (void) y; }
-    // virtual void left_click() =0;
-    // virtual void right_click() =0;
+    virtual void cursor_position(const arma::vec2 &pos) { (void) pos; }
+    virtual void zoom(const arma::vec2 &pos) { (void) pos; }
 
     Game *get_game() const;
 

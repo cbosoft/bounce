@@ -5,6 +5,8 @@ void InputManager::handle_input()
 {
     InputState current_state = this->read_input_state(), current_copy = current_state;
     auto *bool_state = (bool *)&current_state;
+    // for each button (boolean) check if is too soon to register another press
+    // TODO: make more OO-y and create a button class?
     for (unsigned int i = 0; i < 7; i++) {
         if (bool_state[i]) {
             // sets state to false if too soon for a second input
@@ -22,16 +24,8 @@ void InputManager::handle_input()
         if (current_state.alternative) context->alternate();
         if (current_state.back) context->back();
 
-        double mouse_x, mouse_y;
-        glfwGetCursorPos(this->get_window(), &mouse_x, &mouse_y);
-        arma::vec2 w = Renderer::get().get_window_size();
-
-        if (mouse_x < 0.0) mouse_x = 0.0;
-        if (mouse_y < 0.0) mouse_y = 0.0;
-        if (mouse_x > w[0]) mouse_x = w[0];
-        if (mouse_y > w[1]) mouse_y = w[1];
-
-        context->mouse_position(mouse_x, mouse_y);
+        context->cursor_position(current_state.cursor);
+        // context->zoom(current_state.zoom);
     }
 
     this->previous_state = current_copy;
