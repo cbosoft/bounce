@@ -3,10 +3,22 @@
 #include "settings.hpp"
 #include "menu_button.hpp"
 
+class MenuCursor final: public AnimatedMeshRenderable {
+public:
+    MenuCursor(Transform *parent)
+            : AnimatedMeshRenderable(MeshRenderable::regular_polygon(3))
+    {
+        this->set_parent(parent);
+        this->set_z(-100);
+    }
+};
+
 class MainMenu final: public Menu {
 public:
     explicit MainMenu(Game *game)
-            : Menu(game, "menu")
+            :   Menu(game, "menu")
+            //,   _px(0)
+            //,   _py(0)
     {
         {
             auto *b = new MenuButton(this, "physics sim");
@@ -29,6 +41,10 @@ public:
         }
 
         this->connect_vertical();
+
+        this->cursor = new MenuCursor(this);
+        this->cursor->set_position({10, 0});
+        this->attach_renderable("cursor", this->cursor);
 
         // draw logo
         {
@@ -75,28 +91,65 @@ public:
         i->get_game()->add_event(new PushSceneTransitionEvent("free roam"));
     }
 
-    void cursor_position(const arma::vec2 &pos) override
+    void cursor_position(const arma::vec2 &p) override
     {
-        double x = pos[0], y = pos[1];
-        double dx = x - this->_px;
-        if (std::abs(dx) > 100) {
-            if (dx > 0.0) this->right();
-            else this->left();
-
-            this->_px = x;
-        }
-
-        double dy = y - this->_py;
-        if (std::abs(dy) > 100) {
-            if (dy > 0.0) this->down();
-            else this->up();
-
-            this->_py = y;
-        }
+        arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos(p);
+        this->cursor->set_position(wrld);
     }
+
+    void on_update() override
+    {
+        for (MenuItem *item : this->get_items()) {
+            auto *btn = (MenuButton *)item;
+            if (btn->is_near(this->cursor, 5.0)) {
+                this->cursor->animate_to(btn->bg, 10);
+                this->cursor->set_position(btn->get_position());
+                this->set_selected(btn);
+                return;
+            }
+        }
+
+        this->cursor->animate_to_original(5);
+    }
+
+    // void cursor_position(const arma::vec2 &pos) override
+    // {
+    //     double x = pos[0], y = pos[1];
+    //     double dx = x - this->_px;
+    //     if (std::abs(dx) > 100) {
+    //         if (dx > 0.0) this->right();
+    //         else this->left();
+
+    //         this->_px = x;
+    //     }
+
+    //     double dy = y - this->_py;
+    //     if (std::abs(dy) > 100) {
+    //         if (dy > 0.0) this->down();
+    //         else this->up();
+
+    //         this->_py = y;
+    //     }
+    // }
 
     void back() override { this->get_game()->quit(); };
 
+    void alternate() override {
+        static MeshRenderable *other = MeshRenderable::rectangle(10, 10);
+        static bool doobeedoo = false;
+        std::cerr << "CALLED " << doobeedoo << std::endl;
+
+        if (doobeedoo) {
+            this->cursor->animate_to(other, 100);
+        }
+        else {
+            this->cursor->animate_to_original(100);
+        }
+
+        doobeedoo = !doobeedoo;
+    }
+
 private:
-    double _py, _px;
+    //double _px, _py;
+    MenuCursor *cursor;
 };

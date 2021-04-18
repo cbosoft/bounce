@@ -33,7 +33,7 @@ private:
 
 class Cursor final: public CircleRenderable {
 public:
-    Cursor(Transform *parent)
+    explicit Cursor(Transform *parent)
     : CircleRenderable()
     {
         this->set_parent(parent);
