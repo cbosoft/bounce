@@ -6,7 +6,8 @@ void Menu::set_selected(MenuItem *item)
     if (this->selected)
         this->selected->unhighlight();
     this->selected = item;
-    this->selected->highlight();
+    if (this->selected)
+        this->selected->highlight();
 }
 
 void Menu::add_item(MenuItem *item)
