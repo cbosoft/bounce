@@ -34,6 +34,7 @@ public:
     double get_dt() const;
 
     void register_object(Object *obj);
+    void unregister_object(Object *obj);
     std::list<Object *> get_active_objects() const;
 
 private:

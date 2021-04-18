@@ -85,6 +85,11 @@ void PhysicsEngine::register_object(Object *obj)
     this->_all_objects.push_back(obj);
 }
 
+void PhysicsEngine::unregister_object(Object *obj)
+{
+    this->_all_objects.remove(obj);
+}
+
 std::list<Object *> PhysicsEngine::get_active_objects() const
 {
     const Transform *root = this->game->get_active_scene();
