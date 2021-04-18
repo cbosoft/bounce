@@ -49,3 +49,8 @@ void Menu::connect_horizontal()
         prev->connect_left(next);
     }
 }
+
+const std::vector<MenuItem *> &Menu::get_items() const
+{
+    return this->items;
+}

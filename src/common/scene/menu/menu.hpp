@@ -9,6 +9,7 @@ public:
 
     void set_selected(MenuItem *item);
     void add_item(MenuItem *item);
+    const std::vector<MenuItem *> &get_items() const;
 
     void up() override;
     void left() override;
