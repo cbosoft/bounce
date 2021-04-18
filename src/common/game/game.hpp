@@ -13,7 +13,7 @@
 
 class Game {
   public:
-    explicit Game(int w, int h);
+    static Game &ref();
     ~Game();
 
     // Logic
@@ -32,6 +32,7 @@ class Game {
     InputContext *get_context() const;
 
   private:
+    Game();
     bool should_quit;
 
     PhysicsEngine &physics;
