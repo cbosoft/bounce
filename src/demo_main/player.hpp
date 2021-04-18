@@ -13,11 +13,11 @@ public:
         this->set_colour(Colours::cyan);
     }
 
-    void update() override
+    void on_update() override
     {
         double dist = arma::norm(this->get_relative_position());
-        if (dist > 10.0) {
-            // do something?
+        if (dist > 100.0) {
+            Game::ref().add_event(new TransformDestroyEvent(this));
         }
     }
 };

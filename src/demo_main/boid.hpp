@@ -18,7 +18,7 @@ public:
         this->set_layer("boids");
     }
 
-    void update() override {
+    void on_update() override {
         std::vector<Object *> nearby = this->_scene->find_objects_near_to(this, this->_search_radius);
         if (nearby.empty())
             return;

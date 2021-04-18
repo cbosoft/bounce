@@ -9,7 +9,7 @@
 int main()
 {
     std::cerr << GitMetadata::version_string() << std::endl;
-    Game game(1280, 960);
+    auto &game = Game::ref();
     Renderer &r = Renderer::get();
     r.set_max_fps(100);
     r.define_shader("default", "vertex/vertex", "fragment/fragment");

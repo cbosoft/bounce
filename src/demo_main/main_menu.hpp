@@ -75,8 +75,9 @@ public:
         i->get_game()->add_event(new PushSceneTransitionEvent("free roam"));
     }
 
-    void mouse_position(double x, double y) override
+    void cursor_position(const arma::vec2 &pos) override
     {
+        double x = pos[0], y = pos[1];
         double dx = x - this->_px;
         if (std::abs(dx) > 100) {
             if (dx > 0.0) this->right();

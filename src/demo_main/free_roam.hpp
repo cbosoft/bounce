@@ -85,9 +85,9 @@ public:
 
     void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
 
-    void mouse_position(double x, double y) override
+    void cursor_position(const arma::vec2 &pos) override
     {
-        arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos({x, y});
+        arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos(pos);
         this->cursor->set_position(wrld);
         const arma::vec2 &d = wrld - this->player->get_position();
         double len = arma::norm(d);
