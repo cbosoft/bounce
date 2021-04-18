@@ -25,7 +25,7 @@ void InputManager::handle_input()
         if (current_state.back) context->back();
 
         context->cursor_position(current_state.cursor);
-        // context->zoom(current_state.zoom);
+        context->zoom(current_state.zoom);
     }
 
     this->previous_state = current_copy;
