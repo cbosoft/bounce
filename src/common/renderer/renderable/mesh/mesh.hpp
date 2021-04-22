@@ -13,16 +13,37 @@ public:
 
     void draw() const override;
 
-    static MeshRenderable *rectangle(double w, double h);
-    static MeshRenderable *filleted_rectangle(double w, double h, double r);
-    static MeshRenderable *regular_polygon(int n, double angle=M_PI_2);
-
     void set_alignment(MeshRenderable_HorizontalAnchor ha, MeshRenderable_VerticalAnchor va);
 
-private:
+protected:
+    MeshRenderable() =default;
 
-    std::vector<arma::vec2> points;
+    std::vector<arma::vec2> _points;
     arma::vec2 _anchor;
 
+private:
+    void draw_border() const;
+    void draw_main() const;
+
     friend class AnimatedMeshRenderable;
+};
+
+class RectangleMeshRenderable : public MeshRenderable {
+public:
+    RectangleMeshRenderable(double w, double h);
+};
+
+class FilletedRectangleMeshRenderable : public MeshRenderable {
+public:
+    FilletedRectangleMeshRenderable(double w, double h, double r);
+};
+
+class RegularPolygonMeshRenderable : public MeshRenderable {
+public:
+    RegularPolygonMeshRenderable(int n, double theta=M_PI_2);
+};
+
+class CircleMeshRenderable : public MeshRenderable {
+public:
+    CircleMeshRenderable(double radius=0.5);
 };

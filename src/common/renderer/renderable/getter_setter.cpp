@@ -6,19 +6,14 @@ bool Renderable::is_fixed() const
     return this->_object == nullptr;
 }
 
-double Renderable::get_scale() const
+void Renderable::set_size(const arma::vec2 &size)
 {
-    if (this->is_fixed()) {
-        return this->_scale;
-    }
-    else {
-        return this->_object->get_radius()*this->_scale;
-    }
+    this->_size = size;
 }
 
-void Renderable::set_scale(double scale)
+const arma::vec2 &Renderable::get_size() const
 {
-    this->_scale = scale;
+    return this->_size;
 }
 
 void Renderable::set_object(Object *object)

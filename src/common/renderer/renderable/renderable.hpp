@@ -12,8 +12,10 @@ public:
     virtual void draw() const =0;
 
     bool is_fixed() const;
-    double get_scale() const;
-    void set_scale(double scale);
+    void set_aspect_preserve_diagonal(double aspect);
+    double get_aspect() const;
+    void set_size(const arma::vec2 &size);
+    const arma::vec2 &get_size() const;
     double get_angle() const;
     void set_angle(double angle);
 
@@ -45,7 +47,8 @@ public:
 private:
 
     Colour _colour, _border_colour;
-    double _scale, _angle, _border_size;
+    double _aspect_ratio, _angle, _border_size;
+    arma::vec2 _size;
     Object *_object;
     std::string texture_name, _shader_name;
     int _z;
