@@ -7,20 +7,53 @@ MeshRenderable::MeshRenderable(const std::vector<arma::vec2> &points)
     // do nothing
 }
 
+void MeshRenderable::set_alignment(MeshRenderable_HorizontalAnchor ha, MeshRenderable_VerticalAnchor va)
+{
+    const double f = 1.0;
+    switch (ha)
+    {
+        case MR_HA_CENTRE:
+            this->_anchor[0] = 0.0;
+            break;
+
+        case MR_HA_LEFT:
+            this->_anchor[0] = f;
+            break;
+
+        case MR_HA_RIGHT:
+            this->_anchor[0] = -f;
+            break;
+    }
+    switch (va)
+    {
+        case MR_VA_CENTRE:
+            this->_anchor[1] = 0.0;
+            break;
+
+        case MR_VA_BOTTOM:
+            this->_anchor[1] = f;
+            break;
+
+        case MR_VA_TOP:
+            this->_anchor[1] = -f;
+            break;
+    }
+}
+
 void MeshRenderable::draw() const
 {
     Renderer &renderer = Renderer::get();
     arma::vec2 opos = this->get_position();
 
-    auto x = float(opos[0]);
-    auto y = float(opos[1]);
     auto s = float(this->get_scale());
+    auto x = float(opos[0]) + float(this->_anchor[0])*s;
+    auto y = float(opos[1]) + float(this->_anchor[1])*s;
 
     const int n = int(this->points.size());
 
     Colour colour = this->get_border_colour();
     float r = colour.rf(), g = colour.gf(), b = colour.bf();
-    float border_size = (float)this->get_border_size();
+    auto border_size = (float)this->get_border_size();
 
     // first draw a mesh border_size bigger than the mesh
     std::vector<Vertex> vertices;
