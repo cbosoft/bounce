@@ -73,6 +73,11 @@ public:
         this->attach_renderable("position counter", this->pos);
         this->pos->set_parent(cam->get_br());
 
+        this->hud = new AnimatedMeshRenderable(MeshRenderable::filleted_rectangle(1, 1, 0.1));
+        this->hud_big = MeshRenderable::filleted_rectangle(10, 20, 1);
+        this->attach_renderable(hud);
+        this->hud->set_parent(this->player);
+        this->hud->set_relative_position({10, 10});
     }
 
     void up() override { this->player->up(); }
@@ -80,8 +85,8 @@ public:
     void down() override { this->player->down(); }
     void right() override { this->player->right(); }
 
-    void action() override {this->player->shoot(); }
-    void alternate() override {}
+    void action() override { this->player->shoot(); }
+    void alternate() override { this->show_hud(); }
 
     void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
 
@@ -96,20 +101,25 @@ public:
         this->player->aim(angle);
     }
 
-    void on_update() override
+    void update_fps_status()
     {
         std::stringstream ss;
         ss << "FPS: " << Renderer::get().get_fps();
         std::string s = ss.str();
         this->fpscntr->set_text(s);
+    }
 
-        const auto &p = this->player->get_position();
+    void update_player_pos_vel(const arma::vec2 &p)
+    {
         const auto &v = this->player->get_velocity();
-        ss.str("");
+        std::stringstream ss;
         ss << int(p[0]) << "." << int(p[1]) << ">>" << int(v[0]) << "." << int(v[1]);
-        s = ss.str();
+        std::string s = ss.str();
         this->pos->set_text(s);
+    }
 
+    void check_update_map(const arma::vec2 &p)
+    {
         int pcx = std::floor(p[0]/this->cell_size + 0.5);
         int pcy = std::floor(p[1]/this->cell_size + 0.5);
         for (int dx = -1; dx <= 1; dx++) {
@@ -127,6 +137,36 @@ public:
         }
     }
 
+    void show_hud()
+    {
+        this->hud->animate_to(this->hud_big, 10);
+        this->frames_until_hide = 100;
+    }
+
+    void hide_hud()
+    {
+        this->hud->animate_to_original(20);
+    }
+
+    void check_hide_hud()
+    {
+        if (!this->frames_until_hide) {
+            this->hide_hud();
+        }
+        else {
+            this->frames_until_hide--;
+        }
+    }
+
+    void on_update() override
+    {
+        this->update_fps_status();
+        const auto &p = this->player->get_position();
+        this->update_player_pos_vel(p);
+        this->check_update_map(p);
+        this->check_hide_hud();
+    }
+
 private:
 
     void place_star(const arma::vec2 &at) {
@@ -140,4 +180,7 @@ private:
     Player *player;
     Cursor *cursor;
     TextRenderable *fpscntr, *pos;
+    AnimatedMeshRenderable *hud;
+    MeshRenderable *hud_big;
+    int frames_until_hide = 0;
 };

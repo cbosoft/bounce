@@ -57,6 +57,7 @@ public:
         arma::vec2 pos = arma::mat22{{c, -s}, {s, c}}*arma::vec2{1, 0};
         auto *projectile = new Projectile(this, pos*this->gun->get_scale() + this->get_position());
         arma::vec2 v = pos*100 + this->get_velocity();
+        this->add_force(-1e4*pos);
         projectile->set_velocity(v);
     }
 
