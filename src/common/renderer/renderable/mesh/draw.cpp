@@ -30,15 +30,13 @@ void MeshRenderable::draw_border() const
     for (int i = 0; i < n; i++) {
         auto dx = float(this->_points[i][0]);
         auto dy = float(this->_points[i][1]);
-        if (dx < 0) dx -= border_size;
-        if (dx > 0) dx += border_size;
-        if (dy < 0) dy -= border_size;
-        if (dy > 0) dy += border_size;
+        float bx = (dx < 0.0 ? -1.f : 1.f)*border_size;
+        float by = (dy < 0.0 ? -1.f : 1.f)*border_size;
         vertices.push_back({
-                                   x + dx * sx, y + dy * sy, 0.0f,
-                                   r, g, b, 1.0f,
-                                   0.5f + dx/2.0f, 0.5f + dy/2.0f
-                           });
+            x + bx + dx * sx, y + by + dy * sy, 0.0f,
+            r, g, b, 1.0f,
+            0.5f + dx/2.0f, 0.5f + dy/2.0f
+        });
     }
     glBindBuffer(GL_ARRAY_BUFFER, renderer.get_vbuf());
     glBufferData(GL_ARRAY_BUFFER, long(vertices.size()*sizeof(Vertex)), &vertices[0], GL_DYNAMIC_DRAW);
