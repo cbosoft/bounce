@@ -4,16 +4,17 @@
 
 #include "player.hpp"
 
-class Star final: public CircleRenderable {
+class Star final: public RegularPolygonMeshRenderable {
 public:
     Star(Transform *parent, const arma::vec2 &position)
-    :   CircleRenderable()
+    : RegularPolygonMeshRenderable(50)
     {
         this->set_parent(parent);
         this->set_position(position);
         this->set_shader_name("star");
-        this->set_z(-1);
-        this->set_scale(0.5 + std::abs(arma::randn()*3));
+        this->set_z(-100);
+        double s = 0.5 + std::abs(arma::randn()*3);
+        this->set_size({s, s});
         constexpr double max_sat = 0.5;
         this->_saturation = arma::randu()*max_sat;
         this->_hue = arma::randu();
@@ -31,13 +32,31 @@ private:
     double _saturation, _hue;
 };
 
-class Cursor final: public CircleRenderable {
+class Bar : public BarGraph {
+public:
+    explicit Bar(Player *player)
+    :  BarGraph(30, 5)
+    ,   _player(player)
+    {
+        this->set_alignment(MR_HA_LEFT, MR_VA_TOP);
+        this->set_border_size(0.1);
+        this->set_colour(Colours::black);
+        this->set_z(100);
+    }
+    double measure_value() const override { return this->_player->get_ammo_left(); }
+    double measure_maximum() const override { return 1.0; }
+private:
+    Player *_player;
+};
+
+
+class Cursor final: public MeshRenderable {
 public:
     explicit Cursor(Transform *parent)
-    : CircleRenderable()
+    : MeshRenderable({ {-1, -1}, {0, 1}, {1, -1}})
     {
         this->set_parent(parent);
-        this->set_scale(3.0);
+        this->set_size({3.0, 3.0});
         this->set_z(100);
         this->set_texture_name("crosshair");
     }
@@ -73,11 +92,18 @@ public:
         this->attach_renderable("position counter", this->pos);
         this->pos->set_parent(cam->get_br());
 
-        this->hud = new AnimatedMeshRenderable(MeshRenderable::filleted_rectangle(1, 1, 0.1));
-        this->hud_big = MeshRenderable::filleted_rectangle(10, 20, 1);
-        this->attach_renderable(hud);
-        this->hud->set_parent(this->player);
-        this->hud->set_relative_position({10, 10});
+        // this->hud = new AnimatedMeshRenderable(new RectangleMeshRenderable(1, 1));
+        // this->hud_big = new RectangleMeshRenderable(20, 2);
+        // this->attach_renderable(hud);
+        // this->hud->set_parent(this->player);
+        // this->hud->set_relative_position({10, 10});
+        // this->hud->set_alignment(MR_HA_LEFT, MR_VA_BOTTOM);
+        // this->hud->hide();
+
+        this->ammo_counter = new Bar(this->player);
+        this->attach_renderable(this->ammo_counter);
+        this->ammo_counter->set_parent(cam->get_tl());
+        this->ammo_counter->set_relative_position({1, -1});
     }
 
     void up() override { this->player->up(); }
@@ -85,7 +111,7 @@ public:
     void down() override { this->player->down(); }
     void right() override { this->player->right(); }
 
-    void action() override { this->player->shoot(); }
+    void action() override { this->player->shoot(); this->show_hud(); }
     void alternate() override { this->show_hud(); }
 
     void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
@@ -139,13 +165,15 @@ public:
 
     void show_hud()
     {
-        this->hud->animate_to(this->hud_big, 10);
+        //this->hud->animate_to(this->hud_big, 10);
         this->frames_until_hide = 100;
+        this->ammo_counter->show();
     }
 
     void hide_hud()
     {
-        this->hud->animate_to_original(20);
+        //this->hud->animate_to_original(20);
+        this->ammo_counter->hide();
     }
 
     void check_hide_hud()
@@ -180,7 +208,8 @@ private:
     Player *player;
     Cursor *cursor;
     TextRenderable *fpscntr, *pos;
-    AnimatedMeshRenderable *hud;
-    MeshRenderable *hud_big;
+    // AnimatedMeshRenderable *hud;
+    // MeshRenderable *hud_big;
+    Bar *ammo_counter;
     int frames_until_hide = 0;
 };

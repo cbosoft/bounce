@@ -13,7 +13,7 @@ public:
     {
         double theta = M_2_PI * arma::randu();
         this->set_velocity( {this->_max_velocity*std::cos(theta), this->_max_velocity*std::sin(theta)} );
-        this->attach_renderable("circle", new CircleRenderable());
+        this->attach_renderable("circle", new RegularPolygonMeshRenderable(20));
         this->set_radius(0.5);
         this->set_layer("boids");
     }

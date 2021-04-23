@@ -9,8 +9,10 @@ public:
     Projectile(Transform *parent, const arma::vec2 &pos)
     :   Object(parent, pos, false, 1.0)
     {
-        this->attach_renderable("proj", new CircleRenderable());
-        this->set_colour(Colours::cyan);
+        this->attach_renderable("proj", new RegularPolygonMeshRenderable(20));
+        Colour c = Colours::cyan;
+        c.a = 10;
+        this->set_colour(c);
     }
 
     void on_update() override
@@ -30,15 +32,19 @@ public:
             ,   _speed(1000.0)
             ,   _last_shot(std::chrono::system_clock::now())
             ,   _cooldown_ms(100)
+            ,   _mag(10)
+            ,   _ammo(10)
+            ,   _reload(0)
+            ,   _reload_cooldown(20)
     {
-        this->body = new CircleRenderable();
-        this->body->set_texture_name("body");
-        this->body->set_scale(10.0);
+        this->body = new RegularPolygonMeshRenderable(20);
+        this->body->set_texture_name("ufo_body");
+        this->body->set_size({10.0, 10.0});
         this->attach_renderable("body", body);
 
-        this->gun = new CircleRenderable();
-        this->gun->set_texture_name("gun");
-        this->gun->set_scale(5.0);
+        this->gun = new RegularPolygonMeshRenderable(20);
+        this->gun->set_texture_name("ufo_gun");
+        this->gun->set_size({20.0, 20.0});
         this->attach_renderable("gun", gun);
     }
 
@@ -49,16 +55,25 @@ public:
 
     void shoot()
     {
-        auto now = std::chrono::system_clock::now();
-        long dt_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->_last_shot).count();
-        if (dt_ms < this->_cooldown_ms) { return; }
-        this->_last_shot = now;
-        double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
-        arma::vec2 pos = arma::mat22{{c, -s}, {s, c}}*arma::vec2{1, 0};
-        auto *projectile = new Projectile(this, pos*this->gun->get_scale() + this->get_position());
-        arma::vec2 v = pos*100 + this->get_velocity();
-        this->add_force(-1e4*pos);
-        projectile->set_velocity(v);
+        if (this->_ammo) {
+            auto now = std::chrono::system_clock::now();
+            long dt_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->_last_shot).count();
+            if (dt_ms < this->_cooldown_ms) { return; }
+            this->_last_shot = now;
+            double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
+            arma::vec2 pos = arma::mat22{{c, -s},
+                                         {s, c}} * arma::vec2{1, 0};
+            auto *projectile = new Projectile(this, pos * this->gun->get_size()[0] + this->get_position());
+            arma::vec2 v = pos * 100 + this->get_velocity();
+            // this->add_force(-1e4 * pos);
+            projectile->set_velocity(v);
+            this->_ammo --;
+        }
+    }
+
+    double get_ammo_left() const
+    {
+        return double(this->_ammo)/double(this->_mag);
     }
 
     void up() { this->_command_state.move_up = true; }
@@ -91,7 +106,15 @@ public:
             this->body->set_angle(angle);
         }
 
+        if (this->_ammo < this->_mag) {
+            if (!this->_reload--) {
+                this->_ammo++;
+                this->_reload = this->_reload_cooldown;
+            }
+        }
     }
+
+    Renderable *gun, *body;
 
 private:
     struct {
@@ -102,7 +125,7 @@ private:
     } _command_state;
     double _speed;
 
-    Renderable *gun, *body;
     std::chrono::system_clock::time_point _last_shot;
     long _cooldown_ms;
+    long _mag, _ammo, _reload, _reload_cooldown;
 };

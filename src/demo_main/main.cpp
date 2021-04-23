@@ -22,7 +22,7 @@ int main()
     r.define_screen_effect_shader("crt", "vertex/quad", "fragment/crt");
 
     //r.set_screen_effect("1bit");
-    r.set_screen_effect("crt");
+    //r.set_screen_effect("crt");
 
     game.add_scene(new MainMenu(&game));
     game.add_scene(new FreeRoamScene(&game));

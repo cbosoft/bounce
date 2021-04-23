@@ -26,7 +26,7 @@ public:
             theta += dtheta;
         }
 
-        auto *rct = MeshRenderable::rectangle(50, 50);
+        auto *rct = new RectangleMeshRenderable(50, 50);
         rct->set_colour(Colour::from_grayscale(32));
 
         std::stringstream ss;

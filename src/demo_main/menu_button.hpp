@@ -9,7 +9,7 @@ public:
     MenuButton(Menu *parent, const std::string &label)
             : MenuItem(parent)
     {
-        this->bg = MeshRenderable::rectangle(30, 5);
+        this->bg = new RectangleMeshRenderable(60, 10);
         this->bg->set_colour(Colours::black);
         this->attach_renderable("bg", this->bg);
 

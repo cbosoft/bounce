@@ -5,8 +5,8 @@
 
 class MenuCursor final: public AnimatedMeshRenderable {
 public:
-    MenuCursor(Transform *parent)
-            : AnimatedMeshRenderable(MeshRenderable::regular_polygon(3))
+    explicit MenuCursor(Transform *parent)
+            : AnimatedMeshRenderable(new RegularPolygonMeshRenderable(20))
     {
         this->set_parent(parent);
         this->set_z(-100);
@@ -135,7 +135,7 @@ public:
     void back() override { this->get_game()->quit(); };
 
     void alternate() override {
-        static MeshRenderable *other = MeshRenderable::rectangle(10, 10);
+        static MeshRenderable *other = new RegularPolygonMeshRenderable(10, 10);
         static bool doobeedoo = false;
         std::cerr << "CALLED " << doobeedoo << std::endl;
 
