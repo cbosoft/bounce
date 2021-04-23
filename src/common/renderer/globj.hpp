@@ -4,10 +4,10 @@
 
 class GLObject {
 public:
-    GLuint get_id() const { return this->id; }
-    void set_id(GLuint id) { this->id = id; }
+    GLuint get_id() const { return this->_id; }
 
     virtual void use() const =0;
-private:
-    GLuint id =0;
+
+protected:
+    GLuint _id =0;
 };
