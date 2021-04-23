@@ -2,5 +2,5 @@
 
 void Texture::use() const
 {
-    glBindTexture(GL_TEXTURE_2D, this->get_id());
+    glBindTexture(GL_TEXTURE_2D, this->_id);
 }

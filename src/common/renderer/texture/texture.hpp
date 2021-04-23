@@ -4,14 +4,12 @@
 
 class Texture : public GLObject {
 public:
-    Texture(const std::string &path);
-
-    int get_width();
-    int get_height();
-    int get_n_channels();
+    explicit Texture(const std::string &path);
+    Texture();
 
     void use() const override;
 
 private:
-    int w, h, c;
+    explicit Texture(void *vptr);
+    friend class Renderer;
 };
