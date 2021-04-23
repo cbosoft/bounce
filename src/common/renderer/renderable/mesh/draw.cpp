@@ -22,7 +22,7 @@ void MeshRenderable::draw_border() const
     const int n = int(this->_points.size());
 
     Colour colour = this->get_border_colour();
-    float r = colour.rf(), g = colour.gf(), b = colour.bf();
+    float r = colour.rf(), g = colour.gf(), b = colour.bf(), a = colour.af();
     auto border_size = (float)this->get_border_size();
 
     // first draw a mesh border_size bigger than the mesh
@@ -34,7 +34,7 @@ void MeshRenderable::draw_border() const
         float by = (dy < 0.0 ? -1.f : 1.f)*border_size;
         vertices.push_back({
             x + bx + dx * sx, y + by + dy * sy, 0.0f,
-            r, g, b, 1.0f,
+            r, g, b, a,
             0.5f + dx/2.0f, 0.5f + dy/2.0f
         });
     }
@@ -97,7 +97,7 @@ void MeshRenderable::draw_main() const
     loc = glGetUniformLocation(shader, "object_angle");
     if (loc != -1) glUniform1f(loc, float(this->get_angle()));
     const Colour &colour = this->get_colour();
-    float r = colour.rf(), g = colour.gf(), b = colour.bf();
+    float r = colour.rf(), g = colour.gf(), b = colour.bf(), a = colour.af();
 
     std::vector<Vertex> vertices;
     for (int i = 0; i < n; i++) {
@@ -105,7 +105,7 @@ void MeshRenderable::draw_main() const
         const auto dy = float(this->_points[i][1]);
         vertices.push_back({
                 x + dx * sx, y + dy * sy, 0.0f,
-                r, g, b, 1.0f,
+                r, g, b, a,
                 0.5f + dx/2.0f, 0.5f + dy/2.0f
         });
     }

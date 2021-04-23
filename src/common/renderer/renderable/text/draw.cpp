@@ -48,7 +48,7 @@ void TextRenderable::draw() const
     auto y = float(origin[1]);
 
     const Colour &colour = this->get_colour();
-    float cr = colour.rf(), cg = colour.gf(), cb = colour.bf();
+    float cr = colour.rf(), cg = colour.gf(), cb = colour.bf(), ca = colour.af();
 
     for (auto c : this->_text) {
         auto ch = this->_font->get_char(c);
@@ -57,13 +57,13 @@ void TextRenderable::draw() const
         Vertex vertices[6];
         float xm = x+dx, ym = y+dy;
 
-        vertices[0] = {xm,   ym+h, 0.0f, cr, cg, cb, 1.0f, 0.f, 0.f};
-        vertices[1] = {xm,   ym,   0.0f, cr, cg, cb, 1.0f, 0.f, 1.f};
-        vertices[2] = {xm+w, ym,   0.0f, cr, cg, cb, 1.0f, 1.f, 1.f};
+        vertices[0] = {xm,   ym+h, 0.0f, cr, cg, cb, ca, 0.f, 0.f};
+        vertices[1] = {xm,   ym,   0.0f, cr, cg, cb, ca, 0.f, 1.f};
+        vertices[2] = {xm+w, ym,   0.0f, cr, cg, cb, ca, 1.f, 1.f};
 
-        vertices[3] = {xm+w, ym,   0.0f, cr, cg, cb, 1.0f, 1.f, 1.f};
-        vertices[4] = {xm+w, ym+h, 0.0f, cr, cg, cb, 1.0f, 1.f, 0.f};
-        vertices[5] = {xm,   ym+h, 0.0f, cr, cg, cb, 1.0f, 0.f, 0.f};
+        vertices[3] = {xm+w, ym,   0.0f, cr, cg, cb, ca, 1.f, 1.f};
+        vertices[4] = {xm+w, ym+h, 0.0f, cr, cg, cb, ca, 1.f, 0.f};
+        vertices[5] = {xm,   ym+h, 0.0f, cr, cg, cb, ca, 0.f, 0.f};
 
         x += ch->advance;
 
