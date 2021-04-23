@@ -2,6 +2,7 @@
 
 MeshRenderable::MeshRenderable(const std::vector<arma::vec2> &points)
 :   _points(points)
+,   _anchor{0, 0}
 {
     // do nothing
 }
