@@ -50,13 +50,13 @@ private:
 };
 
 
-class Cursor final: public MeshRenderable {
+class Cursor final: public RegularPolygonMeshRenderable {
 public:
     explicit Cursor(Transform *parent)
-    : MeshRenderable({ {-1, -1}, {0, 1}, {1, -1}})
+    : RegularPolygonMeshRenderable(50)
     {
         this->set_parent(parent);
-        this->set_size({3.0, 3.0});
+        this->set_size({5.0, 5.0});
         this->set_z(100);
         this->set_texture_name("crosshair");
     }
@@ -80,6 +80,7 @@ public:
         this->cursor = new Cursor(this);
         this->cursor->set_position({10, 0});
         this->attach_renderable("cursor", this->cursor);
+        this->_cursor_window_position = Renderer::get().get_window_size()%arma::vec2{.5,-.5};
 
         this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 100);
         this->fpscntr->set_alignment(HA_left, VA_bottom);
@@ -103,7 +104,7 @@ public:
         this->ammo_counter = new Bar(this->player);
         this->attach_renderable(this->ammo_counter);
         this->ammo_counter->set_parent(cam->get_tl());
-        this->ammo_counter->set_relative_position({1, -1});
+        this->ammo_counter->set_relative_position({5, -5});
     }
 
     void up() override { this->player->up(); }
@@ -118,13 +119,7 @@ public:
 
     void cursor_position(const arma::vec2 &p) override
     {
-        arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos(p);
-        this->cursor->set_position(wrld);
-        const arma::vec2 &d = wrld - this->player->get_position();
-        double len = arma::norm(d);
-        double angle = std::acos(d[0]/len);
-        if (d[1] < 0.0) angle = -angle;
-        this->player->aim(angle);
+        this->_cursor_window_position = p;
     }
 
     void update_fps_status()
@@ -186,6 +181,17 @@ public:
         }
     }
 
+    void position_cursor()
+    {
+        arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos(this->_cursor_window_position);
+        this->cursor->set_position(wrld);
+        const arma::vec2 &d = wrld - this->player->get_position();
+        double len = arma::norm(d);
+        double angle = std::acos(d[0]/len);
+        if (d[1] < 0.0) angle = -angle;
+        this->player->aim(angle);
+    }
+
     void on_update() override
     {
         this->update_fps_status();
@@ -193,6 +199,7 @@ public:
         this->update_player_pos_vel(p);
         this->check_update_map(p);
         this->check_hide_hud();
+        this->position_cursor();
     }
 
 private:
@@ -204,6 +211,7 @@ private:
 
     double cell_size = 500.0;
     std::map<std::tuple<int, int>, bool> _cell_generated;
+    arma::vec2 _cursor_window_position;
 
     Player *player;
     Cursor *cursor;
