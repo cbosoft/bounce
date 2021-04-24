@@ -28,7 +28,7 @@ RegularPolygonMeshRenderable::RegularPolygonMeshRenderable(int n, double theta)
 {
     double dtheta = 2.*M_PI/double(n);
     for (int i = 0; i < n; i++) {
-        this->_points.push_back({std::cos(theta), std::sin(theta)});
+        this->_points.push_back({std::cos(theta)*.5f, std::sin(theta)*.5f});
         theta += dtheta;
     }
 }
