@@ -64,8 +64,8 @@ public:
 
 class FreeRoamScene final: public Scene {
 public:
-    explicit FreeRoamScene(Game *game)
-            : Scene(game, "free roam")
+    FreeRoamScene()
+            : Scene("free roam")
     {
         this->player = new Player(this, {30, 0});
         auto *cam = this->get_active_camera();
@@ -115,7 +115,7 @@ public:
     void action() override { this->player->shoot(); this->show_hud(); }
     void alternate() override { this->show_hud(); }
 
-    void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
+    void back() override { Game::ref().add_event(new PopSceneTransitionEvent()); }
 
     void cursor_position(const arma::vec2 &p) override
     {

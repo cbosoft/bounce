@@ -45,8 +45,8 @@ private:
 
 class MainMenu final: public Menu {
 public:
-    explicit MainMenu(Game *game)
-            :   Menu(game, "menu")
+    explicit MainMenu()
+            :   Menu("menu")
             //,   _px(0)
             //,   _py(0)
     {
@@ -112,17 +112,17 @@ public:
 
     static void quit_callback(MenuItem *i)
     {
-        i->get_game()->quit();
+        Game::ref().quit();
     }
 
     static void sim_callback(MenuItem *i)
     {
-        i->get_game()->add_event(new PushSceneTransitionEvent("sim"));
+        Game::ref().add_event(new PushSceneTransitionEvent("sim"));
     }
 
     static void free_roam_callback(MenuItem *i)
     {
-        i->get_game()->add_event(new PushSceneTransitionEvent("free roam"));
+        Game::ref().add_event(new PushSceneTransitionEvent("free roam"));
     }
 
     void cursor_position(const arma::vec2 &p) override
@@ -166,7 +166,7 @@ public:
     //     }
     // }
 
-    void back() override { this->get_game()->quit(); };
+    void back() override { Game::ref().quit(); };
 
     void alternate() override {
         static MeshRenderable *other = new RegularPolygonMeshRenderable(10, 10);

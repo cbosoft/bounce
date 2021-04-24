@@ -24,9 +24,9 @@ int main()
     //r.set_screen_effect("1bit");
     //r.set_screen_effect("crt");
 
-    game.add_scene(new MainMenu(&game));
-    game.add_scene(new FreeRoamScene(&game));
-    game.add_scene(new BoidScene(&game));
+    game.add_scene(new MainMenu());
+    game.add_scene(new FreeRoamScene());
+    game.add_scene(new BoidScene());
     game.run();
     return 0;
 }

@@ -7,8 +7,8 @@
 class BoidScene final: public Scene {
 public:
 
-    explicit BoidScene(Game *game)
-            : Scene(game, "sim")
+    explicit BoidScene()
+            : Scene("sim")
     {
         const int n = 12;
         const double dtheta = M_PI * 2.0 / double(n);
@@ -69,7 +69,7 @@ public:
     void action() override {}
     void alternate() override {}
 
-    void back() override { this->get_game()->add_event(new PopSceneTransitionEvent()); }
+    void back() override { Game::ref().add_event(new PopSceneTransitionEvent()); }
 
     void on_update() override
     {
