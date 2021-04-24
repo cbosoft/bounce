@@ -7,48 +7,37 @@ GLFWwindow  *Renderer::get_window()
     return this->window;
 }
 
-void Renderer::render()
+bool Renderer::should_render()
 {
     auto now = _RDR_CLOCK_T::now();
     auto time_since = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->time_last_render);
     int us = int(time_since.count());
     if (us < this->_min_mspf) {
-        return;
+        return false;
     }
+
     this->_actual_fps = (this->_actual_fps + (1000/us))/2;
     this->time_last_render = now;
 
+    return true;
+}
+
+void Renderer::render()
+{
+    if (!this->should_render()) {
+        return;
+    }
+
+    // Call update action on transforms in active scene.
     this->game->get_active_scene()->update();
-
-    int w, h;
-    glfwGetWindowSize(this->window, &w, &h);
-    this->set_window_size(w, h);
-
-    // high dpi displays scale up contents; need to take that into accound.
-    float xscale, yscale;
-    glfwGetWindowContentScale(window, &xscale, &yscale);
-    w = int(float(w)*xscale);
-    h = int(float(h)*yscale);
-
-    glViewport(0, 0, w, h);
-
     this->update_shader_uniforms();
-    glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
 
-    glBindTexture(GL_TEXTURE_2D, this->txt);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0,
-                 GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-                           GL_TEXTURE_2D, this->txt, 0);
+    this->set_target_to_texture(this->txt);
     glClear(GL_COLOR_BUFFER_BIT);
     glBindVertexArray(this->varr);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
+
+    // draw zsorted renderables
     Scene *scene = this->game->get_active_scene();
     if (scene) {
         std::list<const Renderable *> rbls;
@@ -61,10 +50,8 @@ void Renderer::render()
     }
 
     // draw quad to screen
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    this->set_target_to_screen();
     glClear(GL_COLOR_BUFFER_BIT);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     GLuint shader_id = this->get_screen_effect();
     glUseProgram(shader_id);
     glBindTexture(GL_TEXTURE_2D, this->txt);

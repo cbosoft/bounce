@@ -31,6 +31,8 @@ public:
 
     void init(Game *game, int w, int h, const std::string &title);
     void render();
+    void set_target_to_texture(GLuint target_id);
+    void set_target_to_screen();
 
     GLFWwindow *get_window();
     const arma::vec2 &get_window_size() const;
@@ -56,6 +58,8 @@ public:
 private:
     Renderer();
 
+    bool should_render();
+
     void update_shader_uniforms() const;
 
     GLuint get_screen_effect() const;
@@ -65,11 +69,12 @@ private:
     GLuint compile_vertex(const std::string &name);
     GLuint compile_fragment(const std::string &name);
 
+    static void window_size_callback(GLFWwindow *window, int width, int height);
     void set_window_size(int w, int h);
     void set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args);
 
     Game *game;
-    arma::vec2 window_size;
+    arma::vec2 window_size, _window_scale;
     double aspect_ratio; // width over height
 
     GLFWwindow *window;

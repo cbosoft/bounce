@@ -45,6 +45,10 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_buffer_data), vertex_buffer_data, GL_DYNAMIC_DRAW);
 
+    // alpha ftw
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glGenFramebuffers(1, &this->fbo);
     glBindTexture(GL_FRAMEBUFFER, this->fbo);
 
@@ -86,5 +90,13 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
     stbi_set_flip_vertically_on_load(true);
 
     glfwSwapInterval(0);
+
+    // high dpi displays scale up contents; need to take that into account.
+    // I don't think dpi is likely to change while the game is running; don't
+    // need to update.
+    float xscale, yscale;
+    glfwGetWindowContentScale(window, &xscale, &yscale);
+    this->_window_scale = {xscale, yscale};
+
     this->time_last_render = _RDR_CLOCK_T::now();
 }

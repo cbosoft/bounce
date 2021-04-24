@@ -17,6 +17,10 @@ void Renderer::set_window_size(int w, int h)
     this->window_size[1] = h;
     this->aspect_ratio = double(w)/double(h);
     this->game->get_active_scene()->get_active_camera()->set_aspect_preserve_diagonal(this->aspect_ratio);
+
+    int scaled_w = int(this->window_size[0] * this->_window_scale[0]);
+    int scaled_h = int(this->window_size[1] * this->_window_scale[1]);
+    glViewport(0, 0, scaled_w, scaled_h);
 }
 
 int Renderer::get_fps() const
