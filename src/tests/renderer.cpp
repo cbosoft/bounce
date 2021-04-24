@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
-#include <SDL2/SDL.h>
+#include "../common/game/game.hpp"
+#include "../common/renderer/renderer.hpp"
 
-TEST(RendererTest, SDLInit) {
-    EXPECT_FALSE(SDL_Init(SDL_INIT_EVERYTHING));
-    SDL_Quit();
+TEST(RendererTest, RendererInit) {
+    auto &game = Game::ref();
+    auto &rm = Renderer::get();
+    EXPECT_TRUE(true);
 }
