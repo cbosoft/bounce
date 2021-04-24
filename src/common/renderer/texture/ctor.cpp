@@ -24,7 +24,6 @@ Texture::Texture(const std::string &texture_name)
         float total_h = metadata["size"]["h"];
         for (auto& frame : frames) {
             float x = float(frame["frame"]["x"])/total_w;
-            std::cerr << x<< std::endl;
             float y = float(frame["frame"]["y"])/total_h;
             float w = float(frame["frame"]["w"])/total_w;
             float h = float(frame["frame"]["h"])/total_h;
