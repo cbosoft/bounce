@@ -6,15 +6,15 @@ class InputContext {
 public:
     InputContext();
 
-    virtual void up() =0;
-    virtual void down() =0;
-    virtual void left() =0;
-    virtual void right() =0;
+    virtual void up() {};
+    virtual void down() {};
+    virtual void left() {};
+    virtual void right() {};
 
-    virtual void action() =0;
-    virtual void alternate() =0;
+    virtual void action() {};
+    virtual void alternate() {};
 
-    virtual void back() =0;
+    virtual void back() {};
 
     virtual void cursor_position(const arma::vec2 &pos) { (void) pos; }
     virtual void zoom(const arma::vec2 &pos) { (void) pos; }
