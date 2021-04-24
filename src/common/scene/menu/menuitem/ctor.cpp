@@ -1,8 +1,7 @@
 #include "menuitem.hpp"
 
 MenuItem::MenuItem(Menu *parent)
-:   InputContext(parent->get_game())
-,   Transform(parent)
+:   Transform(parent)
 ,   _cb_up(nullptr)
 ,   _cb_left(nullptr)
 ,   _cb_down(nullptr)

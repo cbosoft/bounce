@@ -10,10 +10,10 @@
 
 class Scene: public InputContext, public Transform {
 public:
-    Scene(Game *game, const std::string &name);
+    Scene(const std::string &name);
 
     virtual void on_activate() {}
-    virtual void on_update() {};
+    virtual void on_update() {}
 
     const std::string &get_name() const;
     std::vector<Object *> find_objects_near_to(Transform *t, double radius) const;

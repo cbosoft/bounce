@@ -21,7 +21,7 @@ CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
     }
 
     // objects collide
-    this->game->add_event(new CollisionEvent(a, b));
+    Game::ref().add_event(new CollisionEvent(a, b));
     if (a->fixed() || b->fixed()) {
         return this->resolve_collision_one_fixed(b->fixed()?a:b, b->fixed()?b:a);
     }
@@ -92,7 +92,7 @@ void PhysicsEngine::unregister_object(Object *obj)
 
 std::list<Object *> PhysicsEngine::get_active_objects() const
 {
-    const Transform *root = this->game->get_active_scene();
+    const Transform *root = Game::ref().get_active_scene();
     std::list<Object *> rv;
     for (Object *obj : this->_all_objects) {
         if (root == obj->get_root())

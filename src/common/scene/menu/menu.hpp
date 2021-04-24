@@ -5,7 +5,7 @@
 class MenuItem;
 class Menu : public Scene {
 public:
-    Menu(Game *game, const std::string &name);
+    Menu(const std::string &name);
 
     void set_selected(MenuItem *item);
     void add_item(MenuItem *item);

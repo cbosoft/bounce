@@ -2,10 +2,9 @@
 
 #include <armadillo>
 
-class Game;
 class InputContext {
 public:
-    explicit InputContext(Game *game);
+    InputContext();
 
     virtual void up() =0;
     virtual void down() =0;
@@ -20,8 +19,6 @@ public:
     virtual void cursor_position(const arma::vec2 &pos) { (void) pos; }
     virtual void zoom(const arma::vec2 &pos) { (void) pos; }
 
-    Game *get_game() const;
-
     void set_repeat_delay(int v);
     int get_repeat_delay() const;
     void set_repeat_rate(int v);
@@ -29,5 +26,4 @@ public:
 private:
 
     int repeat_delay, repeat_rate;
-    Game *_game;
 };

@@ -1,10 +1,5 @@
 #include "context.hpp"
 
-Game *InputContext::get_game() const
-{
-    return this->_game;
-}
-
 void InputContext::set_repeat_delay(int v)
 {
     this->repeat_delay = v;

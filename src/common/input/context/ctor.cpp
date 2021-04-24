@@ -1,9 +1,8 @@
 #include "context.hpp"
 
-InputContext::InputContext(Game *game)
+InputContext::InputContext()
 : repeat_delay(0)
 , repeat_rate(0)
-, _game(game)
 {
     // do nothing
 }

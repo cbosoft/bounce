@@ -76,7 +76,7 @@ void Renderer::update_shader_uniforms() const
         GLuint shader_id = kv.second;
         glUseProgram(shader_id);
         int loc = glGetUniformLocation(shader_id, "time");
-        if (loc != -1) glUniform1f(loc, float(PhysicsEngine::engine().get_time()));
+        if (loc != -1) glUniform1f(loc, float(PhysicsEngine::ref().get_time()));
 
         loc = glGetUniformLocation(shader_id, "camera_position");
         auto cp = position;

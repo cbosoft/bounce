@@ -17,7 +17,7 @@ Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double
 {
     this->set_position(position);
     this->set_mass(1.0);
-    PhysicsEngine::engine().register_object(this);
+    PhysicsEngine::ref().register_object(this);
 }
 
 Object::Object(Transform *parent, const arma::vec2 &position, double mass, double cor)
@@ -36,5 +36,5 @@ Object::Object(Transform *parent, const arma::vec2 &position, double mass, doubl
 {
     this->set_position(position);
     this->set_mass(mass);
-    PhysicsEngine::engine().register_object(this);
+    PhysicsEngine::ref().register_object(this);
 }

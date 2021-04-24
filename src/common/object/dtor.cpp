@@ -3,6 +3,6 @@
 
 Object::~Object()
 {
-    PhysicsEngine::engine().unregister_object(this);
+    PhysicsEngine::ref().unregister_object(this);
     Transform::~Transform();
 }

@@ -17,8 +17,7 @@ typedef struct {
 class Game;
 class PhysicsEngine {
 public:
-    static PhysicsEngine &init_engine(Game *game, double dt, double timescale);
-    static PhysicsEngine &engine();
+    static PhysicsEngine &ref();
     ~PhysicsEngine();
 
     void timestep();
@@ -38,9 +37,7 @@ public:
     std::list<Object *> get_active_objects() const;
 
 private:
-    PhysicsEngine(Game *game, double dt, double timescale);
-
-    Game *game;
+    PhysicsEngine();
 
     double dt, time, irl_time, timescale;
     Clock::time_point epoch;

@@ -1,11 +1,10 @@
 #include "engine.hpp"
 
-PhysicsEngine::PhysicsEngine(Game *game, double dt, double timescale)
-    : game(game)
-    , dt(dt)
+PhysicsEngine::PhysicsEngine()
+    : dt(1e-4)
     , time(0.0)
     , irl_time(0.0)
-    , timescale(timescale)
+    , timescale(1.0)
 {
     this->epoch = Clock::now();
 }
