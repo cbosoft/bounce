@@ -13,6 +13,36 @@ public:
     }
 };
 
+class MenuAnimLogo final : public RectangleMeshRenderable {
+public:
+    explicit MenuAnimLogo(Transform *parent)
+        :   RectangleMeshRenderable(48, 8)
+        ,   _speed(10)
+        ,   _countdown(_speed)
+    {
+        this->set_parent(parent);
+        this->set_z(-100);
+        this->set_texture_name("anim-test-logo");
+        this->_current_texture_loop = this->_texture->get_named_loop("loop");
+        this->set_angle(M_PI_2);
+    }
+
+    void on_update() override
+    {
+        if (!this->_countdown--) {
+            TextureFrameCoords tc = this->_texture->get_texcoords_of_frame(this->_current_frame);
+            this->_current_frame++;
+            if (this->_current_frame > this->_current_texture_loop.to) {
+                this->_current_frame = this->_current_texture_loop.from;
+            }
+            this->_countdown = this->_speed;
+        }
+    }
+
+private:
+    int _speed, _countdown;
+};
+
 class MainMenu final: public Menu {
 public:
     explicit MainMenu(Game *game)
@@ -70,6 +100,10 @@ public:
             ttl->set_layer("title 3");
             auto *brk = new Object(this, {-50, -10}, true);
             brk->set_layer("title 3");
+        }
+        {
+            auto *anim_logo = new MenuAnimLogo(this);
+            this->attach_renderable(anim_logo);
         }
 
         auto *gravity = new UnboundedLinearForceField(0, 0, 0, -10);
