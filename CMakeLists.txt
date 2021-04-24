@@ -42,6 +42,9 @@ include_directories(${FREETYPE_INCLUDE_DIRS})
 target_link_libraries(${EXE} ${FREETYPE_LIBRARIES})
 set(GLFW_LIB glfw)
 
+find_package(nlohmann_json REQUIRED)
+target_link_libraries(${EXE} nlohmann_json::nlohmann_json)
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
     message("System is MacOS.")
     find_package(GLFW3 REQUIRED)

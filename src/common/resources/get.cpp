@@ -19,3 +19,15 @@ std::string ResourceManager::get_path(const std::string &subdir,
 
     return path.string();
 }
+
+json ResourceManager::get_metadata(const std::string &subdir,
+                                      const std::string &name)
+{
+    std::filesystem::path path = this->_root;
+    path /= subdir;
+    path /= name;
+    path += ".json";
+
+    std::string content = this->read_file_to_string(path.string());
+    return json::parse(content);
+}
