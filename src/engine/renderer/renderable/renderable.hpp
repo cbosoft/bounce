@@ -37,6 +37,8 @@ public:
     const std::string &get_shader_name() const;
     void set_shader_name(const std::string &name);
 
+    void set_target(Texture *texture);
+
     bool get_visible() const;
     void set_visible(bool visibility);
     void hide();
@@ -58,4 +60,5 @@ protected:
     unsigned int _current_frame;
     int _z;
     bool _visible;
+    GLuint _target;
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 
-#include "../common/bounce.hpp"
+#include "../engine/bounce.hpp"
 #include "settings.hpp"
 
 class Projectile final: public Object {

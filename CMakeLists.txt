@@ -22,7 +22,7 @@ add_dependencies(git check_git)
 project(Bounce)
 set(EXE bounce)
 
-file(GLOB_RECURSE COMMON_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/common/*.cpp")
+file(GLOB_RECURSE COMMON_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/engine/*.cpp")
 
 add_executable(${EXE} src/demo_main/main.cpp ${COMMON_SOURCES})
 target_link_libraries(bounce git)

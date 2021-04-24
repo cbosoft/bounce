@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common/bounce.hpp"
+#include "../engine/bounce.hpp"
 #include "settings.hpp"
 
 class Boid final: public Object {
