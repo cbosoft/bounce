@@ -3,6 +3,7 @@
 
 #include "../../colour/colour.hpp"
 #include "../../transform/transform.hpp"
+#include "../texture/texture.hpp"
 
 class Object;
 class Renderable : public Transform {
@@ -30,8 +31,9 @@ public:
     double get_border_size() const;
 
     bool has_texture() const;
-    const std::string &get_texture_name() const;
+    Texture *get_texture() const;
     void set_texture_name(const std::string &name);
+    void set_texture(Texture *texture);
     const std::string &get_shader_name() const;
     void set_shader_name(const std::string &name);
 
@@ -44,13 +46,16 @@ public:
     int get_z() const;
 
     static bool z_sort(const Renderable *left, const Renderable *right) { return left->get_z() < right->get_z(); }
-private:
 
+protected:
     Colour _colour, _border_colour;
     double _aspect_ratio, _angle, _border_size;
     arma::vec2 _size;
     Object *_object;
-    std::string texture_name, _shader_name;
+    std::string _shader_name;
+    Texture *_texture;
+    TextureAnimLoop _current_texture_loop;
+    unsigned int _current_frame;
     int _z;
     bool _visible;
 };

@@ -1,4 +1,5 @@
 #include "renderable.hpp"
+#include "../renderer.hpp"
 #include "../../object/object.hpp"
 
 bool Renderable::is_fixed() const
@@ -29,17 +30,17 @@ Object *Renderable::get_object() const
 
 bool Renderable::has_texture() const
 {
-    return !this->texture_name.empty();
+    return !this->_texture->is_null();
 }
 
-const std::string &Renderable::get_texture_name() const
+Texture *Renderable::get_texture() const
 {
-    return this->texture_name;
+    return this->_texture;
 }
 
 void Renderable::set_texture_name(const std::string &name)
 {
-    this->texture_name = name;
+    this->_texture = Renderer::get().get_texture(name);
 }
 
 const Colour &Renderable::get_colour() const

@@ -84,8 +84,10 @@ void MeshRenderable::draw_main() const
     glEnableVertexAttribArray(2);
 
     GLuint shader = renderer.get_shader(this->get_shader_name());
+    TextureFrameCoords framecoords = Texture::default_framing;
     if (this->has_texture()) {
-        renderer.get_texture(this->get_texture_name())->use();
+        this->get_texture()->use();
+        framecoords = this->get_texture()->get_texcoords_of_frame(this->_current_frame);
         shader = renderer.get_shader("sprite");
     }
     glUseProgram(shader);
@@ -103,10 +105,13 @@ void MeshRenderable::draw_main() const
     for (int i = 0; i < n; i++) {
         const auto dx = float(this->_points[i][0]);
         const auto dy = float(this->_points[i][1]);
+        arma::Col<float>::fixed<2> st = {(.5f + dx), (.5f + dy)};
+        st %= framecoords.wh;
+        st += framecoords.bl;
         vertices.push_back({
                 x + dx * sx, y + dy * sy, 0.0f,
                 r, g, b, a,
-                0.5f + dx/2.0f, 0.5f + dy/2.0f
+                st[0], st[1]
         });
     }
     glBufferData(GL_ARRAY_BUFFER, long(vertices.size()*sizeof(Vertex)), &vertices[0], GL_DYNAMIC_DRAW);

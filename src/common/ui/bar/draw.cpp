@@ -25,7 +25,7 @@ void BarGraph::draw() const
     // draw main part of mesh
     GLuint shader = renderer.get_shader(this->get_shader_name());
     if (this->has_texture()) {
-        renderer.get_texture(this->get_texture_name())->use();
+        this->get_texture()->use();
         shader = renderer.get_shader("sprite");
     }
     glUseProgram(shader);

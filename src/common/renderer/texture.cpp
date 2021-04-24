@@ -25,10 +25,6 @@ Texture *Renderer::get_texture(const std::string &name)
             }
             else {
                 std::cerr << "w) and no alternate textures available: returning null texture." << std::endl;
-                it = this->textures.find("null");
-                if (it == this->textures.end()) {
-                    this->textures["null"] = new Texture(nullptr);
-                }
                 return this->textures["null"];
             }
         }

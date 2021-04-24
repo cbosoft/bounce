@@ -1,4 +1,3 @@
-#include <iostream>
 #include "renderer.hpp"
 
 Renderer::Renderer()
@@ -18,4 +17,5 @@ Renderer::Renderer()
 {
     // do nothing
     this->set_max_fps(30);
+    this->textures["null"] = new Texture(nullptr);
 }
