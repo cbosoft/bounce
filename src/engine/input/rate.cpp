@@ -1,9 +1,20 @@
-#include "manager.hpp"
 #include <iostream>
 
+#include "manager.hpp"
+#include "../game/game.hpp"
+
+/**
+ * Limit the rate of a button press. Used especially in menus to facilitate navigation.
+ *
+ * Checks how long it has been since the button (with index \p key) was last pressed - if it is too short, then refuse
+ * to activate the key.
+ *
+ * @param key The index of button in the InputState.
+ * @return Boolean indicating whether the button should be allowed to be activated, or ignored.
+ */
 bool InputManager::check_input_rate(unsigned int key)
 {
-    InputContext *context = this->get_context();
+    InputContext *context = Game::ref().get_context();
     if (!context) {
         return false;
     }

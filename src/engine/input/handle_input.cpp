@@ -1,6 +1,12 @@
 #include "manager.hpp"
 #include "../game/game.hpp"
 
+/**
+ * Handle input and enact on the current InputContext.
+ *
+ * Read input state, and check the input rate for the buttons in the state. Then, call the action methods of the active
+ * InputContext.
+ */
 void InputManager::handle_input()
 {
     InputState current_state = this->read_input_state(), current_copy = current_state;

@@ -2,9 +2,16 @@
 
 #include "../manager.hpp"
 
+/**
+ * KeyboardInputManager - Keyboard Input Manager, singleton class.
+ *
+ * Manages input from keyboard - this is where keys are mapped to actions.
+ */
 class KeyboardInputManager : public InputManager {
 public:
     static KeyboardInputManager &ref();
+
+protected:
     InputState read_input_state() override;
 
 private:

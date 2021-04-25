@@ -4,6 +4,9 @@
 
 #include "../../renderer/renderer.hpp"
 
+/**
+ * Constructor: registers GLFW callbacks and initialises the input state to zero/no action.
+ */
 KeyboardInputManager::KeyboardInputManager()
 : _state({false, false, false, false, false, false, false, {0, 0}, {0, 0}})
 {
