@@ -19,15 +19,17 @@ public:
 
     static InputManager *get_active();
 
+    void handle_input();
+
+protected:
     virtual InputState read_input_state() =0;
 
     [[nodiscard]] InputContext *get_context() const;
     [[nodiscard]] GLFWwindow *get_window() const;
-    void handle_input();
 
-private:
     bool check_input_rate(unsigned int key);
 
+private:
     std::map<unsigned int, std::chrono::time_point<std::chrono::system_clock>> previous_press;
     InputState previous_state;
 };
