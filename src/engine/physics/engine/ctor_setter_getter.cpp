@@ -1,7 +1,7 @@
 #include "engine.hpp"
 
 PhysicsEngine::PhysicsEngine()
-    : dt(1e-4)
+    : dt(1.6e-3)
     , time(0.0)
     , irl_time(0.0)
     , timescale(1.0)
