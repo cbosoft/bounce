@@ -1,11 +1,24 @@
 #include "object.hpp"
 
+/**
+ * Accept the provisional position for the Object.
+ */
 void Object::accept_position()
 {
     if (!this->fixed())
         this->set_position(this->new_position);
 }
 
+/**
+ * Check if the Object will collide with another.
+ * This is very simply done by checking the distance between object positions - assuming all Objects are circles. Very
+ * fast, but not very accurate or realistic!
+ *
+ * \todo Replace circle-collision with AABB or other system.
+ *
+ * @param other
+ * @return
+ */
 bool Object::will_collide_with(const Object *other)
 {
     arma::vec2 dp = other->get_new_position() - this->get_new_position();

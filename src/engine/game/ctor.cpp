@@ -1,5 +1,12 @@
 #include "game.hpp"
 
+/**
+ * Game object constructor. Initialises physics engine (if not already) and the renderer.
+ *
+ * Renderer initialisation sets the initial window size - 1280x960 here.
+ *
+ * \todo Don't hard-code the initial window size - load from saved settings
+ */
 Game::Game()
   : should_quit(false)
   , physics(PhysicsEngine::ref())
