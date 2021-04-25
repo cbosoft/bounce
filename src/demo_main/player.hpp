@@ -63,7 +63,7 @@ public:
             double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
             arma::vec2 pos = arma::mat22{{c, -s},
                                          {s, c}} * arma::vec2{1, 0};
-            auto *projectile = new Projectile(this, pos * this->gun->get_size()[0] + this->get_position());
+            auto *projectile = new Projectile(this, pos * this->gun->get_size()[0]*.5 + this->get_position());
             arma::vec2 v = pos * 100 + this->get_velocity();
             // this->add_force(-1e4 * pos);
             projectile->set_velocity(v);
