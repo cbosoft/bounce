@@ -24,9 +24,6 @@ public:
 protected:
     virtual InputState read_input_state() =0;
 
-    [[nodiscard]] InputContext *get_context() const;
-    [[nodiscard]] GLFWwindow *get_window() const;
-
     bool check_input_rate(unsigned int key);
 
 private:

@@ -1,5 +1,5 @@
 #include "manager.hpp"
-#include "../renderer/renderer.hpp"
+#include "../game/game.hpp"
 
 void InputManager::handle_input()
 {
@@ -14,7 +14,7 @@ void InputManager::handle_input()
         }
     }
 
-    InputContext *context = this->get_context();
+    InputContext *context = Game::ref().get_context();
     if (context) {
         if (current_state.up) context->up();
         if (current_state.left) context->left();
