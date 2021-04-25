@@ -15,7 +15,7 @@ void Game::run()
     {
         this->renderer.render();
         this->logic_step();
-        InputManager::get_active(this)->handle_input();
+        InputManager::get_active()->handle_input();
         this->physics.timestep();
     }
 }

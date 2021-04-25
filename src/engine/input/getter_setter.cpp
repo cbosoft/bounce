@@ -4,15 +4,10 @@
 
 InputContext *InputManager::get_context() const
 {
-    return this->_game->get_context();
+    return Game::ref().get_context();
 }
 
 GLFWwindow *InputManager::get_window() const
 {
     return Renderer::get().get_window();
-}
-
-void InputManager::set_game(Game *game)
-{
-    this->_game = game;
 }
