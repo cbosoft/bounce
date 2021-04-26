@@ -49,6 +49,7 @@ public:
     GLuint get_varr() const;
 
     void check_shaders() const;
+    void error_check(const std::string &from) const;
 
     int get_fps() const;
     void set_max_fps(int max_fps);

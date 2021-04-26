@@ -9,6 +9,7 @@ GLFWwindow  *Renderer::get_window()
 
 bool Renderer::should_render()
 {
+    this->error_check("once-per-frame error check");
     auto now = _RDR_CLOCK_T::now();
     auto time_since = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->time_last_render);
     int us = int(time_since.count());

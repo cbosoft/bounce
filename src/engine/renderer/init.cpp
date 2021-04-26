@@ -1,9 +1,9 @@
 #include "image/image.hpp"
 #include "renderer.hpp"
 
-void Renderer::init(Game *game, int w, int h, const std::string &title)
+void Renderer::init(Game *g, int w, int h, const std::string &title)
 {
-    this->game = game;
+    this->game = g;
     this->window_size[0] = w;
     this->window_size[1] = h;
 
@@ -30,6 +30,8 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
     glfwSetInputMode(this->window, GLFW_STICKY_MOUSE_BUTTONS, GL_TRUE);
     glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
+    this->error_check("renderer init");
+
     this->varr = 0;
     glGenVertexArrays(1, &this->varr);
     glBindVertexArray(this->varr);
@@ -49,8 +51,9 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    // framebuffer
     glGenFramebuffers(1, &this->fbo);
-    glBindTexture(GL_FRAMEBUFFER, this->fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
 
     glGenTextures(1, &this->txt);
     glBindTexture(GL_TEXTURE_2D, this->txt);
@@ -67,7 +70,9 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
                            GL_TEXTURE_2D, this->txt, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
-        std::cerr << "framebuffer ok!" << std::endl;
+        std::cerr << "i) framebuffer ok!" << std::endl;
+    else
+        std::cerr << "w) framebuffer set up failed." << std::endl; // should be error?
 
     glGenVertexArrays(1, &this->qarr);
     glBindVertexArray(this->qarr);
@@ -97,6 +102,7 @@ void Renderer::init(Game *game, int w, int h, const std::string &title)
     float xscale, yscale;
     glfwGetWindowContentScale(window, &xscale, &yscale);
     this->_window_scale = {xscale, yscale};
+    this->error_check("renderer init, end");
 
     this->time_last_render = _RDR_CLOCK_T::now();
 }
