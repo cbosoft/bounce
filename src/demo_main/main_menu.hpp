@@ -79,24 +79,27 @@ public:
         // draw logo
         {
             auto *ttl = new Object(this, {-60, 10});
-            ttl->attach_renderable("bounce1", new TextRenderable("Bounce", DEFAULT_FONT, 150));
-            ttl->set_colour(Colour::from_grayscale(40));
+            auto *txt = new TextRenderable("Bounce", DEFAULT_FONT, 150);
+            txt->set_colour(Colour::from_grayscale(40));
+            ttl->attach_renderable("bounce1", txt);
             ttl->set_layer("title 1");
             auto *brk = new Object(this, {-60, 0}, true);
             brk->set_layer("title 1");
         }
         {
             auto *ttl = new Object(this, {-55, 5});
-            ttl->attach_renderable("bounce2", new TextRenderable("Bounce", DEFAULT_FONT, 175));
-            ttl->set_colour(Colour::from_grayscale(127));
+            auto *txt = new TextRenderable("Bounce", DEFAULT_FONT, 175);
+            txt->set_colour(Colour::from_grayscale(127));
+            ttl->attach_renderable("bounce2", txt);
             ttl->set_layer("title 2");
             auto *brk = new Object(this, {-55, -5}, true);
             brk->set_layer("title 2");
         }
         {
             auto *ttl = new Object(this, {-50, 0});
-            ttl->attach_renderable("bounce3", new TextRenderable("Bounce", DEFAULT_FONT, 200));
-            ttl->set_colour(Colour::from_grayscale(255));
+            auto *txt = new TextRenderable("Bounce", DEFAULT_FONT, 200);
+            txt->set_colour(Colour::from_grayscale(255));
+            ttl->attach_renderable("bounce3", txt);
             ttl->set_layer("title 3");
             auto *brk = new Object(this, {-50, -10}, true);
             brk->set_layer("title 3");
@@ -108,6 +111,39 @@ public:
 
         auto *gravity = new UnboundedLinearForceField(0, 0, 0, -10);
         this->add_field(gravity);
+        const int w = 2048, h = w, c = 4;
+        auto *data = new unsigned char[w*h*c];
+        for (int xi = 0; xi < w; xi++) {
+            for (int yi = 0; yi < h; yi++) {
+                double x = xi*.01;
+                double y = yi*.01;
+
+                double noise = (Perlin::noise3d(x, y, 0.0)+.5);
+                auto alpha = uint8_t(noise*255);
+
+                //noise = (Perlin::noise3d(x, y, 1.0)+.5);
+                //auto hue = uint8_t(noise*255);
+
+                Colour col = Colour::from_hsv(170, 255, 255);
+
+                data[xi*h*c + yi*c + 0] = col.r;
+                data[xi*h*c + yi*c + 1] = col.g;
+                data[xi*h*c + yi*c + 2] = col.b;
+                data[xi*h*c + yi*c + 3] = alpha;
+            }
+        }
+        auto *t = new Texture();
+        t->set_image_data(data, w, h);
+        Renderer::get().add_texture("noise1", t);
+
+        // {
+        //     auto *noise_test = new RectangleMeshRenderable(2000, 2000);
+        //     noise_test->set_texture_name("noise1");
+        //     this->attach_renderable(noise_test);
+        //     noise_test->set_parent(this);
+        //     noise_test->set_z(100);
+        // }
+
     }
 
     static void quit_callback(MenuItem *i)

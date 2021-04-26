@@ -12,7 +12,7 @@ public:
         this->set_parent(parent);
         this->set_position(position);
         this->set_shader_name("star");
-        this->set_z(-100);
+        this->set_z(-300);
         double s = 0.5 + std::abs(arma::randn()*3);
         this->set_size({s, s});
         constexpr double max_sat = 0.5;
@@ -30,6 +30,40 @@ public:
 
 private:
     double _saturation, _hue;
+};
+
+class Enemy : public Object {
+public:
+    Enemy(Transform *parent, const arma::vec2 &position, Player *target)
+    :   Object(parent, position, 1.0)
+    ,   _target(target)
+    {
+        auto *body = new RegularPolygonMeshRenderable(20);
+        body->set_colour(Colours::green);
+        this->attach_renderable(body);
+    }
+
+    void on_update() override
+    {
+        auto dp = this->_target->get_position() - this->get_position();
+        auto f = arma::normalise(dp)*5e3;
+        this->set_force(f);
+        auto v = this->get_velocity();
+        this->set_velocity(v*0.9);
+    }
+
+    void on_collision(Object *other) override
+    {
+        if ((Transform *)other == (Transform *)this->_target) {
+            this->_target->damage(1.0);
+        }
+        else {
+            this->_target->score(10.0);
+        }
+    }
+
+private:
+    Player *_target;
 };
 
 class Bar : public BarGraph {
@@ -105,6 +139,14 @@ public:
         this->attach_renderable(this->ammo_counter);
         this->ammo_counter->set_parent(cam->get_tl());
         this->ammo_counter->set_relative_position({5, -5});
+
+        // auto *bg = new RectangleMeshRenderable(2048, 2048);
+        // this->attach_renderable(bg);
+        // bg->set_texture_name("noise1");
+        // bg->set_z(10);
+
+        auto *enemy = new Enemy(this, {100, 100}, this->player);
+        (void) enemy;
     }
 
     void up() override { this->player->up(); }
@@ -197,8 +239,8 @@ public:
         this->update_fps_status();
         const auto &p = this->player->get_position();
         this->update_player_pos_vel(p);
-        this->check_update_map(p);
-        this->check_hide_hud();
+        // this->check_update_map(p);
+        // this->check_hide_hud();
         this->position_cursor();
     }
 
