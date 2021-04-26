@@ -11,7 +11,7 @@ class Perlin {
 public:
     Perlin() = default;
 
-    double noise3d(double x, double y, double z);
+    static double noise3d(double x, double y, double z);
 
 private:
     static double fade(double t);

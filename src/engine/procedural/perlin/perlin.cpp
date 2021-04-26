@@ -13,22 +13,36 @@ double Perlin::noise3d(double x, double y, double z)
     z -= std::floor(z);
 
     // Compute fade curves for each of (x, y, z)
-    double u = Perlin::fade(x);
-    double v = Perlin::fade(y);
-    double w = Perlin::fade(z);
+    double f001 = Perlin::fade(x);
+    double f010 = Perlin::fade(y);
+    double f100 = Perlin::fade(z);
 
     // Hash coords of the 8 corners
-    int A = p[X]+Y, AA = p[A]+Z,AB = p[A+1]+Z,
-            B = p[X+1]+Y, BA = p[B]+Z, BB = p[B+1]+Z;
+    int A  = p[X]   + Y;
+    int AA = p[A]   + Z;
+    int AB = p[A+1] + Z;
+
+    int B  = p[X+1] + Y;
+    int BA = p[B]   + Z;
+    int BB = p[B+1] + Z;
+
+    double c111 = Perlin::grad(p[AA]  , x  , y  , z  );
+    double c011 = Perlin::grad(p[BA]  , x-1, y  , z  );
+    double c101 = Perlin::grad(p[AB]  , x  , y-1, z  );
+    double c001 = Perlin::grad(p[BB]  , x-1, y-1, z  );
+    double c110 = Perlin::grad(p[AA+1], x  , y  , z-1);
+    double c010 = Perlin::grad(p[BA+1], x-1, y  , z-1);
+    double c100 = Perlin::grad(p[AB+1], x  , y-1, z-1);
+    double c000 = Perlin::grad(p[BB+1], x-1, y-1, z-1);
 
     // Add blended results from 8 corners of cube
-    return Perlin::lerp(w,
-                        Perlin::lerp(v,
-                                     Perlin::lerp(u, Perlin::grad(p[AA], x, y, z), Perlin::grad(p[BA], x-1, y, z)),
-                                     Perlin::lerp(u, Perlin::grad(p[AB], x, y-1, z), Perlin::grad(p[BB], x-1, y-1, z))),
-                        Perlin::lerp(v,
-                                     Perlin::lerp(u, Perlin::grad(p[AA+1], x, y, z-1), Perlin::grad(p[BA+1], x-1, y, z-1)),
-                                     Perlin::lerp(u, Perlin::grad(p[AB+1], x, y-1, z-1), Perlin::grad(p[BB+1], x-1, y-1, z-1))));
+    return Perlin::lerp(f100,
+                        Perlin::lerp(f010,
+                                     Perlin::lerp(f001, c111, c011),
+                                     Perlin::lerp(f001, c101, c001)),
+                        Perlin::lerp(f010,
+                                     Perlin::lerp(f001, c110, c010),
+                                     Perlin::lerp(f001, c100, c000)));
 }
 
 double Perlin::fade(double t)
