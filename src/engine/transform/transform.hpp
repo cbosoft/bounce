@@ -34,9 +34,9 @@ public:
 
 private:
     Transform *_parent;
-    std::list<Transform *> _children;
     arma::vec2 _relative_position;
 
+    std::list<Transform *> _children;
     std::map<std::string, Renderable *> _named_renderables;
     std::list<Renderable *> _anonymous_renderables;
 };
