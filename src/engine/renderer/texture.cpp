@@ -6,6 +6,11 @@ void Renderer::add_texture(const std::string &path)
     this->textures[path] = new Texture(path);
 }
 
+void Renderer::add_texture(const std::string &name, Texture *texture)
+{
+    this->textures[name] = texture;
+}
+
 Texture *Renderer::get_texture(const std::string &name)
 {
     auto it = this->textures.find(name);

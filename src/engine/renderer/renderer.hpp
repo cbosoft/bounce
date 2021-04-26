@@ -42,6 +42,7 @@ public:
     void set_screen_effect(const std::string &name);
 
     void add_texture(const std::string &path);
+    void add_texture(const std::string &name, Texture *texture);
     Texture *get_texture(const std::string &name);
 
     GLuint get_shader(const std::string &name) const;
