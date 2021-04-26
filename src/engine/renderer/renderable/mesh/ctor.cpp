@@ -1,10 +1,15 @@
 #include "mesh.hpp"
 
-MeshRenderable::MeshRenderable(const std::vector<arma::vec2> &points)
-:   _points(points)
-,   _anchor{0, 0}
+MeshRenderable::MeshRenderable()
+:   _anchor{0, 0}
 {
-    // do nothing
+
+}
+
+MeshRenderable::MeshRenderable(const std::vector<arma::vec2> &points)
+:   MeshRenderable()
+{
+    this->_points = points;
 }
 
 RectangleMeshRenderable::RectangleMeshRenderable(double w, double h)

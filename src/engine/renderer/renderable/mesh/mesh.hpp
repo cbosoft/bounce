@@ -16,7 +16,7 @@ public:
     void set_alignment(MeshRenderable_HorizontalAnchor ha, MeshRenderable_VerticalAnchor va);
 
 protected:
-    MeshRenderable() =default;
+    MeshRenderable();
 
     std::vector<arma::vec2> _points;
     arma::vec2 _anchor;
