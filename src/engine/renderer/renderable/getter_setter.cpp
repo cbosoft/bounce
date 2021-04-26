@@ -45,22 +45,12 @@ void Renderable::set_texture_name(const std::string &name)
 
 const Colour &Renderable::get_colour() const
 {
-    if (this->is_fixed()) {
-        return this->_colour;
-    }
-    else {
-        return this->_object->get_colour();
-    }
+    return this->_colour;
 }
 
 void Renderable::set_colour(const Colour &colour)
 {
-    if (this->is_fixed()) {
-        this->_colour = colour;
-    }
-    else {
-        this->_object->set_colour(colour);
-    }
+    this->_colour = colour;
 }
 
 const Colour &Renderable::get_border_colour() const
