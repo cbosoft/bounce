@@ -9,6 +9,7 @@ const TextureAnimLoop Texture::default_loop = {0, 1};
 const TextureFrameCoords Texture::default_framing = {{0.f, 0.f}, {1.f, 1.f}};
 
 Texture::Texture(const std::string &texture_name)
+:   Texture()
 {
     auto &rm = ResourceManager::ref();
     std::string path = rm.get_path("textures", texture_name, ".png");
@@ -47,14 +48,7 @@ Texture::Texture(const std::string &texture_name)
             cpath,
             &w, &h, &c, 0);
 
-    glGenTextures(1, &this->_id);
-    glBindTexture(GL_TEXTURE_2D, this->_id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                 w, h, 0, GL_RGBA,
-                 GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    this->set_image_data(data, w, h);
     stbi_image_free(data);
 }
 

@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
-#include <vector>
 #include <map>
 #include <armadillo>
+#include <array>
 
 #include "../globj.hpp"
 
@@ -14,6 +14,8 @@ struct TextureFrameCoords {
     arma::Col<float>::fixed<2> bl, wh;
 };
 
+class Colour;
+
 class Texture : public GLObject {
 public:
     explicit Texture(const std::string &path);
@@ -24,6 +26,8 @@ public:
     [[nodiscard]] const TextureFrameCoords &get_texcoords_of_frame(unsigned int index) const;
     [[nodiscard]] const TextureAnimLoop &get_named_loop(const std::string &name) const;
     [[nodiscard]] bool is_null() const;
+
+    void set_image_data(unsigned char *data, int w, int h);
 
     const static TextureAnimLoop default_loop;
     const static TextureFrameCoords default_framing;
