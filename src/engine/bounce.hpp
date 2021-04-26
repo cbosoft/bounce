@@ -10,3 +10,4 @@
 #include "renderer/renderer.hpp"
 #include "physics/field/force_fields.hpp"
 #include "ui/bar/bar.hpp"
+#include "procedural/perlin/perlin.hpp"
