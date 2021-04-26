@@ -43,7 +43,7 @@ void Renderer::render()
     if (scene) {
         std::list<const Renderable *> rbls;
         scene->get_renderables(rbls);
-        //std::sort(rbls.begin(), rbls.end(), Renderable::z_sort);
+        rbls.sort(Renderable::z_sort);
         for (auto *rbl : rbls) {
             if (rbl && rbl->get_visible())
                 rbl->draw();
