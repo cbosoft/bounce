@@ -33,7 +33,6 @@ public:
     bool has_texture() const;
     Texture *get_texture() const;
     void set_texture_name(const std::string &name);
-    void set_texture(Texture *texture);
     const std::string &get_shader_name() const;
     void set_shader_name(const std::string &name);
 
