@@ -18,12 +18,13 @@ Colour Colour::from_rgb_f(double r_f, double g_f, double b_f, double a_f) noexce
 Colour Colour::from_hsv(int h, int s, int v, int a) noexcept
 {
     double c = double(s*v)/255.0/255.0;
-    double h60 = double(h)*60.0/255.0;
-    double hmod2m1 = std::abs(std::fmod(h60, 2.0) - 1.0);
+    double hf = double(h)*360/255.;
+    double hprime = hf/60.0;
+    double hmod2m1 = std::abs(std::fmod(hprime, 2.0) - 1.0);
     double x = c * (1.0 - hmod2m1);
     double rprime, bprime, gprime;
     rprime = bprime = gprime = 0.0;
-    switch (int(h60)) {
+    switch (int(hprime)) {
         case 0:
             rprime = c;
             gprime = x;
@@ -33,21 +34,21 @@ Colour Colour::from_hsv(int h, int s, int v, int a) noexcept
             gprime = c;
             break;
         case 2:
-            bprime = c;
-            gprime = x;
+            gprime = c;
+            bprime = x;
             break;
         case 3:
-            bprime = x;
-            gprime = c;
+            gprime = x;
+            bprime = c;
             break;
         case 4:
             rprime = x;
-            gprime = c;
+            bprime = c;
             break;
         default:
         case 5:
             rprime = c;
-            gprime = x;
+            bprime = x;
             break;
     }
     double m = double(v)/255.0 - c;
