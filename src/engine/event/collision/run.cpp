@@ -4,6 +4,6 @@
 void CollisionEvent::run(Game *game)
 {
     (void) game;
-    this->_a->run_collision(this->_b);
-    this->_b->run_collision(this->_a);
+    this->_a->on_collision(this->_b);
+    this->_b->on_collision(this->_a);
 }

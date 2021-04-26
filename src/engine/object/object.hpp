@@ -6,9 +6,6 @@
 #include "../colour/colour.hpp"
 #include "../renderer/renderable/renderable.hpp"
 
-class Object;
-typedef void (*collision_callback)(Object *self, Object *other);
-
 class Object : public Transform {
   public:
     Object(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
@@ -57,8 +54,7 @@ class Object : public Transform {
     void set_layer(const std::string &layer);
     const std::string &get_layer() const;
 
-    void run_collision(Object *other);
-    void set_collision_callback(collision_callback cb);
+    virtual void on_collision(Object *other) {}
 
   private:
     arma::vec2 new_position;
@@ -72,5 +68,4 @@ class Object : public Transform {
     Colour c;
 
     bool _fixed;
-    collision_callback _collision_callback;
 };

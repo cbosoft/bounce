@@ -13,7 +13,6 @@ Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double
         , _layer("unset")
         , c(Colour::from_grayscale(255))
         , _fixed(fixed)
-        , _collision_callback(nullptr)
 {
     this->set_position(position);
     this->set_mass(1.0);
@@ -32,7 +31,6 @@ Object::Object(Transform *parent, const arma::vec2 &position, double mass, doubl
         , _layer("unset")
         , c(Colour::from_grayscale(255))
         , _fixed(false)
-        , _collision_callback(nullptr)
 {
     this->set_position(position);
     this->set_mass(mass);

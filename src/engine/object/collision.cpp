@@ -46,14 +46,3 @@ bool Object::will_collide_with(const Object *other, arma::vec2 &normal, arma::ve
 
     return false;
 }
-
-void Object::run_collision(Object *other)
-{
-    if (this->_collision_callback)
-        this->_collision_callback(this, other);
-}
-
-void Object::set_collision_callback(collision_callback cb)
-{
-    this->_collision_callback = cb;
-}
