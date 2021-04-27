@@ -3,10 +3,10 @@
 #include "../engine/bounce.hpp"
 #include "settings.hpp"
 
-class MenuButton final: public MenuItem
+class DemoMenuButton final: public MenuItem
 {
 public:
-    MenuButton(Menu *parent, const std::string &label)
+    DemoMenuButton(Menu *parent, const std::string &label)
             : MenuItem(parent)
     {
         this->bg = new RectangleMeshRenderable(60, 10);
@@ -40,5 +40,5 @@ private:
     MeshRenderable *bg;
     TextRenderable *txt;
 
-    friend class MainMenu;
+    friend class DemoMainMenu;
 };

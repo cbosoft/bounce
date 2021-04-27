@@ -35,7 +35,7 @@ public:
             ,   _command_state({false, false, false, false})
             ,   _speed(1000.0)
             ,   _last_shot(std::chrono::system_clock::now())
-            ,   _cooldown_ms(100)
+            ,   _cooldown_frames(50)
             // ,   _mag(10)
             // ,   _ammo(10)
             // ,   _reload(0)
@@ -67,10 +67,8 @@ public:
 
     void shoot()
     {
-        auto now = std::chrono::system_clock::now();
-        long dt_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->_last_shot).count();
-        if (dt_ms < this->_cooldown_ms) { return; }
-        this->_last_shot = now;
+        if (this->_cooldown_frames) return;
+        this->_cooldown_frames = 50;
         double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
         arma::vec2 pos = arma::mat22{{c, -s},
                                      {s, c}} * arma::vec2{1, 0};
@@ -98,6 +96,7 @@ public:
 
     void on_update() override
     {
+        if (this->_cooldown_frames) this->_cooldown_frames--;
         arma::vec2 dir{0,0};
         if (this->_command_state.move_up)    dir[1] += 1.0;
         if (this->_command_state.move_down)  dir[1] -= 1.0;
@@ -141,8 +140,8 @@ private:
     double _speed;
 
     std::chrono::system_clock::time_point _last_shot;
-    long _cooldown_ms;
+    long _cooldown_frames;
     // long _mag, _ammo, _reload, _reload_cooldown;
 
-    double _score = 100.0;
+    double _score;
 };

@@ -11,8 +11,8 @@ public:
     {
         this->set_parent(parent);
         this->set_position(position);
-        this->set_shader_name("star");
         this->set_z(-300);
+        this->set_texture_name("star");
         double s = 0.5 + std::abs(arma::randn()*3);
         this->set_size({s, s});
         constexpr double max_sat = 0.5;
@@ -20,13 +20,13 @@ public:
         this->_hue = arma::randu();
     }
 
-    // void update() override
-    // {
-    //     double time = PhysicsEngine::engine().get_time();
-    //     constexpr double min_brightness = 0.7;
-    //     double brightness = (std::sin(time*0.1) + 1.0)*0.5*(1.0 - min_brightness) + min_brightness;
-    //     this->set_colour(Colour::from_hsv_f(this->_hue, this->_saturation, brightness));
-    // }
+    void on_update() override
+    {
+        double time = PhysicsEngine::ref().get_time();
+        constexpr double min_brightness = 0.7;
+        double brightness = (std::sin(time*0.1) + 1.0)*0.5*(1.0 - min_brightness) + min_brightness;
+        this->set_colour(Colour::from_hsv_f(this->_hue, this->_saturation, brightness));
+    }
 
 private:
     double _saturation, _hue;
@@ -36,20 +36,84 @@ class Enemy : public Object {
 public:
     Enemy(Transform *parent, const arma::vec2 &position, Player *target)
     :   Object(parent, position, 1.0)
+    ,   evasive_mult(1.0)
     ,   _target(target)
     {
-        auto *body = new RegularPolygonMeshRenderable(20);
-        body->set_colour(Colours::green);
+        this->body = new RegularPolygonMeshRenderable(20);
+        body->set_colour(Colour::from_rgb(255, 225, 225));
+        body->set_texture_name("enemy");
+        body->set_size({5, 5});
+        this->set_radius(2.5);
         this->attach_renderable(body);
+    }
+
+    void face_forward()
+    {
+        arma::vec2 vd = arma::normalise(this->get_velocity());
+        double len = arma::norm(vd);
+        if (len > 0.0) {
+            double angle = std::acos(vd[0] / len);
+            if (vd[1] < 0.0) angle *= -1.0;
+            this->body->set_angle(angle);
+        }
+    }
+
+    void head_toward_target()
+    {
+        auto dp = this->_target->get_position() - this->get_position();
+        arma::vec2 f = arma::normalise(dp)*5e3;
+        this->set_force(f);
+    }
+
+    void enforce_max_vel()
+    {
+        auto v = this->get_velocity();
+        double vm = arma::norm(v);
+        constexpr double MAX_VEL = 50.0;
+        if (vm > MAX_VEL) {
+            auto nv = arma::normalise(v);
+            this->set_velocity(MAX_VEL*nv);
+        }
+    }
+
+    void maybe_change_state()
+    {
+        if (arma::randu() < 1./60.) {
+            this->_state = ENEMY_EVASIVE;
+            this->cooldown = 10;
+            if (arma::randu() < 0.1)
+                this->evasive_mult *= -1.0;
+        }
+    }
+
+    void evasive_manoeuvre()
+    {
+        if (this->cooldown-- > 0) {
+            auto dp = this->_target->get_position() - this->get_position();
+            arma::vec2 perp{-dp[1], dp[0]};
+            arma::vec2 f = arma::normalise(perp)*5e3*this->evasive_mult;
+            this->set_force(f);
+        }
+        else {
+            this->_state = ENEMY_ATTACKING;
+        }
     }
 
     void on_update() override
     {
-        auto dp = this->_target->get_position() - this->get_position();
-        auto f = arma::normalise(dp)*5e3;
-        this->set_force(f);
-        auto v = this->get_velocity();
-        this->set_velocity(v*0.9);
+        switch (this->_state) {
+            case ENEMY_ATTACKING:
+                this->head_toward_target();
+                this->maybe_change_state();
+                break;
+
+            case ENEMY_EVASIVE:
+                this->evasive_manoeuvre();
+                break;
+        }
+
+        this->face_forward();
+        this->enforce_max_vel();
     }
 
     void on_collision(Object *other) override
@@ -59,11 +123,18 @@ public:
         }
         else {
             this->_target->score(10.0);
+            Game::ref().add_event(new TransformDestroyEvent(this));
         }
+        Game::ref().add_event(new TemporaryTimePause(10));
     }
 
 private:
+    enum AI_STATE { ENEMY_ATTACKING, ENEMY_EVASIVE };
+    AI_STATE _state = ENEMY_ATTACKING;
+    int cooldown = 0;
+    double evasive_mult;
     Player *_target;
+    MeshRenderable *body;
 };
 
 class Bar : public BarGraph {
@@ -73,6 +144,7 @@ public:
     ,   _player(player)
     {
         this->set_alignment(MR_HA_LEFT, MR_VA_TOP);
+        this->set_position({5, -5});
         this->set_border_size(0.1);
         this->set_colour(Colours::black);
         this->set_z(100);
@@ -118,14 +190,21 @@ public:
 
         this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 100);
         this->fpscntr->set_alignment(HA_left, VA_bottom);
-        this->fpscntr->set_position({1, 1});
+        this->fpscntr->set_position({5, 5});
         this->attach_renderable("FPS counter", this->fpscntr);
         this->fpscntr->set_parent(cam->get_bl());
 
         this->pos = new TextRenderable("<pos>", DEFAULT_FONT, 100);
         this->pos->set_alignment(HA_right, VA_bottom);
+        this->pos->set_position({-5, 5});
         this->attach_renderable("position counter", this->pos);
         this->pos->set_parent(cam->get_br());
+
+        auto *bg = new RectangleMeshRenderable(400, 400);
+        bg->set_colour(Colour::from_rgb(0, 0, 30));
+        bg->set_z(-1000);
+        this->attach_renderable(bg);
+        bg->set_parent(cam);
 
         // this->hud = new AnimatedMeshRenderable(new RectangleMeshRenderable(1, 1));
         // this->hud_big = new RectangleMeshRenderable(20, 2);
@@ -234,14 +313,40 @@ public:
         this->player->aim(angle);
     }
 
+    void maybe_dispatch_new_enemy()
+    {
+        if (arma::randu() > 1e-2)
+            return;
+        auto *enemy = new Enemy(this, {100, 100}, this->player);
+        (void)enemy;
+
+        // while (true) {
+        arma::vec2 quadrant(arma::fill::randu), dist(arma::fill::randu);
+        quadrant[0] = quadrant[0] < 0.5 ? -1. : 1.;
+        quadrant[1] = quadrant[1] < 0.5 ? -1. : 1.;
+        dist *= 0.5;
+        dist += 0.5;
+        dist *= 100.;
+        arma::vec2 p = dist%quadrant;
+        enemy->set_position(this->player->get_position() + p);
+        //     auto close_objects = this->find_objects_near_to(enemy, 10);
+        //     if (close_objects.empty())
+        //         break;
+        // };
+
+        arma::vec2 at = enemy->get_position() - this->player->get_position();
+        std::cerr << "new enemy dispatched at (" << at[0] << "," << at[1] << ")" << std::endl;
+    }
+
     void on_update() override
     {
         this->update_fps_status();
         const auto &p = this->player->get_position();
         this->update_player_pos_vel(p);
-        // this->check_update_map(p);
+        this->check_update_map(p);
         // this->check_hide_hud();
         this->position_cursor();
+        this->maybe_dispatch_new_enemy();
     }
 
 private:
