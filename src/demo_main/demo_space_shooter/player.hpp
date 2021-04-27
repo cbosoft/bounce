@@ -1,12 +1,11 @@
 #pragma once
 #include <chrono>
 
-#include "../engine/bounce.hpp"
-#include "settings.hpp"
+#include "../../engine/bounce.hpp"
 
-class Projectile final: public Object {
+class DemoProjectile final: public Object {
 public:
-    Projectile(Transform *parent, const arma::vec2 &pos)
+    DemoProjectile(Transform *parent, const arma::vec2 &pos)
             :   Object(parent, pos, false, 1.0)
     {
         this->attach_renderable("proj", new RegularPolygonMeshRenderable(20));
@@ -28,18 +27,14 @@ public:
     }
 };
 
-class Player final: public Object {
+class DemoPlayer final: public Object {
 public:
-    Player(Scene *parent, const arma::vec2 &position)
+    DemoPlayer(Scene *parent, const arma::vec2 &position)
             :   Object(parent, position, false, 1.0)
             ,   _command_state({false, false, false, false})
             ,   _speed(1000.0)
             ,   _last_shot(std::chrono::system_clock::now())
             ,   _cooldown_frames(50)
-            // ,   _mag(10)
-            // ,   _ammo(10)
-            // ,   _reload(0)
-            // ,   _reload_cooldown(20)
             ,   _score(0.0)
     {
         this->body = new RegularPolygonMeshRenderable(20);
@@ -60,39 +55,39 @@ public:
         this->gun->set_angle(angle);
     }
 
-    void score(double amount)
+    void shoot()
+    {
+        if (this->_cooldown_frames) return;
+        this->_cooldown_frames = 10;
+        double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
+        arma::vec2 pos = arma::mat22{{c, -s},
+                                     {s, c}} * arma::vec2{1, 0};
+        auto *projectile = new DemoProjectile(this, pos * this->gun->get_size()[0]*.5 + this->get_position());
+        arma::vec2 v = pos * 100 + this->get_velocity();
+        // this->add_force(-1e4 * pos);
+        projectile->set_velocity(v);
+        this->_score -= 1;
+    }
+
+    long get_score() const
+    {
+        return this->_score;
+    }
+
+    void score(long amount)
     {
         this->_score += amount;
     }
 
-    void shoot()
+    void damage(long amount)
     {
-        if (this->_cooldown_frames) return;
-        this->_cooldown_frames = 50;
-        double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
-        arma::vec2 pos = arma::mat22{{c, -s},
-                                     {s, c}} * arma::vec2{1, 0};
-        auto *projectile = new Projectile(this, pos * this->gun->get_size()[0]*.5 + this->get_position());
-        arma::vec2 v = pos * 100 + this->get_velocity();
-        // this->add_force(-1e4 * pos);
-        projectile->set_velocity(v);
-        this->_score -= 1.0;
-    }
-
-    double get_ammo_left() const
-    {
-        return double(this->_score)/1000.0;
+        this->_score -= amount;
     }
 
     void up() { this->_command_state.move_up = true; }
     void left() { this->_command_state.move_left = true; }
     void down() { this->_command_state.move_down = true; }
     void right() { this->_command_state.move_right = true; }
-
-    void damage(double amount)
-    {
-        this->_score -= amount;
-    }
 
     void on_update() override
     {
@@ -113,19 +108,13 @@ public:
 
         this->_command_state = {false, false, false, false};
 
-        double len = arma::norm(vd);
-        if (len > 0.0) {
-            double angle = std::acos(vd[0] / len);
-            if (vd[1] < 0.0) angle *= -1.0;
-            this->body->set_angle(angle);
-        }
-
-        // if (this->_ammo < this->_mag) {
-        //     if (!this->_reload--) {
-        //         this->_ammo++;
-        //         this->_reload = this->_reload_cooldown;
-        //     }
+        // double len = arma::norm(vd);
+        // if (len > 0.0) {
+        //     double angle = std::acos(vd[0] / len);
+        //     if (vd[1] < 0.0) angle *= -1.0;
+        //     this->body->set_angle(angle);
         // }
+        this->body->set_angle(this->gun->get_angle());
     }
 
     Renderable *gun, *body;
@@ -140,8 +129,5 @@ private:
     double _speed;
 
     std::chrono::system_clock::time_point _last_shot;
-    long _cooldown_frames;
-    // long _mag, _ammo, _reload, _reload_cooldown;
-
-    double _score;
+    long _cooldown_frames, _score;
 };

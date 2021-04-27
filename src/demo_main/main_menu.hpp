@@ -82,7 +82,7 @@ public:
         tagline2->set_position({0, -60});
         this->attach_renderable(tagline2);
 
-        auto *bg = new RectangleMeshRenderable(200, 200);
+        auto *bg = new RectangleMeshRenderable(500, 300);
         this->attach_renderable(bg);
         bg->set_colour(Colour::from_grayscale(50));
         bg->set_z(-1000);
@@ -118,7 +118,7 @@ public:
 
     static void free_roam_callback(MenuItem *i)
     {
-        Game::ref().add_event(new PushSceneTransitionEvent("free roam"));
+        Game::ref().add_event(new PushSceneTransitionEvent("demo space shooter"));
     }
 
     void cursor_position(const arma::vec2 &p) override

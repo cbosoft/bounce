@@ -2,7 +2,7 @@
 #include "../version.hpp"
 
 #include "main_menu.hpp"
-#include "free_roam.hpp"
+#include "demo_space_shooter/free_roam.hpp"
 
 
 int main()
@@ -21,10 +21,10 @@ int main()
     r.define_screen_effect_shader("crt", "vertex/quad", "fragment/crt");
 
     //r.set_screen_effect("1bit");
-    r.set_screen_effect("crt");
+    //r.set_screen_effect("crt");
 
     game.add_scene(new DemoMainMenu());
-    game.add_scene(new FreeRoamScene());
+    game.add_scene(new DemoSpaceShooter());
     game.run();
     return 0;
 }
