@@ -38,6 +38,10 @@ void Renderer::render()
     glBindVertexArray(this->varr);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbuf);
 
+    int w, h;
+    glfwGetWindowSize(this->window, &w, &h);
+    this->set_window_size(w, h);
+
     // draw zsorted renderables
     Scene *scene = this->game->get_active_scene();
     if (scene) {
