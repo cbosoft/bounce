@@ -3,6 +3,5 @@
 
 void TransformDestroyEvent::run(Game *game)
 {
-    // tidying up is taken care of in dtor of transform/object etc
-    delete this->_to_be_destroyed;
+    this->_to_be_destroyed->destroy();
 }

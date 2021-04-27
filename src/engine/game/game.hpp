@@ -31,6 +31,9 @@ class Game {
     /* Register a new event to be processed when ready. The Event ptr is owned by the game. */
     void add_event(Event *event);
 
+    /* Put transform into the graveyard - when suitable, it will be deleted. */
+    void add_to_graveyard(Transform *transform);
+
     /* Push named scene onto active stack - making it the new active scene.  */
     void push_active_scene(const std::string &scene_name);
 
@@ -49,7 +52,7 @@ class Game {
     /* Quit the game - stop running, exit the game. */
     void quit();
 
-    /* Returns the object currently accepting input - this is the active scene by another name */
+    /* Returns the object currently accepting input - this is the active scene by another name. */
     [[nodiscard]] InputContext *get_context() const;
 
 protected:
@@ -65,4 +68,5 @@ private:
     std::list<Event *> events;
     std::vector<Object *> all_objects;
     std::map<std::string, Scene *> scenes_by_name;
+    std::list<Transform *> graveyard;
 };

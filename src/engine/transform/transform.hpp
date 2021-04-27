@@ -11,7 +11,8 @@ public:
     Transform();
     Transform(Transform *parent);
     Transform(Transform *parent, const arma::vec2 &position);
-    virtual ~Transform();
+    virtual ~Transform() =default;
+    void destroy();
 
     const arma::vec2 &get_relative_position() const;
     arma::vec2 get_position() const;
