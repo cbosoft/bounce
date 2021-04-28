@@ -94,10 +94,12 @@ void PhysicsEngine::unregister_object(Object *obj)
 void PhysicsEngine::traverse_get_objects(Transform *t, std::list<Object *> &out) const
 {
     for (Transform *child : t->get_children()) {
-        if (child->is_physics_object()) {
-            out.push_back((Object *)child);
+        if (child->is_active()) {
+            if (child->is_physics_object()) {
+                out.push_back((Object *) child);
+            }
+            this->traverse_get_objects(child, out);
         }
-        this->traverse_get_objects(child, out);
     }
 }
 

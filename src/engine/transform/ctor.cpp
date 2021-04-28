@@ -1,8 +1,9 @@
 #include "transform.hpp"
 
 Transform::Transform()
-: _parent(nullptr)
+: _parent{nullptr}
 , _relative_position({0.0, 0.0})
+, _active{true}
 {
     // do nothing
 }

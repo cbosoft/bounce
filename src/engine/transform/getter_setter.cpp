@@ -71,3 +71,21 @@ unsigned long Transform::count() const
     return rv;
 }
 
+void Transform::activate()
+{
+    this->_active = true;
+    for (Transform *child : this->_children)
+        child->activate();
+}
+
+void Transform::deactivate()
+{
+    this->_active = false;
+    for (Transform *child : this->_children)
+        child->deactivate();
+}
+
+bool Transform::is_active() const
+{
+    return this->_active;
+}

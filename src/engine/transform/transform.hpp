@@ -28,6 +28,10 @@ public:
     const std::list<Transform *> &get_children() const;
     unsigned long count() const;
 
+    void activate();
+    void deactivate();
+    bool is_active() const;
+
     virtual void attach_renderable(const std::string &name, Renderable *rbl);
     virtual void attach_renderable(Renderable *rbl);
     virtual void get_renderables(std::list<const Renderable *> &out) const;
@@ -40,6 +44,7 @@ public:
 private:
     Transform *_parent;
     arma::vec2 _relative_position;
+    bool _active;
 
     std::list<Transform *> _children;
     std::map<std::string, Renderable *> _named_renderables;
