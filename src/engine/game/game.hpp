@@ -55,11 +55,15 @@ class Game {
     /* Returns the object currently accepting input - this is the active scene by another name. */
     [[nodiscard]] InputContext *get_context() const;
 
+    void show_colliders();
+    void hide_colliders();
+    bool should_show_colliders() const;
+
 protected:
     Game();
 
 private:
-    bool should_quit;
+    bool should_quit, _visible_colliders;
 
     PhysicsEngine &physics;
     Renderer &renderer;

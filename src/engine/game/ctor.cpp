@@ -9,6 +9,7 @@
  */
 Game::Game()
   : should_quit(false)
+  , _visible_colliders(false)
   , physics(PhysicsEngine::ref())
   , renderer(Renderer::get())
 {

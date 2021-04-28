@@ -28,7 +28,7 @@ public:
 
     virtual void attach_renderable(const std::string &name, Renderable *rbl);
     virtual void attach_renderable(Renderable *rbl);
-    void get_renderables(std::list<const Renderable *> &out) const;
+    virtual void get_renderables(std::list<const Renderable *> &out) const;
 
     void update();
     virtual void on_update() {}
