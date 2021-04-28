@@ -33,6 +33,8 @@ public:
     void update();
     virtual void on_update() {}
 
+    [[nodiscard]] virtual bool is_physics_object() const { return false; }
+
 private:
     Transform *_parent;
     arma::vec2 _relative_position;
