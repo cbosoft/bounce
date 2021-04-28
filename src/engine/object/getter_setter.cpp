@@ -77,16 +77,6 @@ void Object::set_cor(double _cor)
     this->cor = _cor;
 }
 
-double Object::get_radius() const
-{
-    return this->_radius;
-}
-
-void Object::set_radius(double radius)
-{
-    this->_radius = radius;
-}
-
 const Colour &Object::get_colour() const
 {
     return this->c;

@@ -15,12 +15,13 @@ CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
         return this->_cached_collision;
     }
 
-    if (!a->will_collide_with(b, this->_cached_collision.normal, this->_cached_collision.at)) {
+    if (!this->check_will_collide(a, b, this->_cached_collision.normal, this->_cached_collision.at)) {
         this->_cached_collision.happens = false;
         return this->_cached_collision;
     }
 
     // objects collide
+    // TODO only run collision event if the collision is new
     Game::ref().add_event(new CollisionEvent(a, b));
     if (a->fixed() || b->fixed()) {
         return this->resolve_collision_one_fixed(b->fixed()?a:b, b->fixed()?b:a);

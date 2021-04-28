@@ -4,10 +4,12 @@
 
 #include "../transform/transform.hpp"
 #include "../colour/colour.hpp"
-#include "../renderer/renderable/renderable.hpp"
+#include "../renderer/renderables.hpp"
+#include "../physics/shape/shape.hpp"
 
 class Object : public Transform {
   public:
+    Object(Transform *parent);
     Object(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
     Object(Transform *parent, const arma::vec2 &position, double mass, double cor=1.0);
     ~Object();
@@ -38,13 +40,6 @@ class Object : public Transform {
     void set_force(const arma::vec2 &&force);
     void add_force(const arma::vec2 &force);
 
-    double get_radius() const;
-    void set_radius(double radius);
-
-    bool will_collide_with(const Object *other);
-    bool will_collide_with(const Object *other, arma::vec2 &normal);
-    bool will_collide_with(const Object *other, arma::vec2 &normal, arma::vec2 &at);
-
     double get_cor() const;
     void set_cor(double _cor);
 
@@ -56,16 +51,20 @@ class Object : public Transform {
 
     virtual void on_collision(Object *other) {}
 
+    [[nodiscard]] bool is_physics_object() const override { return true; }
+    void get_renderables(std::list<const Renderable *> &out) const override;
+
+    CollisionShape shape; // TODO getter, setter
   private:
     arma::vec2 new_position;
     arma::vec2 velocity;
     arma::vec2 force;
 
-    double mass, inv_mass, cor, _radius;
-    static constexpr double COLLISION_THRESH = 5e-2;
+    double mass, inv_mass, cor;
     std::string _layer;
 
     Colour c;
 
     bool _fixed;
+    MeshRenderable *_renderable_collider;
 };

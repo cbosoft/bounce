@@ -4,6 +4,7 @@
 
 #include "../../object/object.hpp"
 #include "../field/field.hpp"
+#include "../shape/shape.hpp"
 
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::duration<double, std::ratio<1, 1>> Duration;
@@ -36,11 +37,18 @@ public:
     void unregister_object(Object *obj);
     std::list<Object *> get_active_objects() const;
 
+    bool check_will_collide(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at);
+
 private:
+    bool check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at);
+    bool check_will_collide_circle_rect(const Object *circle, const Object *rect, arma::vec2 &norm, arma::vec2 &at);
+    bool check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at);
+
     PhysicsEngine();
 
     double dt, time, irl_time, timescale;
     Clock::time_point epoch;
     CollisionInformation _cached_collision;
     std::list<Object *> _all_objects;
+    static constexpr double COLLISION_THRESH = 5e-2;
 };
