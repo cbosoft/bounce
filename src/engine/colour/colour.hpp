@@ -34,4 +34,6 @@ public:
     static const Colour gray;
     static const Colour dark_gray;
     static const Colour black;
+
+    static const Colour clear;
 };
