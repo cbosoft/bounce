@@ -63,4 +63,11 @@ void Transform::set_position(const arma::vec2 &position)
     this->set_relative_position(relpos);
 }
 
+unsigned long Transform::count() const
+{
+    unsigned long rv = 1;
+    for (const Transform *child : this->_children)
+        rv += child->count();
+    return rv;
+}
 

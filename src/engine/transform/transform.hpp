@@ -26,6 +26,7 @@ public:
     void remove_child(Transform *child);
     void add_child(Transform *child);
     const std::list<Transform *> &get_children() const;
+    unsigned long count() const;
 
     virtual void attach_renderable(const std::string &name, Renderable *rbl);
     virtual void attach_renderable(Renderable *rbl);
