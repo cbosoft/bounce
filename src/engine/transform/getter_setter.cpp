@@ -23,6 +23,11 @@ void Transform::add_child(Transform *child)
     this->_children.push_back(child);
 }
 
+const std::list<Transform *> &Transform::get_children() const
+{
+    return this->_children;
+}
+
 void Transform::set_parent(Transform *parent)
 {
     if (this->_parent) {

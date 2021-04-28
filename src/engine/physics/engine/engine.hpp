@@ -44,6 +44,8 @@ private:
     bool check_will_collide_circle_rect(const Object *circle, const Object *rect, arma::vec2 &norm, arma::vec2 &at);
     bool check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at);
 
+    void traverse_get_objects(Transform *t, std::list<Object *> &out) const;
+
     PhysicsEngine();
 
     double dt, time, irl_time, timescale;

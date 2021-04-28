@@ -91,13 +91,20 @@ void PhysicsEngine::unregister_object(Object *obj)
     this->_all_objects.remove(obj);
 }
 
+void PhysicsEngine::traverse_get_objects(Transform *t, std::list<Object *> &out) const
+{
+    for (Transform *child : t->get_children()) {
+        if (child->is_physics_object()) {
+            out.push_back((Object *)child);
+        }
+        this->traverse_get_objects(child, out);
+    }
+}
+
 std::list<Object *> PhysicsEngine::get_active_objects() const
 {
-    const Transform *root = Game::ref().get_active_scene();
+    Transform *root = Game::ref().get_active_scene();
     std::list<Object *> rv;
-    for (Object *obj : this->_all_objects) {
-        if (root == obj->get_root())
-            rv.push_back(obj);
-    }
+    this->traverse_get_objects(root, rv);
     return rv;
 }
