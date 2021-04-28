@@ -100,14 +100,27 @@ public:
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 auto tpl = std::make_tuple(pcx+dx, pcy+dy);
-                if (this->_cell_generated.find(tpl) == this->_cell_generated.end()) {
-                    arma::vec2 cell_centre{double(pcx+dx), double(pcy+dy)};
-                    cell_centre *= this->cell_size;
+                if (this->_cells.find(tpl) == this->_cells.end()) {
+                    arma::vec2 cpos{double(pcx+dx), double(pcy+dy)};
+                    cpos *= this->cell_size;
+                    auto *cell_centre = new Transform(this, cpos);
                     for (int i = 0; i < 100; i++)
-                        this->place_star(
-                                cell_centre + this->cell_size * (2. * arma::vec2(arma::fill::randu) - 1.) * 0.5);
-                    this->_cell_generated[tpl] = true;
+                        this->place_star(cell_centre, this->cell_size * (2. * arma::vec2(arma::fill::randu) - 1.) * 0.5);
+                    this->_cells[tpl] = cell_centre;
                 }
+            }
+        }
+
+        for (auto kv : this->_cells) {
+            Transform *cell = kv.second;
+            double dist = arma::norm(cell->get_position() - p);
+            if (dist > this->cell_size*3) {
+                if (cell->is_active())
+                    cell->deactivate();
+            }
+            else {
+                if (!cell->is_active())
+                    cell->activate();
             }
         }
     }
@@ -144,8 +157,8 @@ public:
         //         break;
         // };
 
-        arma::vec2 at = enemy->get_position() - this->player->get_position();
-        std::cerr << "new enemy dispatched at (" << at[0] << "," << at[1] << ")" << std::endl;
+        // arma::vec2 at = enemy->get_position() - this->player->get_position();
+        // std::cerr << "new enemy dispatched at (" << at[0] << "," << at[1] << ")" << std::endl;
     }
 
     void on_update() override
@@ -157,17 +170,19 @@ public:
         this->check_update_map(p);
         this->position_reticule();
         this->maybe_dispatch_new_enemy();
+
+        std::cerr << this->count() << std::endl;
     }
 
 private:
 
-    void place_star(const arma::vec2 &at) {
-        auto *star = new DemoStar(this, at);
-        this->attach_renderable(star);
+    void place_star(Transform *cell, const arma::vec2 &at) {
+        auto *star = new DemoStar(cell, at);
+        cell->attach_renderable(star);
     }
 
     double cell_size = 500.0;
-    std::map<std::tuple<int, int>, bool> _cell_generated;
+    std::map<std::tuple<int, int>, Transform *> _cells;
     arma::vec2 _cursor_window_position;
 
     DemoPlayer *player;

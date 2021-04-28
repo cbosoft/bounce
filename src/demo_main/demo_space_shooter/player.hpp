@@ -47,7 +47,7 @@ public:
         this->gun->set_size({20.0, 20.0});
         this->attach_renderable("gun", gun);
 
-        this->set_radius(5.0);
+        this->shape = CollisionShape::circle(5.0);
     }
 
     void aim(double angle)

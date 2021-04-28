@@ -14,7 +14,7 @@ public:
         body->set_colour(Colour::from_rgb(255, 225, 225));
         body->set_texture_name("enemy");
         body->set_size({5, 5});
-        this->set_radius(2.5);
+        this->shape = CollisionShape::circle(2.5);
         this->attach_renderable(body);
     }
 

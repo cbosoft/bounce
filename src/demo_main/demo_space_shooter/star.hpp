@@ -7,7 +7,7 @@ public:
             : RegularPolygonMeshRenderable(50)
     {
         this->set_parent(parent);
-        this->set_position(position);
+        this->set_relative_position(position);
         this->set_z(-300);
         this->set_texture_name("star");
         double s = 0.5 + std::abs(arma::randn()*3);
