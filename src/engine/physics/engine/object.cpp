@@ -2,9 +2,12 @@
 #include "../../game/game.hpp"
 #include "../../events.hpp"
 
-double PhysicsEngine::get_overall_cor(double cora, double corb)
+PhysicsMaterial PhysicsEngine::get_overall_material_properties(const PhysicsMaterial &a, const PhysicsMaterial &b)
 {
-    return (cora < corb) ? cora : corb;
+    return {
+        (a.bounciness < b.bounciness ? a.bounciness : b.bounciness),
+        (a.dynamic_friction > b.dynamic_friction ? a.dynamic_friction : b.dynamic_friction)
+        };
 }
 
 CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
@@ -39,8 +42,9 @@ CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(Object *free_bo
     arma::vec2 vel_parallel_to_norm = (vn/nn)*norm;
     arma::vec2 vel_perpendicular_to_norm = v - vel_parallel_to_norm;
 
-    const double cor = PhysicsEngine::get_overall_cor(free_body->get_cor(), fixed_body->get_cor());
-    free_body->set_velocity(cor * (vel_perpendicular_to_norm - vel_parallel_to_norm));
+    const PhysicsMaterial overall = PhysicsEngine::get_overall_material_properties(
+            free_body->get_material(), fixed_body->get_material());
+    free_body->set_velocity(((1. - overall.dynamic_friction)*vel_perpendicular_to_norm - overall.bounciness*vel_parallel_to_norm));
     free_body->set_new_position(free_body->get_velocity()*this->dt + free_body->get_position());
 
     return this->_cached_collision;

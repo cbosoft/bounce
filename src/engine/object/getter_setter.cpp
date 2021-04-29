@@ -72,17 +72,6 @@ bool Object::fixed() const
     return this->_fixed;
 }
 
-
-double Object::get_cor() const
-{
-    return this->cor;
-}
-
-void Object::set_cor(double _cor)
-{
-    this->cor = _cor;
-}
-
 const Colour &Object::get_colour() const
 {
     return this->c;
@@ -143,3 +132,17 @@ void Object::set_shape(const CollisionShape &shape)
     this->_renderable_collider->set_z(1000);
 }
 
+void Object::set_bounciness(double bounciness)
+{
+    this->_material.bounciness = bounciness;
+}
+
+void Object::set_friction(double friction)
+{
+    this->_material.dynamic_friction = friction;
+}
+
+const PhysicsMaterial &Object::get_material() const
+{
+    return this->_material;
+}

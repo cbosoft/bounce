@@ -6,6 +6,7 @@
 #include "../colour/colour.hpp"
 #include "../renderer/renderables.hpp"
 #include "../physics/shape/shape.hpp"
+#include "../physics/material/material.hpp"
 
 class Object : public Transform {
   public:
@@ -41,8 +42,9 @@ class Object : public Transform {
     void set_force(const arma::vec2 &&force);
     void add_force(const arma::vec2 &force);
 
-    double get_cor() const;
-    void set_cor(double _cor);
+    const PhysicsMaterial &get_material() const;
+    void set_bounciness(double bounciness);
+    void set_friction(double friction);
 
     void attach_renderable(const std::string &name, Renderable *rbl) override;
     void attach_renderable(Renderable *rbl) override;
@@ -65,8 +67,10 @@ class Object : public Transform {
     arma::vec2 velocity;
     arma::vec2 force;
 
-    double mass, inv_mass, cor;
+    double mass, inv_mass;
     std::string _layer;
+
+    PhysicsMaterial _material;
 
     Colour c;
 

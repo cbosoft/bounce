@@ -10,8 +10,8 @@ Object::Object(Transform *parent)
     ,   force({0, 0})
     ,   mass(1.0)
     ,   inv_mass(1.0)
-    ,   cor(1.0)
     ,   _layer("unset")
+    ,   _material({1.0, 0.0})
     ,   c(Colour::from_grayscale(255))
     ,   _fixed(false)
     ,   _renderable_collider(nullptr)
@@ -24,14 +24,14 @@ Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double
     :   Object(parent)
 {
     this->_fixed = fixed;
-    this->cor = cor;
+    this->_material.bounciness = cor;
     this->set_position(position);
 }
 
 Object::Object(Transform *parent, const arma::vec2 &position, double mass, double cor)
     :   Object(parent)
 {
-    this->cor = cor;
+    this->_material.bounciness = cor;
     this->set_position(position);
     this->set_mass(mass);
 }
