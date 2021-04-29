@@ -1,4 +1,5 @@
 #include "image/image.hpp"
+#include "../logging/logger.hpp"
 #include "renderer.hpp"
 
 void Renderer::init(Game *g, int w, int h, const std::string &title)
@@ -70,9 +71,9 @@ void Renderer::init(Game *g, int w, int h, const std::string &title)
                            GL_TEXTURE_2D, this->txt, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
-        std::cerr << "i) framebuffer ok!" << std::endl;
+        Logger::ref() << LL_INFO << "Framebuffer init ok!\n";
     else
-        std::cerr << "w) framebuffer set up failed." << std::endl; // should be error?
+        Logger::ref() << LL_WARN << "Framebuffer init failed.\n"; // TODO should be error?
 
     glGenVertexArrays(1, &this->qarr);
     glBindVertexArray(this->qarr);

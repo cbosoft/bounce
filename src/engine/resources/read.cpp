@@ -1,5 +1,5 @@
 #include <fstream>
-#include <iostream>
+#include <sstream>
 #include "manager.hpp"
 
 std::string ResourceManager::read_file_to_string(const std::string &path)
@@ -8,8 +8,9 @@ std::string ResourceManager::read_file_to_string(const std::string &path)
     std::ifstream ifs(path);
 
     if (!ifs.is_open()) {
-        std::perror(path.c_str());
-        throw std::runtime_error("Could not open file.");
+        std::stringstream ss;
+        ss << "Could not open file: \"" << path << "\"" << strerror(errno);
+        throw std::runtime_error(ss.str());
     }
 
     while (std::getline(ifs, buff)) {

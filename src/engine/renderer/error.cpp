@@ -1,4 +1,5 @@
 #include "renderer.hpp"
+#include "../logging/logger.hpp"
 
 void Renderer::error_check(const std::string &from) const
 {
@@ -28,6 +29,7 @@ void Renderer::error_check(const std::string &from) const
             default:
                 break;
         }
-        std::cerr << "E) Error " << errtype << " originating from " << from << std::endl;
+        Logger::ref() << LL_ERROR << "OpenGL error " << errtype << " found " << from << "\n";
+        // TODO raise error?
     }
 }

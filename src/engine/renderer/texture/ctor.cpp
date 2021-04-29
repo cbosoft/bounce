@@ -1,9 +1,9 @@
-#include <iostream>
 #include <filesystem>
 
-#include "texture.hpp"
-#include "../image/image.hpp"
+#include "../../logging/logger.hpp"
 #include "../../resources/manager.hpp"
+#include "../image/image.hpp"
+#include "texture.hpp"
 
 const TextureAnimLoop Texture::default_loop = {0, 1};
 const TextureFrameCoords Texture::default_framing = {{0.f, 0.f}, {1.f, 1.f}};
@@ -50,6 +50,8 @@ Texture::Texture(const std::string &texture_name)
 
     this->set_image_data(data, w, h);
     stbi_image_free(data);
+
+    Logger::ref() << LL_INFO << "Loaded texture \"" << texture_name << "\".\n";
 }
 
 Texture::Texture()

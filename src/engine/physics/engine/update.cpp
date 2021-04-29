@@ -1,6 +1,6 @@
-#include <iostream>
 #include <armadillo>
 #include <map>
+
 #include "../../game/game.hpp"
 #include "engine.hpp"
 

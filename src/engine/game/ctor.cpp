@@ -1,4 +1,6 @@
 #include "game.hpp"
+#include "../version/version.hpp"
+#include "../logging/logger.hpp"
 
 /**
  * Game object constructor. Initialises physics engine (if not already) and the renderer.
@@ -13,5 +15,6 @@ Game::Game()
   , physics(PhysicsEngine::ref())
   , renderer(Renderer::get())
 {
+    Logger::ref() << LL_INFO << VersionInfo::version_string();
     this->renderer.init(this, 1280, 960, "bounce");
 }

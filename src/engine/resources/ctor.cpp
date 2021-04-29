@@ -1,8 +1,8 @@
 #include "manager.hpp"
-#include <iostream>
+#include "../logging/logger.hpp"
 
 ResourceManager::ResourceManager()
 {
     this->set_root();
-    std::cerr << "Resources dir found at " << this->_root << std::endl;
+    Logger::ref() << LL_INFO << "Resources dir found at " << this->_root << "\n";
 }

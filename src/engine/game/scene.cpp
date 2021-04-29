@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "../logging/logger.hpp"
 
 /**
  * Add Scene to Game. The Scene ptr is then owned by the Game.
@@ -15,7 +16,7 @@ void Game::add_scene(Scene *scene)
     this->scenes_by_name[scene->get_name()] = scene;
     if (this->get_active_scene() == nullptr) {
         this->scene_stack.push(scene);
-        std::cerr << "active scene set to \"" << scene->get_name() << "\"" << std::endl;
+        Logger::ref() << LL_INFO << "Active scene set to \"" << scene->get_name() << "\".\n";
         scene->on_activate();
     }
 }
@@ -37,11 +38,11 @@ void Game::push_active_scene(const std::string &scene_name)
     if (it != this->scenes_by_name.end()) {
         Scene *scene = it->second;
         this->scene_stack.push(scene);
-        std::cerr << "active scene set to \"" << scene_name << "\"" << std::endl;
+        Logger::ref() << LL_INFO << "Pushed scene. Active scene now \"" << scene_name << "\".\n";
         scene->on_activate();
     }
     else {
-        std::cerr << "scene with name\"" << scene_name << "\" not found." << std::endl;
+        Logger::ref() << LL_ERROR << "Scene with name\"" << scene_name << "\" not found.\n";
         throw std::runtime_error("Cannot set to requested scene; scene not found.");
     }
 }
@@ -68,11 +69,11 @@ Scene *Game::pop_active_scene()
     this->scene_stack.pop();
     Scene *active = this->get_active_scene();
     if (active) {
-        std::cerr << "Popped active scene; active scene now \"" << active->get_name() << "\"." << std::endl;
+        Logger::ref() << LL_INFO << "Popped active scene; active scene now \"" << active->get_name() << "\".\n";
         this->scene_stack.top()->on_activate();
     }
     else {
-        std::cerr << "Popped active scene; no scene active. Quitting." << std::endl;
+        Logger::ref() << LL_INFO << "Popped active scene; no scene active. Quitting.\n";
         this->quit();
     }
     return s;

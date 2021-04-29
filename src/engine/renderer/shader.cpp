@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include "../resources/manager.hpp"
+#include "../logging/logger.hpp"
 #include "renderer.hpp"
 
 GLuint Renderer::compile_shader(
@@ -30,9 +31,7 @@ GLuint Renderer::compile_shader(
     if (loglen > 0) {
         std::vector<char> log(loglen+1);
         glGetShaderInfoLog(shader_id, loglen, nullptr, log.data());
-        std::cerr
-            << source << ": "
-            << log.data() << std::endl;
+        Logger::ref() << source << ": " << log.data() << "\n";
         if (!result)
             return -1;
     }
@@ -53,7 +52,7 @@ GLuint Renderer::load_shader_program(
         const std::string &vertex_name,
         const std::string &fragment_name)
 {
-    std::cerr << "Loading shaders\n" << vertex_name << std::endl << fragment_name << std::endl;
+    Logger::ref() << LL_INFO << "Loading shaders \"" << vertex_name << "\" and \"" << fragment_name << "\"\n";
     GLuint vertex_id = this->compile_vertex(vertex_name);
     GLuint fragment_id = this->compile_fragment(fragment_name);
     GLuint program_id = glCreateProgram();
@@ -63,10 +62,10 @@ GLuint Renderer::load_shader_program(
     int result = 0, loglen = 0;
     glGetProgramiv(program_id, GL_LINK_STATUS, &result);
     glGetProgramiv(program_id, GL_INFO_LOG_LENGTH, &loglen);
-    if (loglen > 0) {
+    if (loglen > 0 && !result) {
         std::vector<char> log(loglen+1);
         glGetProgramInfoLog(program_id, loglen, nullptr, log.data());
-        std::cerr << log.data() << std::endl;
+        Logger::ref() << LL_INFO << log.data();
         if (!result)
             return -1;
     }
@@ -96,7 +95,7 @@ GLuint Renderer::get_screen_effect() const
 {
     auto it = this->effects.find(this->_screen_effect);
     if (it == this->effects.end()) {
-        std::cerr << "w) Cannot find effect shader \"" << this->_screen_effect << "\"; falling back to default." << std::endl;
+        Logger::ref() << LL_WARN << "Cannot find effect shader \"" << this->_screen_effect << "\": falling back to default.\n";
         return this->effects.at("default");
     }
     return it->second;
@@ -108,7 +107,7 @@ void Renderer::set_screen_effect(const std::string &name)
         this->_screen_effect = name;
     }
     else {
-        std::cerr << "w) Cannot find effect shader \"" << name << "\"; not changing effect." << std::endl;
+        Logger::ref() << LL_WARN << "Cannot find effect shader \"" << name << "\": not changing effect.\n";
     }
 }
 
@@ -119,25 +118,25 @@ GLuint Renderer::get_shader(const std::string &name) const
         return it->second;
     }
 
-    std::cerr << "w) Cannot find shader \"" << name << "\"; falling back to default." << std::endl;
+    Logger::ref() << LL_WARN << "Cannot find shader \"" << name << "\": falling back to default.\n";
     return this->shaders.at(name);
 }
 
 void Renderer::check_shaders() const
 {
     if (this->shaders.empty()) {
-        throw std::runtime_error("E) Cannot render without shaders defined; must define at least a \"default\" shader.");
+        throw std::runtime_error("Cannot render without shaders defined; must define at least a \"default\" shader.");
     }
 
     if (this->shaders.find("default") == this->shaders.end()) {
-        throw std::runtime_error("E) Cannot find default shader.");
+        throw std::runtime_error("Cannot find default shader.");
     }
 
     if (this->effects.empty()) {
-        throw std::runtime_error("E) Cannot render without screen effect shaders defined; must define at least a \"default\" shader.");
+        throw std::runtime_error("Cannot render without screen effect shaders defined; must define at least a \"default\" shader.");
     }
 
     if (this->effects.find("default") == this->effects.end()) {
-        throw std::runtime_error("E) Cannot find default screen effect shader.");
+        throw std::runtime_error("Cannot find default screen effect shader.");
     }
 }

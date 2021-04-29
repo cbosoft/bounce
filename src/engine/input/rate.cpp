@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "manager.hpp"
 #include "../game/game.hpp"
 
