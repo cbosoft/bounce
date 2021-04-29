@@ -50,6 +50,7 @@ class Object : public Transform {
     void set_layer(const std::string &layer);
     const std::string &get_layer() const;
 
+    virtual void on_physics_update() {}
     virtual void on_collision(Object *other) {}
 
     [[nodiscard]] bool is_physics_object() const override { return true; }
