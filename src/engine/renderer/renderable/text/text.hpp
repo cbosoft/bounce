@@ -25,11 +25,11 @@ public:
     const std::wstring &get_text() const;
 
     void draw() const override;
+    arma::vec2 measure() const;
 
 private:
 
     void refresh_font();
-    arma::vec2 measure() const;
     arma::vec2 aligned_origin() const;
 
     Font *_font;
