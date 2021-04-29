@@ -11,9 +11,6 @@ class KeyboardInputManager : public InputManager {
 public:
     static KeyboardInputManager &ref();
 
-protected:
-    InputState read_input_state() override;
-
 private:
     KeyboardInputManager();
 
@@ -26,7 +23,4 @@ private:
     static void mouse_btn_cb(GLFWwindow *win, int button, int action, int mods);
     static void mouse_pos_cb(GLFWwindow *win, double x, double y);
     static void scroll_pos_cb(GLFWwindow *win, double xoff, double yoff);
-
-    InputState _state;
-
 };

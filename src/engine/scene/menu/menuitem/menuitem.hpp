@@ -10,14 +10,14 @@ class MenuItem : public InputContext, public Transform {
 public:
     explicit MenuItem(Menu *parent);
 
-    void up() override;
-    void left() override;
-    void down() override;
-    void right() override;
+    void up_pressed() override;
+    void left_pressed() override;
+    void down_pressed() override;
+    void right_pressed() override;
 
-    void action() override;
-    void alternate() override;
-    void back() override;
+    void action_pressed() override;
+    void alternate_pressed() override;
+    void back_pressed() override;
 
     void set_callback_up(menu_callback cb);
     void set_callback_left(menu_callback cb);

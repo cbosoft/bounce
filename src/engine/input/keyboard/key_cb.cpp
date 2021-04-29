@@ -11,40 +11,72 @@ void KeyboardInputManager::key_press(GLFWwindow *win, int key, int scancode, int
     (void) scancode;
     (void) mode;
 
-    bool v = action == GLFW_PRESS || action == GLFW_REPEAT;
+    ButtonState button_state = BTN_NULL;
+    switch (action) {
 
+        case GLFW_PRESS:
+            button_state = BTN_PRESSED;
+            break;
+
+        case GLFW_REPEAT:
+            button_state = BTN_REPEATED;
+            break;
+
+        case GLFW_RELEASE:
+            button_state = BTN_RELEASED;
+            break;
+
+        default:
+            return;
+    }
+
+    InputState new_state = {
+            .up = BTN_NULL,
+            .left = BTN_NULL,
+            .down = BTN_NULL,
+            .right = BTN_NULL,
+            .action = BTN_NULL,
+            .alternative = BTN_NULL,
+            .back = BTN_NULL,
+            .cursor_moved = false,
+            .zoomed = false,
+            .cursor = {0, 0},
+            .zoom = {0, 0}
+    };
     switch (key) {
         case GLFW_KEY_F:
         case GLFW_KEY_ENTER:
-            this->_state.action = v;
+            new_state.action = button_state;
             break;
 
         case GLFW_KEY_UP:
         case GLFW_KEY_W:
-            this->_state.up = v;
+            new_state.up = button_state;
             break;
 
         case GLFW_KEY_LEFT:
         case GLFW_KEY_A:
-            this->_state.left = v;
+            new_state.left = button_state;
             break;
 
         case GLFW_KEY_DOWN:
         case GLFW_KEY_S:
-            this->_state.down = v;
+            new_state.down = button_state;
             break;
 
         case GLFW_KEY_RIGHT:
         case GLFW_KEY_D:
-            this->_state.right = v;
+            new_state.right = button_state;
             break;
 
         case GLFW_KEY_ESCAPE:
-            this->_state.back = v;
+            new_state.back = button_state;
             break;
 
         default:
             // do nothing
             break;
     }
+
+    this->_state_queue.push_back(new_state);
 }

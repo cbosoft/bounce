@@ -2,37 +2,67 @@
 #include "../game/game.hpp"
 
 /**
- * Handle input and enact on the current InputContext.
- *
- * Read input state, and check the input rate for the buttons in the state. Then, call the action methods of the active
- * InputContext.
+ * Process the input queue in order.
  */
-void InputManager::handle_input()
-{
-    InputState current_state = this->read_input_state(), current_copy = current_state;
-    auto *bool_state = (bool *)&current_state;
-    // for each button (boolean) check if is too soon to register another press
-    // TODO: make more OO-y and create a button class?
-    for (unsigned int i = 0; i < 7; i++) {
-        if (bool_state[i]) {
-            // sets state to false if too soon for a second input
-            bool_state[i] = this->check_input_rate(i);
-        }
+void InputManager::handle_input() {
+    for (const auto &input : this->_state_queue) {
+        this->run_input_state(input);
     }
+    this->_state_queue.clear();
+}
 
+/**
+ * For the given input state, run action methods of the current context depending on the button press information.
+ * @param input_state The state to process.
+ */
+void InputManager::run_input_state(const InputState &input_state)
+{
     InputContext *context = Game::ref().get_context();
     if (context) {
-        if (current_state.up) context->up();
-        if (current_state.left) context->left();
-        if (current_state.down) context->down();
-        if (current_state.right) context->right();
-        if (current_state.action) context->action();
-        if (current_state.alternative) context->alternate();
-        if (current_state.back) context->back();
+        switch (input_state.up) {
+            case BTN_NULL:                             break;
+            case BTN_PRESSED:  context->up_pressed();  break;
+            case BTN_REPEATED: context->up_repeated(); break;
+            case BTN_RELEASED: context->up_released(); break;
+        }
+        switch (input_state.left) {
+            case BTN_NULL:                               break;
+            case BTN_PRESSED:  context->left_pressed();  break;
+            case BTN_REPEATED: context->left_repeated(); break;
+            case BTN_RELEASED: context->left_released(); break;
+        }
+        switch (input_state.down) {
+            case BTN_NULL:                               break;
+            case BTN_PRESSED:  context->down_pressed();  break;
+            case BTN_REPEATED: context->down_repeated(); break;
+            case BTN_RELEASED: context->down_released(); break;
+        }
+        switch (input_state.right) {
+            case BTN_NULL:                                break;
+            case BTN_PRESSED:  context->right_pressed();  break;
+            case BTN_REPEATED: context->right_repeated(); break;
+            case BTN_RELEASED: context->right_released(); break;
+        }
+        switch (input_state.action) {
+            case BTN_NULL:                                 break;
+            case BTN_PRESSED:  context->action_pressed();  break;
+            case BTN_REPEATED: context->action_repeated(); break;
+            case BTN_RELEASED: context->action_released(); break;
+        }
+        switch (input_state.alternative) {
+            case BTN_NULL:                               break;
+            case BTN_PRESSED:  context->left_pressed();  break;
+            case BTN_REPEATED: context->left_repeated(); break;
+            case BTN_RELEASED: context->left_released(); break;
+        }
+        switch (input_state.back) {
+            case BTN_NULL:                               break;
+            case BTN_PRESSED:  context->back_pressed();  break;
+            case BTN_REPEATED: context->back_repeated(); break;
+            case BTN_RELEASED: context->back_released(); break;
+        }
 
-        context->cursor_position(current_state.cursor);
-        context->zoom(current_state.zoom);
+        if (input_state.cursor_moved) context->cursor_position(input_state.cursor);
+        if (input_state.zoomed) context->zoom(input_state.zoom);
     }
-
-    this->previous_state = current_copy;
 }

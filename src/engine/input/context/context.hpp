@@ -5,55 +5,77 @@
 /**
  * Class to which input is sent.
  *
- * When a InputManager::handle_input is called, the input is sent to an instance of InputContext, by calling its
+ * An InputContext is acted upon by the InputManager during InputManahger#handle_input by calling its
  * <em>action methods</em>:
- *  - InputContext#up
- *  - InputContext#left
- *  - InputContext#down
- *  - InputContext#right
- *  - InputContext#action
- *  - InputContext#alternate
- *  - InputContext#back
+ *  - InputContext#up_pressed
+ *  - InputContext#up_repeated
+ *  - InputContext#up_released
+ *  - InputContext#left_pressed
+ *  - InputContext#left_repeated
+ *  - InputContext#left_released
+ *  - InputContext#down_pressed
+ *  - InputContext#down_repeated
+ *  - InputContext#down_released
+ *  - InputContext#right_pressed
+ *  - InputContext#right_repeated
+ *  - InputContext#right_released
+ *  - InputContext#action_pressed
+ *  - InputContext#action_repeated
+ *  - InputContext#action_released
+ *  - InputContext#alternate_pressed
+ *  - InputContext#alternate_repeated
+ *  - InputContext#alternate_released
+ *  - InputContext#back_pressed
+ *  - InputContext#back_repeated
+ *  - InputContext#back_released
  *
  * In addition to the button press actions above, there are calls to cursor position (InputContext#cursor_position) and
  * zoom level methods (InputContext#zoom), which can represent mouse and scroll wheel positions for keyboard input, or
  * right joystick positions for gamepads.
- *
- * In addition, stores information about how \m frequently an input should be processed - the input \p repeat_rate and
- * input \p repeat_delay. The former, annoyingly, is a misnomer and is not a rate but inverse rate or period. Rate just
- * sounded nicer.
  */
 class InputContext {
 public:
-    InputContext();
-
     /** Action method called on 'up' button press.
      * The default implementation does nothing. */
-    virtual void up() {};
+    virtual void up_pressed() {};
+    virtual void up_repeated() {};
+    virtual void up_released() {};
 
     /** Action method called on 'down' button press.
      * The default implementation does nothing. */
-    virtual void down() {};
+    virtual void down_pressed() {};
+    virtual void down_repeated() {};
+    virtual void down_released() {};
 
     /** Action method called on 'left' button press.
      * The default implementation does nothing. */
-    virtual void left() {};
+    virtual void left_pressed() {};
+    virtual void left_repeated() {};
+    virtual void left_released() {};
 
     /** Action method called on 'right' button press.
      * The default implementation does nothing. */
-    virtual void right() {};
+    virtual void right_pressed() {};
+    virtual void right_repeated() {};
+    virtual void right_released() {};
 
     /** Action method called on 'action' button press.
      * The default implementation does nothing. */
-    virtual void action() {};
+    virtual void action_pressed() {};
+    virtual void action_repeated() {};
+    virtual void action_released() {};
 
     /** Action method called on 'alternate action' button press.
      * The default implementation does nothing. */
-    virtual void alternate() {};
+    virtual void alternate_pressed() {};
+    virtual void alternate_repeated() {};
+    virtual void alternate_released() {};
 
     /** Action method called on 'back' button press.
      * The default implementation does nothing. */
-    virtual void back() {};
+    virtual void back_pressed() {};
+    virtual void back_repeated() {};
+    virtual void back_released() {};
 
     /** Action method called when cursor changes position (mouse, left joystick -> aiming things).
      * The default implementation does nothing. */
@@ -62,12 +84,4 @@ public:
     /** Action method called when zoom level changes.
      * The default implementation does nothing. */
     virtual void zoom(const arma::vec2 &pos) { (void) pos; }
-
-    void set_repeat_delay(int v);
-    [[nodiscard]] int get_repeat_delay() const;
-    void set_repeat_rate(int v);
-    [[nodiscard]] int get_repeat_rate() const;
-
-private:
-    int repeat_delay, repeat_rate;
 };

@@ -18,15 +18,15 @@ void Menu::add_item(MenuItem *item)
         this->set_selected(item);
 }
 
-void Menu::up() { if (this->selected) this->selected->up(); }
-void Menu::left() { if (this->selected) this->selected->left(); }
-void Menu::down() { if (this->selected) this->selected->down(); }
-void Menu::right() { if (this->selected) this->selected->right(); }
+void Menu::up_pressed() { if (this->selected) this->selected->up_pressed(); }
+void Menu::left_pressed() { if (this->selected) this->selected->left_pressed(); }
+void Menu::down_pressed() { if (this->selected) this->selected->down_pressed(); }
+void Menu::right_pressed() { if (this->selected) this->selected->right_pressed(); }
 
-void Menu::action() { if (this->selected) this->selected->action(); }
+void Menu::action_pressed() { if (this->selected) this->selected->action_pressed(); }
 
-void Menu::alternate() { if (this->selected) this->selected->alternate(); }
-void Menu::back() { if (this->selected) this->selected->back(); }
+void Menu::alternate_pressed() { if (this->selected) this->selected->alternate_pressed(); }
+void Menu::back_pressed() { if (this->selected) this->selected->back_pressed(); }
 
 void Menu::connect_vertical()
 {

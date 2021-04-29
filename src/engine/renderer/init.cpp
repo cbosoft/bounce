@@ -26,11 +26,6 @@ void Renderer::init(Game *g, int w, int h, const std::string &title)
     if (glewInit() != GLEW_OK)
         throw std::runtime_error("Failed to init GLEW.");
 
-
-    glfwSetInputMode(this->window, GLFW_STICKY_KEYS, GL_TRUE);
-    glfwSetInputMode(this->window, GLFW_STICKY_MOUSE_BUTTONS, GL_TRUE);
-    glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
     this->error_check("renderer init");
 
     this->varr = 0;
