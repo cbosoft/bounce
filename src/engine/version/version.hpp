@@ -3,8 +3,12 @@
 
 // From: https://github.com/andrew-hardin/cmake-git-version-tracking
 
-class GitMetadata {
+class VersionInfo {
 public:
+
+    static std::string version_string();
+
+private:
     // Is the metadata populated? We may not have metadata if
     // there wasn't a .git directory (e.g. downloaded source
     // code without revision history).
@@ -22,7 +26,4 @@ public:
     static std::string commit_body();
     static std::string describe();
     static std::string branch();
-
-    // derived from the above
-    static std::string version_string();
 };
