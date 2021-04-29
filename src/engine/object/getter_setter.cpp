@@ -108,3 +108,32 @@ void Object::set_layer(const std::string &layer)
 {
     this->_layer = layer;
 }
+
+const CollisionShape &Object::get_shape() const
+{
+    return this->_shape;
+}
+
+void Object::set_shape(const CollisionShape &shape)
+{
+    this->_shape = shape;
+
+    if (this->_renderable_collider) {
+        delete this->_renderable_collider;
+        this->_renderable_collider = nullptr;
+    }
+
+    switch (shape.get_type()) {
+        case ST_CIRCLE:
+            this->_renderable_collider = new RegularPolygonMeshRenderable(20);
+            break;
+        case ST_RECT:
+            this->_renderable_collider = new RectangleMeshRenderable(1, 1);
+            break;
+    }
+
+    this->_renderable_collider->set_parent(this);
+    this->_renderable_collider->set_colour(Colour::from_rgb(255, 255, 0, 127));
+    this->_renderable_collider->set_z(1000);
+}
+

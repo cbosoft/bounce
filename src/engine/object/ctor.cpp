@@ -4,7 +4,7 @@
 
 Object::Object(Transform *parent)
     :   Transform(parent)
-    ,   shape(CollisionShape::circle(0.5))
+    ,   _shape(CollisionShape::circle(0.5))
     ,   new_position({0, 0})
     ,   velocity({0, 0})
     ,   force({0, 0})
@@ -14,15 +14,10 @@ Object::Object(Transform *parent)
     ,   _layer("unset")
     ,   c(Colour::from_grayscale(255))
     ,   _fixed(false)
+    ,   _renderable_collider(nullptr)
 {
     // nothing
     PhysicsEngine::ref().register_object(this);
-
-    this->_renderable_collider = new RegularPolygonMeshRenderable(20);
-    this->_renderable_collider->set_parent(this);
-    this->_renderable_collider->set_size({this->shape.w, this->shape.h});
-    this->_renderable_collider->set_colour(Colour::from_rgb(255, 255, 0, 127));
-    this->_renderable_collider->set_z(1000);
 }
 
 Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double cor)

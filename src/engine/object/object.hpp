@@ -54,8 +54,11 @@ class Object : public Transform {
     [[nodiscard]] bool is_physics_object() const override { return true; }
     void get_renderables(std::list<const Renderable *> &out) const override;
 
-    CollisionShape shape; // TODO getter, setter
+    [[nodiscard]] const CollisionShape &get_shape() const;
+    void set_shape(const CollisionShape &shape);
+
   private:
+    CollisionShape _shape;
     arma::vec2 new_position;
     arma::vec2 velocity;
     arma::vec2 force;
