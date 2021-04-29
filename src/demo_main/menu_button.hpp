@@ -9,11 +9,12 @@ public:
     DemoMenuButton(Menu *parent, const std::string &label)
             : MenuItem(parent)
     {
-        this->bg = new RectangleMeshRenderable(60, 10);
+        this->bg = new RectangleMeshRenderable(1, 1);
         this->bg->set_colour(Colours::black);
         this->attach_renderable("bg", this->bg);
 
         this->txt = new TextRenderable(label, DEFAULT_FONT, 80);
+        this->bg->set_size(this->txt->measure() + 5.);
         this->attach_renderable("text", this->txt);
 
         //this->bg->set_border_size(0.01);

@@ -44,48 +44,82 @@ public:
 //     int _speed, _countdown;
 // };
 
+class AnimIcon final: public RectangleMeshRenderable {
+public:
+    AnimIcon()
+    :   RectangleMeshRenderable(20, 20)
+    ,   dtheta(0.01)
+    {
+        this->set_texture_name("icon");
+    }
+
+    void on_update() override
+    {
+        double theta = this->get_angle();
+        if (std::abs(theta) > 0.3)this->dtheta *= -1.0;
+        this->set_angle(theta + this->dtheta);
+    }
+private:
+    double dtheta;
+
+};
+
 class DemoMainMenu final: public Menu {
 public:
     explicit DemoMainMenu()
             :   Menu("menu")
     {
+        this->icon = new AnimIcon();
+        this->attach_renderable(this->icon);
+        this->icon->set_position({0, 40});
+
+        auto *txt = new TextRenderable("Bounce Demo Collection", DEFAULT_FONT, 150);
+        txt->set_colour(Colour::from_rgb(240, 240, 220));
+        txt->set_position({0, 20});
+        this->attach_renderable(txt);
+
         {
-            auto *b = new DemoMenuButton(this, "start!");
-            b->set_position({-20, 10});
+            auto *b = new DemoMenuButton(this, "space shooter (pew pew)");
+            b->set_position({0, 0});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::free_roam_callback);
         }
         {
-            auto *b = new DemoMenuButton(this, "platformer");
-            b->set_position({20, 10});
+            auto *b = new DemoMenuButton(this, "platformer (jump around)");
+            b->set_position({0, -15});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::platformer_cb);
         }
         {
+            auto *b = new DemoMenuButton(this, "demo #3");
+            b->set_position({0, -30});
+            this->add_item(b);
+            // TODO b->set_callback_action(DemoMainMenu::/* callback */);
+        }
+        {
+            auto *b = new DemoMenuButton(this, "demo #4");
+            b->set_position({0, -45});
+            this->add_item(b);
+            // TODO b->set_callback_action(DemoMainMenu::/* callback */);
+        }
+        {
             auto *b = new DemoMenuButton(this, "quit");
-            b->set_position({0, -10});
+            b->set_position({0, -60});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::quit_callback);
         }
-
-        this->connect_vertical();
 
         this->cursor = new MenuCursor(this);
         this->cursor->set_position({10, 0});
         this->attach_renderable("cursor", this->cursor);
 
-        auto *txt = new TextRenderable("Demonstration Game", DEFAULT_FONT, 150);
-        txt->set_colour(Colours::blue);
-        txt->set_position({0, 30});
-        this->attach_renderable(txt);
-
-        auto *tagline = new TextRenderable("A demo of the powers of the great and powerful", DEFAULT_FONT, 50);
+        auto *tagline = new TextRenderable("A demonstration of the great and powerful", DEFAULT_FONT, 50);
         tagline->set_colour(Colour::from_grayscale(127));
-        tagline->set_position({0, -50});
+        tagline->set_position({0, -70});
         this->attach_renderable(tagline);
         auto *tagline2 = new TextRenderable("BounceEngine", DEFAULT_FONT, 80);
         tagline2->set_colour(Colour::from_grayscale(200));
-        tagline2->set_position({0, -60});
+        tagline2->set_position({0, -80});
         this->attach_renderable(tagline2);
 
         auto *bg = new RectangleMeshRenderable(500, 300);
@@ -162,4 +196,5 @@ public:
 
 private:
     MenuCursor *cursor;
+    MeshRenderable *icon;
 };

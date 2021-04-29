@@ -31,9 +31,11 @@ public:
         auto *gravity = new UnboundedLinearForceField(0, 0, 0, -10);
         this->add_field(gravity);
 
-        Game::ref().show_colliders();
         this->get_active_camera()->set_parent(this->player);
     }
+
+    void on_activate() override { Game::ref().show_colliders(); }
+    void on_deactivate() override { Game::ref().hide_colliders(); }
 
     void back() override { Game::ref().pop_active_scene(); }
 
