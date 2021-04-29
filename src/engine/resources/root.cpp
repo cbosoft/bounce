@@ -29,4 +29,6 @@ void ResourceManager::set_root()
         this->_root = provisional_root;
         return;
     }
+
+    // TODO no resources dir found: error?
 }
