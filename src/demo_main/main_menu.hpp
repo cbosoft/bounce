@@ -51,9 +51,15 @@ public:
     {
         {
             auto *b = new DemoMenuButton(this, "start!");
-            b->set_position({0, 10});
+            b->set_position({-20, 10});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::free_roam_callback);
+        }
+        {
+            auto *b = new DemoMenuButton(this, "platformer");
+            b->set_position({20, 10});
+            this->add_item(b);
+            b->set_callback_action(DemoMainMenu::platformer_cb);
         }
         {
             auto *b = new DemoMenuButton(this, "quit");
@@ -119,6 +125,11 @@ public:
     static void free_roam_callback(MenuItem *i)
     {
         Game::ref().add_event(new PushSceneTransitionEvent("demo space shooter"));
+    }
+
+    static void platformer_cb(MenuItem *i)
+    {
+        Game::ref().add_event(new PushSceneTransitionEvent("demo platformer"));
     }
 
     void cursor_position(const arma::vec2 &p) override
