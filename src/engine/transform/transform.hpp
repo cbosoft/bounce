@@ -18,7 +18,7 @@ public:
     arma::vec2 get_position() const;
 
     void set_relative_position(const arma::vec2 &relative_position);
-    void set_position(const arma::vec2 &position);
+    virtual void set_position(const arma::vec2 &position);
 
     const Transform *get_root() const;
     void set_parent(Transform *parent);

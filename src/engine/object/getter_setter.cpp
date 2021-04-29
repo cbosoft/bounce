@@ -41,6 +41,12 @@ void Object::set_force(const arma::vec2 &&_force)
     this->force = _force;
 }
 
+void Object::set_position(const arma::vec2 &position)
+{
+    this->new_position = position;
+    Transform::set_position(position);
+}
+
 const arma::vec2 &Object::get_new_position() const
 {
     return this->new_position;
