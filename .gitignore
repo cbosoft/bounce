@@ -26,3 +26,4 @@ cmake-build-debug
 *.ttf
 *.png
 *.json
+*.aseprite
