@@ -66,6 +66,7 @@ Scene *Game::get_active_scene() const
 Scene *Game::pop_active_scene()
 {
     auto *s = this->scene_stack.top();
+    s->on_deactivate();
     this->scene_stack.pop();
     Scene *active = this->get_active_scene();
     if (active) {
