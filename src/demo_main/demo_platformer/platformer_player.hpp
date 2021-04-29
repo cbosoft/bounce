@@ -10,30 +10,40 @@ public:
         ,   _jump{false}
     {
         this->set_shape(CollisionShape::rectangle(1, 1));
-        this->set_friction(0.9);
         this->set_bounciness(0.1);
+        this->set_friction(0.01);
     }
 
-    void left() { this->_dir -= 1.0; }
-    void right() { this->_dir += 1.0; }
+    void left() { this->_dir = -1.0; }
+    void right() { this->_dir = 1.0; }
     void jump() { this->_jump = true; }
 
     void on_collision(Object *other) override
     {
-        std::cerr << "colliding!" << std::endl;
-        this->_can_jump = true;
+        this->_on_ground = true;
+    }
+
+    void on_update() override
+    {
+        this->_dir = 0.0;
+        this->_on_ground = false;
     }
 
     void on_physics_update() override
     {
-        if (this->_can_jump && this->_jump) {
-            this->_can_jump = this->_jump = false;
-            this->add_force({0.0, 1e3});
+        double fy = 0.0;
+        if (this->_on_ground && this->_jump) {
+            this->_on_ground = this->_jump = false;
+            fy = 1.5e4;
         }
-        this->set_velocity({this->_dir*10.0, 0.0});
+
+        double spd_mult = this->_on_ground ? 1.0 : 0.1;
+        this->add_force({this->_dir*300.0*spd_mult, fy});
+
+        this->_on_ground = false;
     }
 
 private:
     double _dir;
-    bool _jump, _can_jump;
+    bool _jump, _on_ground;
 };

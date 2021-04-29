@@ -1,5 +1,4 @@
 #include "../engine/bounce.hpp"
-#include "../version.hpp"
 
 #include "main_menu.hpp"
 #include "demo_space_shooter/free_roam.hpp"
@@ -8,7 +7,6 @@
 
 int main()
 {
-    std::cerr << GitMetadata::version_string() << std::endl;
     auto &game = Game::ref();
     Renderer &r = Renderer::get();
     r.set_max_fps(100);
