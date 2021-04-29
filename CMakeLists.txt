@@ -7,8 +7,8 @@ cmake_minimum_required(VERSION 3.0)
 
 # Define the two required variables before including
 # the source code for watching a git repository.
-set(PRE_CONFIGURE_FILE "src/version.cpp.in")
-set(POST_CONFIGURE_FILE "src/version.cpp")
+set(PRE_CONFIGURE_FILE "src/engine/version/version.cpp.in")
+set(POST_CONFIGURE_FILE "src/engine/version/version.cpp")
 include(git_watcher.cmake)
 
 # Create a library out of the compiled post-configure file.
