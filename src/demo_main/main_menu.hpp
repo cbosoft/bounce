@@ -192,7 +192,7 @@ public:
         check_select_buttons();
     }
 
-    void back() override { Game::ref().quit(); };
+    void back_pressed() override { Game::ref().quit(); };
 
 private:
     MenuCursor *cursor;

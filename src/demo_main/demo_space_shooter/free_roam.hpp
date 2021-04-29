@@ -50,15 +50,20 @@ public:
         (void) enemy;
     }
 
-    void up() override { this->player->up(); }
-    void left() override { this->player->left(); }
-    void down() override { this->player->down(); }
-    void right() override { this->player->right(); }
+    void up_pressed() override { this->player->up_pressed(); }
+    void up_released() override { this->player->up_released(); }
+    void left_pressed() override { this->player->left_pressed(); }
+    void left_released() override { this->player->left_released(); }
+    void down_pressed() override { this->player->down_pressed(); }
+    void down_released() override { this->player->down_released(); }
+    void right_pressed() override { this->player->right_pressed(); }
+    void right_released() override { this->player->right_released(); }
 
-    void action() override { this->player->shoot(); }
-    void alternate() override { }
+    void action_pressed() override { this->player->shoot(); }
+    void action_released() override { this->player->dont_shoot(); }
+    void alternate_pressed() override { }
 
-    void back() override { Game::ref().add_event(new PopSceneTransitionEvent()); }
+    void back_pressed() override { Game::ref().add_event(new PopSceneTransitionEvent()); }
 
     void cursor_position(const arma::vec2 &p) override
     {

@@ -23,8 +23,9 @@ project(Bounce)
 set(EXE bounce)
 
 file(GLOB_RECURSE COMMON_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/engine/*.cpp")
+file(GLOB_RECURSE DEMO_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/demo_main/*.cpp")
 
-add_executable(${EXE} src/demo_main/main.cpp ${COMMON_SOURCES})
+add_executable(${EXE} ${DEMO_SOURCES} ${COMMON_SOURCES})
 target_link_libraries(bounce git)
 
 set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 17)
