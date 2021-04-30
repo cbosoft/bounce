@@ -91,10 +91,10 @@ public:
             b->set_callback_action(DemoMainMenu::platformer_cb);
         }
         {
-            auto *b = new DemoMenuButton(this, "demo #3");
+            auto *b = new DemoMenuButton(this, "music (doo bee doo)");
             b->set_position({0, -30});
             this->add_item(b);
-            // TODO b->set_callback_action(DemoMainMenu::/* callback */);
+            b->set_callback_action(DemoMainMenu::music_cb);
         }
         {
             auto *b = new DemoMenuButton(this, "demo #4");
@@ -166,6 +166,11 @@ public:
         Game::ref().add_event(new PushSceneTransitionEvent("demo platformer"));
     }
 
+    static void music_cb(MenuItem *i)
+    {
+        Game::ref().add_event(new PushSceneTransitionEvent("demo music"));
+    }
+
     void cursor_position(const arma::vec2 &p) override
     {
         arma::vec2 wrld = Renderer::get().screen_pos_to_world_pos(p);
@@ -190,6 +195,11 @@ public:
     void on_update() override
     {
         check_select_buttons();
+    }
+
+    void on_activate() override
+    {
+        Renderer::get().set_screen_effect("crt");
     }
 
     void back_pressed() override { Game::ref().quit(); };

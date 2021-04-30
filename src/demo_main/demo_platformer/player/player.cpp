@@ -18,8 +18,7 @@ void DemoPlatformerPlayer::right_released() { this->_dir -= 1.; }
 
 void DemoPlatformerPlayer::jump_pressed()
 {
-    this->_jump = true;
-    std::cerr << "jump!" << std::endl;
+    this->_jump = this->_on_ground;
 }
 
 void DemoPlatformerPlayer::on_update()

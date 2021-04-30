@@ -52,6 +52,7 @@ public:
 
     void on_activate() override
     {
+        Renderer::get().set_screen_effect("crt");
         if (!this->_tut_shown) {
             Game::ref().add_event(new PushSceneTransitionEvent("space shooter tutorial"));
             this->_tut_shown = true;
