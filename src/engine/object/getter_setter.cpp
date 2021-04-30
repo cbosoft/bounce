@@ -128,7 +128,6 @@ void Object::set_shape(const CollisionShape &shape)
     }
 
     this->_renderable_collider->set_parent(this);
-    this->_renderable_collider->set_colour(Colour::from_rgb(255, 255, 0, 127));
     this->_renderable_collider->set_z(1000);
 }
 
