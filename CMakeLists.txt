@@ -67,6 +67,10 @@ target_compile_definitions(${EXE} PRIVATE RESOURCES_DIR="${RESOURCES_DIR}")
 target_link_libraries(${EXE} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${EXTRA_LIBS})
 include_directories(${OPENGL_INCLUDE_DIR} ${GLFW_INCLUDE_DIR} ${GLEW_INCLUDE_DIR})
 
+find_package(portaudio REQUIRED)
+include_directories(/usr/local/include)
+target_link_libraries(${EXE} portaudio)
+
 if(MSVC)
     target_compile_options(${EXE} PRIVATE /W4 /WX)
 else()

@@ -14,6 +14,7 @@ Game::Game()
   , _visible_colliders(false)
   , physics(PhysicsEngine::ref())
   , renderer(Renderer::get())
+  , sound(SoundManager::ref())
 {
     Logger::ref() << LL_INFO << VersionInfo::version_string();
     this->renderer.init(this, 1280, 960, "bounce");

@@ -10,6 +10,7 @@
 #include "../input/manager.hpp"
 #include "../scene/scene.hpp"
 #include "../event/event.hpp"
+#include "../sound/manager/manager.hpp"
 
 /**
  * Game - singleton object managing the general running of the game.
@@ -70,6 +71,7 @@ private:
 
     PhysicsEngine &physics;
     Renderer &renderer;
+    SoundManager &sound;
 
     std::vector<Scene *> scene_stack;
     std::list<Event *> events;
