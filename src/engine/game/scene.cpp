@@ -15,7 +15,7 @@ void Game::add_scene(Scene *scene)
 {
     this->scenes_by_name[scene->get_name()] = scene;
     if (this->get_active_scene() == nullptr) {
-        this->scene_stack.push(scene);
+        this->scene_stack.push_back(scene);
         Logger::ref() << LL_INFO << "Active scene set to \"" << scene->get_name() << "\".\n";
         scene->on_activate();
     }
@@ -37,7 +37,7 @@ void Game::push_active_scene(const std::string &scene_name)
     auto it = this->scenes_by_name.find(scene_name);
     if (it != this->scenes_by_name.end()) {
         Scene *scene = it->second;
-        this->scene_stack.push(scene);
+        this->scene_stack.push_back(scene);
         Logger::ref() << LL_INFO << "Pushed scene. Active scene now \"" << scene_name << "\".\n";
         scene->on_activate();
     }
@@ -55,7 +55,7 @@ Scene *Game::get_active_scene() const
     if (this->scene_stack.empty()) {
         return nullptr;
     }
-    return this->scene_stack.top();
+    return this->scene_stack.back();
 }
 
 /**
@@ -65,13 +65,13 @@ Scene *Game::get_active_scene() const
  */
 Scene *Game::pop_active_scene()
 {
-    auto *s = this->scene_stack.top();
+    auto *s = this->scene_stack.back();
     s->on_deactivate();
-    this->scene_stack.pop();
+    this->scene_stack.pop_back();
     Scene *active = this->get_active_scene();
     if (active) {
         Logger::ref() << LL_INFO << "Popped active scene; active scene now \"" << active->get_name() << "\".\n";
-        this->scene_stack.top()->on_activate();
+        this->scene_stack.back()->on_activate();
     }
     else {
         Logger::ref() << LL_INFO << "Popped active scene; no scene active. Quitting.\n";
@@ -79,3 +79,23 @@ Scene *Game::pop_active_scene()
     }
     return s;
 }
+
+/**
+ * Get a list of scenes to be rendered.
+ *
+ * This will normally just be a list containing a single entry: the active scene. If the active scene doesn't cover the
+ * screen (i.e. it is marked "insubstantial" - Scene::is_insubstantial), then a lower Scene on the active stack needs to
+ * be included to fill in the gaps.
+ *
+ * This is to allow a pop-up menu which takes over as active scene, but with a gameplay scene still rendered behind it.
+ */
+ std::list<Scene*> Game::get_scenes_to_be_rendered() const
+ {
+     std::list<Scene *> rv;
+     for (auto it = this->scene_stack.rbegin(); it != this->scene_stack.rend(); it++) {
+         rv.push_front(*it);
+         if (!(*it)->is_insubstantial())
+             break;
+     }
+     return rv;
+ }

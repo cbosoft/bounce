@@ -31,7 +31,6 @@ void Renderer::render()
 
     // Call update action on transforms in active scene.
     this->game->get_active_scene()->update();
-    this->update_shader_uniforms();
 
     this->set_target_to_texture(this->txt);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -42,16 +41,8 @@ void Renderer::render()
     glfwGetWindowSize(this->window, &w, &h);
     this->set_window_size(w, h);
 
-    // draw zsorted renderables
-    Scene *scene = this->game->get_active_scene();
-    if (scene) {
-        std::list<const Renderable *> rbls;
-        scene->get_renderables(rbls);
-        rbls.sort(Renderable::z_sort);
-        for (auto *rbl : rbls) {
-            if (rbl && rbl->get_visible())
-                rbl->draw();
-        }
+    for (const Scene *scene :this->game->get_scenes_to_be_rendered()) {
+        this->render_scene(scene);
     }
 
     // draw quad to screen
@@ -73,9 +64,8 @@ void Renderer::render()
 }
 
 
-void Renderer::update_shader_uniforms() const
+void Renderer::update_shader_uniforms(const RectTransform *camera) const
 {
-    RectTransform *camera = this->game->get_active_scene()->get_active_camera();
     arma::vec2 position = camera->get_position(), size = camera->get_size(), w = this->window_size;
     for (const auto &kv : this->shaders) {
         GLuint shader_id = kv.second;
@@ -109,4 +99,20 @@ void Renderer::set_shader_filter_kernel(GLuint shader_id, float kernel_norm, con
     if (loc != -1) glUniform3f(loc, args[3], args[4], args[5]);
     loc = glGetUniformLocation(shader_id, "kernel_c");
     if (loc != -1) glUniform3f(loc, args[6], args[7], args[8]);
+}
+
+void Renderer::render_scene(const Scene *scene)
+{
+    if (scene) {
+        this->update_shader_uniforms(scene->get_active_camera());
+
+        // draw zsorted renderables
+        std::list<const Renderable *> rbls;
+        scene->get_renderables(rbls);
+        rbls.sort(Renderable::z_sort);
+        for (auto *rbl : rbls) {
+            if (rbl && rbl->get_visible())
+                rbl->draw();
+        }
+    }
 }

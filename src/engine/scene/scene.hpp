@@ -22,11 +22,16 @@ public:
     void add_field(ForceField *field);
     const std::vector<ForceField *> &get_fields() const;
 
+    bool is_insubstantial() const;
+
     void set_active_camera(const std::string &name);
     void add_camera(const std::string &name, RectTransform *t);
     RectTransform *new_camera(const std::string &name);
     void remove_camera(const std::string &name);
     RectTransform *get_active_camera() const;
+
+protected:
+    bool _insubstantial;
 
 private:
     std::vector<ForceField *> _fields;

@@ -43,6 +43,9 @@ class Game {
     /* Return the current scene on top of the stack - the active scene.*/
     [[nodiscard]] Scene *get_active_scene() const;
 
+    /* Get a list of scenes which need rendering. */
+    [[nodiscard]] std::list<Scene *>get_scenes_to_be_rendered() const;
+
     /* Add a scene to the game. The Scene ptr is owned by the game.*/
     void add_scene(Scene *scene);
 
@@ -68,7 +71,7 @@ private:
     PhysicsEngine &physics;
     Renderer &renderer;
 
-    std::stack<Scene *> scene_stack;
+    std::vector<Scene *> scene_stack;
     std::list<Event *> events;
     std::vector<Object *> all_objects;
     std::map<std::string, Scene *> scenes_by_name;

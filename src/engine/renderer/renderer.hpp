@@ -11,6 +11,7 @@
 
 #include "texture/texture.hpp"
 #include "../object/object.hpp"
+#include "../transform/rect/rect.hpp"
 
 struct Vertex {
     float x, y, z;
@@ -22,6 +23,7 @@ typedef std::chrono::system_clock _RDR_CLOCK_T;
 typedef _RDR_CLOCK_T::time_point _RDR_TIME_PT_T;
 
 class Game;
+class Scene;
 class Renderer {
 public:
     Renderer(const Renderer &other) =delete;
@@ -60,9 +62,10 @@ public:
 private:
     Renderer();
 
+    void render_scene(const Scene *scene);
     bool should_render();
 
-    void update_shader_uniforms() const;
+    void update_shader_uniforms(const RectTransform *camera) const;
 
     GLuint get_screen_effect() const;
 
