@@ -13,7 +13,7 @@ public:
     DemoSpaceShooter()
             : Scene("demo space shooter")
     {
-        this->player = new DemoPlayer(this, {30, 0});
+        this->player = new DemoPlayer(this, {0, 0});
         auto *cam = this->get_active_camera();
         cam->set_parent(this->player);
 
@@ -28,11 +28,11 @@ public:
         this->attach_renderable("FPS counter", this->fpscntr);
         this->fpscntr->set_parent(cam->get_bl());
 
-        this->pos = new TextRenderable("<pos>", DEFAULT_FONT, 100);
-        this->pos->set_alignment(HA_right, VA_bottom);
-        this->pos->set_position({-5, 5});
-        this->attach_renderable("position counter", this->pos);
-        this->pos->set_parent(cam->get_br());
+        auto *tut = new TextRenderable("<WASD>: move  <mouse>: aim  <lclick>: shoot  <esc>: back to menu", DEFAULT_FONT, 30);
+        tut->set_alignment(HA_right, VA_bottom);
+        tut->set_position({-5, 5});
+        this->attach_renderable("position counter", tut);
+        tut->set_parent(cam->get_br());
 
         auto *bg = new RectangleMeshRenderable(400, 400);
         bg->set_colour(Colour::from_rgb(0, 0, 30));
@@ -48,6 +48,20 @@ public:
 
         auto *enemy = new DemoEnemy(this, {100, 100}, this->player);
         (void) enemy;
+    }
+
+    void on_activate() override
+    {
+        if (!this->_tut_shown) {
+            Game::ref().add_event(new PushSceneTransitionEvent("space shooter tutorial"));
+            this->_tut_shown = true;
+            this->score_display->hide();
+            this->fpscntr->hide();
+        }
+        else {
+            this->score_display->show();
+            this->fpscntr->show();
+        }
     }
 
     void up_pressed() override { this->player->up_pressed(); }
@@ -76,15 +90,6 @@ public:
         ss << "FPS: " << Renderer::get().get_fps();
         std::string s = ss.str();
         this->fpscntr->set_text(s);
-    }
-
-    void update_player_pos_vel(const arma::vec2 &p)
-    {
-        const auto &v = this->player->get_velocity();
-        std::stringstream ss;
-        ss << int(p[0]) << "." << int(p[1]) << ">>" << int(v[0]) << "." << int(v[1]);
-        std::string s = ss.str();
-        this->pos->set_text(s);
     }
 
     void update_player_score()
@@ -170,13 +175,10 @@ public:
     {
         this->update_fps_status();
         const auto &p = this->player->get_position();
-        this->update_player_pos_vel(p);
         this->update_player_score();
         this->check_update_map(p);
         this->position_reticule();
         this->maybe_dispatch_new_enemy();
-
-        std::cerr << this->count() << std::endl;
     }
 
 private:
@@ -186,11 +188,12 @@ private:
         cell->attach_renderable(star);
     }
 
+    bool _tut_shown = false;
     double cell_size = 500.0;
     std::map<std::tuple<int, int>, Transform *> _cells;
     arma::vec2 _cursor_window_position;
 
     DemoPlayer *player;
     DemoReticule *reticule;
-    TextRenderable *fpscntr, *pos, *score_display;
+    TextRenderable *fpscntr, *score_display;
 };
