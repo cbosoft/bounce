@@ -84,4 +84,12 @@ public:
     /** Action method called when zoom level changes.
      * The default implementation does nothing. */
     virtual void zoom(const arma::vec2 &pos) { (void) pos; }
+
+    /**
+     * Action method called when a key mapped to an alphanumeric character is pressed and if text_mode is set.
+     * @param c The character sent by the key.
+     */
+    virtual void key_char_pressed(char c){ (void)c; }
+    virtual void key_char_repeated(char c){ (void)c; }
+    virtual void key_char_released(char c){ (void)c; }
 };

@@ -19,6 +19,8 @@ struct InputState
     ButtonState action, alternative, back;
     bool cursor_moved, zoomed;
     arma::vec2 cursor, zoom;
+    ButtonState char_state;
+    char ch;
 };
 
 class Game;

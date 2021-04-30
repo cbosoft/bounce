@@ -61,6 +61,12 @@ void InputManager::run_input_state(const InputState &input_state)
             case BTN_REPEATED: context->back_repeated(); break;
             case BTN_RELEASED: context->back_released(); break;
         }
+        switch (input_state.char_state) {
+            case BTN_NULL:                               break;
+            case BTN_PRESSED:  context->key_char_pressed(input_state.ch);  break;
+            case BTN_REPEATED: context->key_char_repeated(input_state.ch); break;
+            case BTN_RELEASED: context->key_char_released(input_state.ch); break;
+        }
 
         if (input_state.cursor_moved) context->cursor_position(input_state.cursor);
         if (input_state.zoomed) context->zoom(input_state.zoom);
