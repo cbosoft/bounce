@@ -62,6 +62,8 @@ class Game {
     void show_colliders();
     void hide_colliders();
     bool should_show_colliders() const;
+    void set_name(const std::string &name);
+    const std::string &get_name() const;
 
 protected:
     Game();
@@ -78,4 +80,6 @@ private:
     std::vector<Object *> all_objects;
     std::map<std::string, Scene *> scenes_by_name;
     std::list<Transform *> graveyard;
+
+    std::string _name;
 };

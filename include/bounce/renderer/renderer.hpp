@@ -59,6 +59,8 @@ public:
 
     arma::vec2 screen_pos_to_world_pos(const arma::vec2 &screen_pos) const;
 
+    void set_window_name(const std::string &name) const;
+
 private:
     Renderer();
 

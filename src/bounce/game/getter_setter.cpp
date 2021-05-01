@@ -14,3 +14,14 @@ bool Game::should_show_colliders() const
 {
     return this->_visible_colliders;
 }
+
+void Game::set_name(const std::string &name)
+{
+    this->_name = name;
+    Renderer::get().set_window_name(name);
+}
+
+const std::string &Game::get_name() const
+{
+    return this->_name;
+}

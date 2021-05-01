@@ -37,3 +37,9 @@ const arma::vec2 &Renderer::get_window_size() const
 {
     return this->window_size;
 }
+
+void Renderer::set_window_name(const std::string &name) const
+{
+    const char *title_cstr = name.c_str();
+    glfwSetWindowTitle(this->window, title_cstr);
+}
