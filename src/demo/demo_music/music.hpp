@@ -7,55 +7,57 @@ public:
     DemoMusic()
     : Scene("demo music")
     {
-        this->sounds['1'] = new Tone(105);
-        this->sounds['q'] = new Tone(155);
-        this->sounds['a'] = new Tone(205);
-        this->sounds['z'] = new Tone(255);
+        this->sounds['1'] = new Tone(NOTE_A,       4);
+        this->sounds['2'] = new Tone(NOTE_A_SHARP, 4);
+        this->sounds['3'] = new Tone(NOTE_B,       4);
+        this->sounds['4'] = new Tone(NOTE_C,       4);
+        this->sounds['5'] = new Tone(NOTE_C_SHARP, 4);
+        this->sounds['6'] = new Tone(NOTE_D,       4);
+        this->sounds['7'] = new Tone(NOTE_D_SHARP, 4);
+        this->sounds['8'] = new Tone(NOTE_E,       4);
+        this->sounds['9'] = new Tone(NOTE_F,       4);
+        this->sounds['0'] = new Tone(NOTE_F_SHARP, 4);
+        this->sounds['-'] = new Tone(NOTE_G,       4);
+        this->sounds['='] = new Tone(NOTE_G_SHARP, 4);
 
-        this->sounds['2'] = new Tone(305);
-        this->sounds['w'] = new Tone(355);
-        this->sounds['s'] = new Tone(405);
-        this->sounds['x'] = new Tone(455);
+        this->sounds['q'] = new Tone(NOTE_A,       5);
+        this->sounds['w'] = new Tone(NOTE_A_SHARP, 5);
+        this->sounds['e'] = new Tone(NOTE_B,       5);
+        this->sounds['r'] = new Tone(NOTE_C,       5);
+        this->sounds['t'] = new Tone(NOTE_C_SHARP, 5);
+        this->sounds['y'] = new Tone(NOTE_D,       5);
+        this->sounds['u'] = new Tone(NOTE_D_SHARP, 5);
+        this->sounds['i'] = new Tone(NOTE_E,       5);
+        this->sounds['o'] = new Tone(NOTE_F,       5);
+        this->sounds['p'] = new Tone(NOTE_F_SHARP, 5);
+        this->sounds['['] = new Tone(NOTE_G,       5);
+        this->sounds[']'] = new Tone(NOTE_G_SHARP, 5);
 
-        this->sounds['3'] = new Tone(505);
-        this->sounds['e'] = new Tone(555);
-        this->sounds['d'] = new Tone(605);
-        this->sounds['c'] = new Tone(655);
+        this->sounds['a'] = new Tone(NOTE_A,       6);
+        this->sounds['s'] = new Tone(NOTE_A_SHARP, 6);
+        this->sounds['d'] = new Tone(NOTE_B,       6);
+        this->sounds['f'] = new Tone(NOTE_C,       6);
+        this->sounds['g'] = new Tone(NOTE_C_SHARP, 6);
+        this->sounds['h'] = new Tone(NOTE_D,       6);
+        this->sounds['j'] = new Tone(NOTE_D_SHARP, 6);
+        this->sounds['k'] = new Tone(NOTE_E,       6);
+        this->sounds['l'] = new Tone(NOTE_F,       6);
+        this->sounds[';'] = new Tone(NOTE_F_SHARP, 6);
+        this->sounds['\''] = new Tone(NOTE_G,       6);
+        this->sounds['\\'] = new Tone(NOTE_G_SHARP, 6);
 
-        this->sounds['4'] = new Tone(705);
-        this->sounds['r'] = new Tone(755);
-        this->sounds['f'] = new Tone(805);
-        this->sounds['v'] = new Tone(855);
-
-        this->sounds['5'] =  new Tone(905);
-        this->sounds['t'] =  new Tone(955);
-        this->sounds['g'] = new Tone(1005);
-        this->sounds['b'] = new Tone(1055);
-
-        this->sounds['6'] = new Tone(1105);
-        this->sounds['y'] = new Tone(1155);
-        this->sounds['h'] = new Tone(1205);
-        this->sounds['n'] = new Tone(1255);
-
-        this->sounds['7'] = new Tone(1305);
-        this->sounds['u'] = new Tone(1355);
-        this->sounds['j'] = new Tone(1405);
-        this->sounds['m'] = new Tone(1455);
-
-        this->sounds['8'] = new Tone(1505);
-        this->sounds['i'] = new Tone(1555);
-        this->sounds['k'] = new Tone(1505);
-        this->sounds[','] = new Tone(1555);
-
-        this->sounds['9'] = new Tone(1605);
-        this->sounds['o'] = new Tone(1655);
-        this->sounds['l'] = new Tone(1705);
-        this->sounds['.'] = new Tone(1755);
-
-        this->sounds['0'] = new Tone(1805);
-        this->sounds['p'] = new Tone(1855);
-        this->sounds[';'] = new Tone(1905);
-        this->sounds['/'] = new Tone(1955);
+        this->sounds['`'] = new Tone(NOTE_A,       7);
+        this->sounds['z'] = new Tone(NOTE_A_SHARP, 7);
+        this->sounds['x'] = new Tone(NOTE_B,       7);
+        this->sounds['c'] = new Tone(NOTE_C,       7);
+        this->sounds['v'] = new Tone(NOTE_C_SHARP, 7);
+        this->sounds['b'] = new Tone(NOTE_D,       7);
+        this->sounds['n'] = new Tone(NOTE_D_SHARP, 7);
+        this->sounds['m'] = new Tone(NOTE_E,       7);
+        this->sounds[','] = new Tone(NOTE_F,       7);
+        this->sounds['.'] = new Tone(NOTE_F_SHARP, 7);
+        this->sounds['/'] = new Tone(NOTE_G,       7);
+        //this->sounds[''] = new Tone(NOTE_G_SHARP, 7);
 
         auto *note = new TextRenderable("Mash the keys!", DEFAULT_FONT, 100);
         this->attach_renderable(note);
