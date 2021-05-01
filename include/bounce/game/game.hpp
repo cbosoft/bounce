@@ -91,9 +91,9 @@ class Game {
      * @returns The value of the varaible.
      * */
     template<typename T>
-    T get_state_value(const std::string &name)
+    T get_state_value(const std::string &category, const std::string &name)
     {
-        return T(this->_state[name]);
+        return T(this->_state[category][name]);
     }
 
     /**
@@ -110,9 +110,9 @@ class Game {
      * @param v The value of the variable.
      * */
     template<typename T>
-    void set_state_value(const std::string &name, const T &v)
+    void set_state_value(const std::string &category, const std::string &name, const T &v)
     {
-        this->_state[name] = v;
+        this->_state[category][name] = v;
     }
 
     /**
@@ -129,9 +129,9 @@ class Game {
      * @returns The value of the variable.
      * */
     template<typename T>
-    T get_settings_value(const std::string &name)
+    T get_settings_value(const std::string &category, const std::string &name)
     {
-        return T(this->_settings[name]);
+        return T(this->_settings[category][name]);
     }
 
     /**
@@ -148,9 +148,9 @@ class Game {
      * @param v The value of the variable.
      * */
     template<typename T>
-    void set_settings_value(const std::string &name, const T &v)
+    void set_settings_value(const std::string &category, const std::string &name, const T &v)
     {
-        this->_settings[name] = v;
+        this->_settings[category][name] = v;
         this->save_settings();
     }
 
