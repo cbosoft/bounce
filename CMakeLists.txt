@@ -1,9 +1,15 @@
+###################################################################################################
+# Some settings
+
 cmake_minimum_required(VERSION 3.0)
 
-include_directories(RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include)
+if(MSVC)
+    add_compile_options(/W4 /WX)
+else()
+    add_compile_options(-O2 -Wall -Wextra -pedantic -Werror -Wno-unused-parameter)
+endif()
 
-###################################################################################################
-# VERSION
+include_directories(RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include)
 
 # powered by git_watcher.cmake; from https://github.com/andrew-hardin/cmake-git-version-tracking
 
@@ -23,22 +29,16 @@ add_dependencies(git check_git)
 
 project(Bounce)
 set(LIB bounce)
-set(EXE bounce-demo)
 
 file(GLOB_RECURSE LIBRARY_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/bounce/*.cpp")
 
 add_library(${LIB} STATIC ${LIBRARY_SOURCES})
+target_compile_definitions(${LIB} PRIVATE RESOURCES_DIR="${RESOURCES_DIR}")
 set_property(TARGET ${LIB} PROPERTY CXX_STANDARD 20)
 target_link_libraries(${LIB} git)
 
 ###################################################################################################
-## DEMO
-
-file(GLOB_RECURSE DEMO_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/demo/*.cpp")
-add_executable(${EXE} ${DEMO_SOURCES} ${COMMON_SOURCES})
-set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 20)
-
-target_link_libraries(${EXE} ${LIB})
+## EXTERNAL LIBRARIES
 
 find_package(Armadillo REQUIRED)
 set(OpenGL_GL_PREFERENCE GLVND)
@@ -46,15 +46,15 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
 include_directories(${ARMADILLO_INCLUDE_DIRS})
-target_link_libraries(${EXE} ${ARMADILLO_LIBRARIES})
+list(APPEND EXT_LIB ${ARMADILLO_LIBRARIES})
 
 find_package(Freetype REQUIRED)
 include_directories(${FREETYPE_INCLUDE_DIRS})
-target_link_libraries(${EXE} ${FREETYPE_LIBRARIES})
+list(APPEND EXT_LIB ${FREETYPE_LIBRARIES})
 set(GLFW_LIB glfw)
 
 find_package(nlohmann_json REQUIRED)
-target_link_libraries(${EXE} nlohmann_json::nlohmann_json)
+list(APPEND EXT_LIB ${nlohmann_json_LIBRARIES})
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL Darwin)
     message("System is MacOS.")
@@ -73,32 +73,37 @@ else()
     message("UNKNOWN SYSTEM!")
 endif()
 
-target_compile_definitions(${EXE} PRIVATE RESOURCES_DIR="${RESOURCES_DIR}")
-target_link_libraries(${EXE} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${EXTRA_LIBS})
+list(APPEND EXT_LIB ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${EXTRA_LIBS})
 include_directories(${OPENGL_INCLUDE_DIR} ${GLFW_INCLUDE_DIR} ${GLEW_INCLUDE_DIR})
 
 find_package(portaudio REQUIRED)
 include_directories(/usr/local/include)
-target_link_libraries(${EXE} portaudio)
+list(APPEND EXT_LIB portaudio)
 
-if(MSVC)
-    target_compile_options(${EXE} PRIVATE /W4 /WX)
-else()
-    target_compile_options(${EXE} PRIVATE -O2 -Wall -Wextra -pedantic -Werror -Wno-unused-parameter)
-endif()
+###################################################################################################
+## DEMO
 
-enable_testing()
+set(EXE bounce-demo)
+file(GLOB_RECURSE DEMO_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/demo/*.cpp")
+add_executable(${EXE} ${DEMO_SOURCES} ${COMMON_SOURCES})
+set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 20)
+
+target_link_libraries(${EXE} ${LIB} ${EXT_LIB})
+
+###################################################################################################
+## DOCUMENTATION
 
 add_subdirectory ("docs")
 
 ###################################################################################################
 ## TESTS
 
+enable_testing()
 find_package(GTest REQUIRED)
+set(TEST_EXE bounce-tests)
 include(GoogleTest)
 file(GLOB_RECURSE TEST_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/tests/*.cpp")
-add_executable(bounce_tests ${TEST_SOURCES} ${COMMON_SOURCES})
-set_property(TARGET bounce_tests PROPERTY CXX_STANDARD 20)
-target_link_libraries(bounce_tests ${GTEST_LIBRARIES} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${EXTRA_LIBS} ${FREETYPE_LIBRARIES})
-target_link_libraries(bounce_tests ${ARMADILLO_LIBRARIES})
-gtest_discover_tests(bounce_tests)
+add_executable(${TEST_EXE} ${TEST_SOURCES})
+set_property(TARGET ${TEST_EXE} PROPERTY CXX_STANDARD 20)
+target_link_libraries(${TEST_EXE} ${LIB} ${EXT_LIB} ${GTEST_LIBRARIES})
+gtest_discover_tests(${TEST_EXE})
