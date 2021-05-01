@@ -1,4 +1,5 @@
 #include <bounce/game/game.hpp>
+#include <bounce/logging/logger.hpp>
 
 /**
  * Run the main game loop.
@@ -10,6 +11,7 @@
  */
 void Game::run()
 {
+    Logger::ref() << LL_INFO << "Game running...\n";
     this->renderer.check_shaders();
     while (!this->should_quit)
     {
@@ -18,4 +20,5 @@ void Game::run()
         InputManager::get_active()->handle_input();
         this->physics.timestep();
     }
+    Logger::ref() << LL_INFO << "Game stopped.\n";
 }
