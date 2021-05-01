@@ -7,3 +7,9 @@ Tone::Tone(float freq)
 {
 
 }
+
+Tone::Tone(MusicNote note, int octave)
+:   Tone(Sound::freq_from_note(note, octave))
+{
+
+}
