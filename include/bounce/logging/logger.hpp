@@ -37,10 +37,10 @@ public:
         return *this;
     }
 
+    void gen_unique_log_path();
 private:
     Logger();
 
-    void gen_unique_log_path();
     void maybe_flush();
     void flush();
 

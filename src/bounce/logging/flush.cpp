@@ -10,7 +10,10 @@ void Logger::maybe_flush()
 
 void Logger::flush()
 {
-    std::ofstream ofs(this->_output_path, std::ios::app);
-    ofs << this->_buffer.str();
-    this->_buffer.str("");
+    if (!this->_output_path.empty()) {
+        std::ofstream ofs(this->_output_path, std::ios::app);
+        ofs << this->_buffer.str();
+        this->_buffer.str("");
+        this->_number_things = 0;
+    }
 }
