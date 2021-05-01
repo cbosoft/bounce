@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
+include_directories(RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} include)
+
 ###################################################################################################
 # VERSION
 
@@ -7,8 +9,8 @@ cmake_minimum_required(VERSION 3.0)
 
 # Define the two required variables before including
 # the source code for watching a git repository.
-set(PRE_CONFIGURE_FILE "src/engine/version/version.cpp.in")
-set(POST_CONFIGURE_FILE "src/engine/version/version.cpp")
+set(PRE_CONFIGURE_FILE "src/bounce/version/version.cpp.in")
+set(POST_CONFIGURE_FILE "src/bounce/version/version.cpp")
 include(git_watcher.cmake)
 
 # Create a library out of the compiled post-configure file.
@@ -17,18 +19,26 @@ target_include_directories(git PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_dependencies(git check_git)
 
 ###################################################################################################
-# MAIN EXE
+## LIBRARY
 
 project(Bounce)
-set(EXE bounce)
+set(LIB bounce)
+set(EXE bounce-demo)
 
-file(GLOB_RECURSE COMMON_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/engine/*.cpp")
-file(GLOB_RECURSE DEMO_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/demo_main/*.cpp")
+file(GLOB_RECURSE LIBRARY_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/bounce/*.cpp")
 
+add_library(${LIB} STATIC ${LIBRARY_SOURCES})
+set_property(TARGET ${LIB} PROPERTY CXX_STANDARD 20)
+target_link_libraries(${LIB} git)
+
+###################################################################################################
+## DEMO
+
+file(GLOB_RECURSE DEMO_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/demo/*.cpp")
 add_executable(${EXE} ${DEMO_SOURCES} ${COMMON_SOURCES})
-target_link_libraries(bounce git)
-
 set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 20)
+
+target_link_libraries(${EXE} ${LIB})
 
 find_package(Armadillo REQUIRED)
 set(OpenGL_GL_PREFERENCE GLVND)
