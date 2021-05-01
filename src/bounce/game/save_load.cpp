@@ -53,6 +53,7 @@ void Game::load_settings()
     if (std::filesystem::exists(p)) {
         std::ifstream ifs(p);
         ifs >> this->_settings;
+        Logger::ref() << LL_INFO << "Settings loaded from " << p << "\n";
     }
     else {
         Logger::ref() << LL_WARN << "Could not load game settings from " << p << "\n";
@@ -84,6 +85,7 @@ void Game::save_game(int slot)
     p /= ss.str();
     std::ofstream ofs(p);
     ofs << this->_state;
+    Logger::ref() << LL_INFO << "Game state saved to " << p << "\n";
 }
 
 /**
@@ -102,6 +104,7 @@ void Game::load_game(int slot)
     if (std::filesystem::exists(p)) {
         std::ifstream ifs(p);
         ifs >> this->_state;
+        Logger::ref() << LL_INFO << "Game state loaded from " << p << "\n";
     }
     else {
         Logger::ref() << LL_WARN << "Could not load game in" << p << "\n";
