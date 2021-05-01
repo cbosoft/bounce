@@ -1,5 +1,6 @@
 #include <bounce/renderer/renderer.hpp>
 #include <bounce/game/game.hpp>
+#include <bounce/scene/scene.hpp>
 
 arma::vec2 Renderer::screen_pos_to_world_pos(const arma::vec2 &screen_pos) const
 {

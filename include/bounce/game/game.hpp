@@ -8,10 +8,11 @@
 #include "../physics/engine/engine.hpp"
 #include "../renderer/renderer.hpp"
 #include "../input/manager.hpp"
-#include "../scene/scene.hpp"
 #include "../event/event.hpp"
 #include "../sound/manager/manager.hpp"
 #include "../serialisation/json.hpp"
+
+class Scene;
 
 /**
  * Game - singleton object managing the general running of the game.

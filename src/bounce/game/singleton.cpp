@@ -32,8 +32,7 @@ Game &Game::setup(const std::string &name)
     auto &game = Game::ref();
     game.set_name(name);
     game.load_settings();
-    auto graphics = game.get_settings_value<json>("graphics");
-    auto res = graphics["resolution"];
+    auto res = game.get_settings_value<json>("graphics", "resolution");
     int w = res["w"], h = res["h"];
     Renderer::get().init(&game, w, h, name);
     Renderer::get().set_window_name(name);

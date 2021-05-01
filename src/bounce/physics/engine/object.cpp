@@ -1,5 +1,6 @@
 #include <bounce/physics/engine/engine.hpp>
 #include <bounce/game/game.hpp>
+#include <bounce/scene/scene.hpp>
 #include <bounce/events.hpp>
 
 PhysicsMaterial PhysicsEngine::get_overall_material_properties(const PhysicsMaterial &a, const PhysicsMaterial &b)

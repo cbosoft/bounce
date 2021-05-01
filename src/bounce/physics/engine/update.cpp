@@ -3,6 +3,7 @@
 
 #include <bounce/game/game.hpp>
 #include <bounce/physics/engine/engine.hpp>
+#include <bounce/scene/scene.hpp>
 
 
 void PhysicsEngine::check_set_time()

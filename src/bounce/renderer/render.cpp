@@ -1,6 +1,7 @@
 #include <bounce/renderer/renderer.hpp>
 #include <bounce/physics/engine/engine.hpp>
 #include <bounce/game/game.hpp>
+#include <bounce/scene/scene.hpp>
 
 GLFWwindow  *Renderer::get_window()
 {

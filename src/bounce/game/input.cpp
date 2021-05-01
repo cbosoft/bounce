@@ -1,4 +1,5 @@
 #include <bounce/game/game.hpp>
+#include <bounce/scene/scene.hpp>
 
 /**
  * Get return the input context (scene) at the top of the current stack. That is, the currently active scene.

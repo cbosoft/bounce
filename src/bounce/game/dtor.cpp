@@ -1,4 +1,5 @@
 #include <bounce/game/game.hpp>
+#include <bounce/scene/scene.hpp>
 
 /**
  * Game object destructor.

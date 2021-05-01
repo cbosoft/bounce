@@ -1,5 +1,6 @@
 #include <bounce/renderer/renderer.hpp>
 #include <bounce/game/game.hpp>
+#include <bounce/scene/scene.hpp>
 
 GLuint Renderer::get_varr() const
 {
