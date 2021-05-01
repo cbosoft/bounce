@@ -115,12 +115,6 @@ class Game {
         this->_state[name] = v;
     }
 
-    /* Save settings to disk. */
-    void save_settings();
-
-    /* Load settings from disk. */
-    void load_settings();
-
     /**
      * Get variable value in Game settings store.
      *
@@ -169,6 +163,12 @@ protected:
     Game();
 
 private:
+    /* Save settings to disk. */
+    void save_settings();
+
+    /* Load settings from disk. */
+    void load_settings();
+
     bool should_quit, _visible_colliders;
 
     PhysicsEngine &physics;
