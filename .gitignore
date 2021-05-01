@@ -18,8 +18,6 @@ vgcore*
 
 # Build files
 obj
-bounce
-!src/bounce
 build
 cmake-build-debug
 
