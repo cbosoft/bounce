@@ -7,6 +7,7 @@
 #include "../transform/transform.hpp"
 #include "../transform/rect/rect.hpp"
 #include "../physics/field/field.hpp"
+#include "../game/game.hpp"
 
 class Scene: public InputContext, public Transform {
 public:
@@ -29,6 +30,18 @@ public:
     RectTransform *new_camera(const std::string &name);
     void remove_camera(const std::string &name);
     RectTransform *get_active_camera() const;
+
+    template<typename T>
+    void set_state_value(const std::string &name, const T &value)
+    {
+        Game::ref().set_state_value(this->_name, name, value);
+    }
+
+    template<typename T>
+    T get_state_value(const std::string &name)
+    {
+        return Game::ref().get_state_value<T>(this->_name, name);
+    }
 
 protected:
     bool _insubstantial;
