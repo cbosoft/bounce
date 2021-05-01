@@ -18,5 +18,4 @@ Game::Game()
   , _name("bounce")
 {
     Logger::ref() << LL_INFO << VersionInfo::version_string();
-    this->renderer.init(this, 1280, 960, "bounce");
 }

@@ -25,7 +25,11 @@ class Game {
   public:
     /* Get ref to singleton. */
     static Game &ref();
-    static Game &ref(const std::string &name);
+
+    /* Perform first set up of Game object. */
+    static Game &setup(const std::string &name);
+
+    /* dtor */
     ~Game();
 
     /* Logic step - where events are processed. */

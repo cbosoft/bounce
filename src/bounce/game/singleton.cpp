@@ -6,8 +6,7 @@ static bool game_unnamed = true;
 /**
  * Get ref to Game singleton.
  *
- * If game is unnamed, this throws and exception. Use Game::ref(name) to set the game's name first. This is important to
- * keep the logs right.
+ * If game is not set up, will raise exception. Run Game::setup() first.
  *
  * @return Reference to Game singleton.
  */
@@ -15,23 +14,30 @@ Game &Game::ref()
 {
     static Game game;
     if (game_unnamed)
-        throw std::runtime_error("Game is unnamed. Use Game::ref(name) first.");
+        throw std::runtime_error("Game is not yet set up. Use Game::setup(...) first.");
     return game;
 }
 
 /**
- * Get Game ref, and set name of game. This is important for getting the logs right. This should be the first call in
+ * Do initial setup of Game, and return ref to created object. This should be the first call in
  * your main function.
  *
  * @return Reference to Game singleton.
  */
-Game &Game::ref(const std::string &name)
+Game &Game::setup(const std::string &name)
 {
     if (!game_unnamed)
-        throw std::runtime_error("Game is already named: cannot re-name!");
+        throw std::runtime_error("Game is already set up: cannot set up again!");
     game_unnamed = false;
     auto &game = Game::ref();
     game.set_name(name);
+    game.load_settings();
+    auto graphics = game.get_settings_value<json>("graphics");
+    auto res = graphics["resolution"];
+    int w = res["w"], h = res["h"];
+    Renderer::get().init(&game, w, h, name);
+    Renderer::get().set_window_name(name);
     Logger::ref().gen_unique_log_path();
+
     return game;
 }
