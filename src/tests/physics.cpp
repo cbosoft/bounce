@@ -1,5 +1,6 @@
-#include "../common/bounce.hpp"
 #include <gtest/gtest.h>
+
+#include <bounce/bounce.hpp>
 
 TEST(PhysicsTest, PhysicsEngine_GravityField) {
     double mass = 1.0;
