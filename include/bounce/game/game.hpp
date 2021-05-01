@@ -151,6 +151,7 @@ class Game {
     void set_settings_value(const std::string &name, const T &v)
     {
         this->_settings[name] = v;
+        this->save_settings();
     }
 
     /* Save game to save file in specified slot */
