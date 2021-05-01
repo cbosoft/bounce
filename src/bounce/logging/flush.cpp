@@ -4,8 +4,8 @@
 
 void Logger::maybe_flush()
 {
-    // TODO decide when/if should flush
-    this->flush();
+    if (this->_number_things > 10)
+        this->flush();
 }
 
 void Logger::flush()

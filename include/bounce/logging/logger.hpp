@@ -33,6 +33,7 @@ public:
         this->_buffer << thing;
         if (this->_log_level > LL_INFO)
             std::cerr << thing;
+        this->_number_things++;
         this->maybe_flush();
         return *this;
     }
@@ -47,4 +48,5 @@ private:
     std::filesystem::path _output_path;
     std::stringstream _buffer;
     LogLevel _log_level;
+    int _number_things;
 };

@@ -1,7 +1,9 @@
 #include <bounce/logging/logger.hpp>
 
 Logger::Logger()
-:   _log_level(LL_INFO)
+:   _output_path("")
+,   _log_level(LL_INFO)
+,   _number_things(0)
 {
-    this->gen_unique_log_path();
+    // do nothing?
 }
