@@ -15,12 +15,28 @@
 class Scene;
 
 /**
- * Game - singleton object managing the general running of the game.
+ * \brief Object manaing the general running of the game.
  *
  * The Game manages Events and Scenes. In addition, the Game singleton typically is where the initialisation of the
  * PhysicsEngine and the Renderer is done.
  *
- * \todo Serialisation, saving, settings, game state
+ * The object is a singleton - only one instance exists. Proper initialisation of the singleton is done using the
+ * Game#setup function. This sets up the game, and initialises the renderer and logger too.
+ *
+ * After setup, the game is not yet ready to go. You still need to tell the renderer how to render stuff - you need to
+ * specify a shader. (Renderer#define_shader and Renderer#define_screen_effect_shader).
+ *
+ * Still not ready though, your game needs some Scene(s)! (Game#add_scene). Scenes are managed in a stack fashion:
+ * active scenes are appended to the end of a list and then removed. This is quite a natural way to store menu scenes -
+ * encompassing the concept of forward and back. To set the currently active scene, (Game#push_active_scene), it is
+ * pushed on to the end of the stack.
+ *
+ * After all that, now the game is ready to run (Game#run).
+ *
+ * Settings and game state are edited by user user through actions from the active scene (e.g. menu buttons and sliders
+ * etc) - Game#get_state_value, Game#set_state_value, Game#get_settings_value, Game#set_settings_value. Game settings
+ * are automatically saved on every edit while state is not saved to disk until requested using Game#save_game. Settings
+ * are loaded once on first start, but save states are loaded, again, only on request using Game#load_game.
  */
 class Game {
   public:
