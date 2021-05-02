@@ -15,7 +15,7 @@
 class Scene;
 
 /**
- * \brief Object manaing the general running of the game.
+ * \brief Singleton managing the general running of the game.
  *
  * The Game manages Events and Scenes. In addition, the Game singleton typically is where the initialisation of the
  * PhysicsEngine and the Renderer is done.
