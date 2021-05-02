@@ -98,7 +98,7 @@ void Renderer::render()
 void Renderer::render_scene(const Scene *scene)
 {
     if (scene) {
-        this->update_shader_uniforms(scene->get_active_camera());
+        this->update_common_shader_variables(scene->get_active_camera());
 
         // draw zsorted renderables
         std::list<const Renderable *> rbls;

@@ -72,6 +72,10 @@ public:
     void define_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name);
     void define_screen_effect_shader(const std::string &name, const std::string &vertex_name, const std::string &frag_name);
     void set_screen_effect(const std::string &name);
+    void set_shader_variable(const std::string &shader, const std::string &variable, float v);
+    void set_shader_variable(const std::string &shader, const std::string &variable, const arma::vec2 &v);
+    void set_shader_variable(const std::string &shader, const std::string &variable, const arma::vec3 &v);
+    void set_shader_variable(const std::string &shader, const std::string &variable, const arma::vec4 &v);
 
     /* Create and get textures. */
     void add_texture(const std::string &path);
@@ -105,7 +109,7 @@ private:
     void check_shaders() const;
     void error_check(const std::string &from) const;
 
-    void update_shader_uniforms(const RectTransform *camera) const;
+    void update_common_shader_variables(const RectTransform *camera) const;
 
     GLuint get_screen_effect() const;
 

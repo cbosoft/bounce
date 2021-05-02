@@ -3,10 +3,9 @@
 #include <bounce/resources/manager.hpp>
 #include <bounce/renderer/renderer.hpp>
 #include <bounce/logging/logger.hpp>
+#include <bounce/physics/engine/engine.hpp>
 
-GLuint Renderer::compile_shader(
-        const std::string &name,
-        GLint shader_type)
+GLuint Renderer::compile_shader(const std::string &name, GLint shader_type)
 {
     std::string source = ResourceManager::ref().get_path("shaders", name, ".glsl");
     GLuint shader_id = glCreateShader(shader_type);
@@ -48,9 +47,7 @@ GLuint Renderer::compile_fragment(const std::string &name)
     return this->compile_shader(name, GL_FRAGMENT_SHADER);
 }
 
-GLuint Renderer::load_shader_program(
-        const std::string &vertex_name,
-        const std::string &fragment_name)
+GLuint Renderer::load_shader_program(const std::string &vertex_name, const std::string &fragment_name)
 {
     Logger::ref() << LL_INFO << "Loading shaders \"" << vertex_name << "\" and \"" << fragment_name << "\"\n";
     GLuint vertex_id = this->compile_vertex(vertex_name);
@@ -141,7 +138,7 @@ void Renderer::check_shaders() const
     }
 }
 
-void Renderer::update_shader_uniforms(const RectTransform *camera) const
+void Renderer::update_common_shader_variables(const RectTransform *camera) const
 {
     arma::vec2 position = camera->get_position(), size = camera->get_size(), w = this->window_size;
     for (const auto &kv : this->shaders) {
@@ -158,9 +155,6 @@ void Renderer::update_shader_uniforms(const RectTransform *camera) const
         auto cs = size;
         if (loc != -1) glUniform2f(loc, float(cs[0]), float(cs[1]));
 
-        loc = glGetUniformLocation(shader_id, "camera_angle");
-        if (loc != -1) glUniform1f(loc, 0.0 /* TODO */);
-
         loc = glGetUniformLocation(shader_id, "window_size");
         if (loc != -1) glUniform2f(loc, float(w[0]), float(w[1]));
     }
@@ -176,4 +170,88 @@ void Renderer::set_shader_filter_kernel(GLuint shader_id, float kernel_norm, con
     if (loc != -1) glUniform3f(loc, args[3], args[4], args[5]);
     loc = glGetUniformLocation(shader_id, "kernel_c");
     if (loc != -1) glUniform3f(loc, args[6], args[7], args[8]);
+}
+
+void Renderer::set_shader_variable(const std::string &shader, const std::string &variable, float v)
+{
+    auto it = this->shaders.find(shader);
+    if (it == this->shaders.end()) {
+        it = this->effects.find(shader);
+        if (it == this->effects.end()) {
+            Logger::ref() << LL_WARN << "Could not find shader \"" << shader << "\"; unable to set variable \""
+                          << variable << "\" value of " << v << "\n";
+            return;
+        }
+    }
+
+    GLuint shader_id = it->second;
+    glUseProgram(shader_id);
+    int loc = glGetUniformLocation(shader_id, variable.c_str());
+    if (loc != -1) glUniform1f(loc, v);
+    else
+        Logger::ref() << LL_WARN << "Variable \"" << variable << "\" not found in shader \"" << shader
+                      << "\"; could not set value of " << v << "\n";
+}
+
+void Renderer::set_shader_variable(const std::string &shader, const std::string &variable, const arma::vec2 &v)
+{
+    auto it = this->shaders.find(shader);
+    if (it == this->shaders.end()) {
+        it = this->effects.find(shader);
+        if (it == this->effects.end()) {
+            Logger::ref() << LL_WARN << "Could not find shader \"" << shader << "\"; unable to set variable \""
+                          << variable << "\" value of " << v[0] << "," << v[1] << "\n";
+            return;
+        }
+    }
+
+    GLuint shader_id = it->second;
+    glUseProgram(shader_id);
+    int loc = glGetUniformLocation(shader_id, variable.c_str());
+    if (loc != -1) glUniform2f(loc, float(v[0]), float(v[1]));
+    else
+        Logger::ref() << LL_WARN << "Variable \"" << variable << "\" not found in shader \"" << shader
+                      << "\"; could not set value of " << v[0] << "," << v[1] << "\n";
+}
+
+void Renderer::set_shader_variable(const std::string &shader, const std::string &variable, const arma::vec3 &v)
+{
+    auto it = this->shaders.find(shader);
+    if (it == this->shaders.end()) {
+        it = this->effects.find(shader);
+        if (it == this->effects.end()) {
+            Logger::ref() << LL_WARN << "Could not find shader \"" << shader << "\"; unable to set variable \""
+                          << variable << "\" value of " << v[0] << "," << v[1] << "," << v[2] << "\n";
+            return;
+        }
+    }
+    GLuint shader_id = it->second;
+    glUseProgram(shader_id);
+    int loc = glGetUniformLocation(shader_id, variable.c_str());
+    if (loc != -1) glUniform3f(loc, float(v[0]), float(v[1]), float(v[2]));
+    else
+        Logger::ref() << LL_WARN << "Variable \"" << variable << "\" not found in shader \"" << shader
+                      << "\"; could not set value of " << v[0] << "," << v[1] << "," << v[2] << "\n";
+
+}
+
+void Renderer::set_shader_variable(const std::string &shader, const std::string &variable, const arma::vec4 &v)
+{
+    auto it = this->shaders.find(shader);
+    if (it == this->shaders.end()) {
+        it = this->effects.find(shader);
+        if (it == this->effects.end()) {
+            Logger::ref() << LL_WARN << "Could not find shader \"" << shader << "\"; unable to set variable \""
+                          << variable << "\" value of " << v[0] << "," << v[1] << "," << v[2] << "," << v[3] << "\n";
+            return;
+        }
+    }
+
+    GLuint shader_id = it->second;
+    glUseProgram(shader_id);
+    int loc = glGetUniformLocation(shader_id, variable.c_str());
+    if (loc != -1) glUniform4f(loc, float(v[0]), float(v[1]), float(v[2]), float(v[3]));
+    else
+        Logger::ref() << LL_WARN << "Variable \"" << variable << "\" not found in shader \"" << shader
+                      << "\"; could not set value of " << v[0] << "," << v[1] << "," << v[2] << "," << v[3] << "\n";
 }
