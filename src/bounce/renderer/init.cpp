@@ -2,6 +2,19 @@
 #include <bounce/renderer/renderer.hpp>
 #include <bounce/logging/logger.hpp>
 
+/**
+ * Initialise Renderer.
+ *
+ * Must be called once and before any rendering is attempted. Is called by Game#setup
+ *
+ * Give the renderer a ptr to the game, and set the desired window size (\p w, \p h) and window \p title. The function
+ * performs important initialisation of the underlying renderer (OpenGL via glew and glfw).
+ *
+ * @param g Pointer to Game singleton
+ * @param w Width of screen in pixels
+ * @param h Height of screen in pixels
+ * @param title Title of window
+ */
 void Renderer::init(Game *g, int w, int h, const std::string &title)
 {
     this->game = g;

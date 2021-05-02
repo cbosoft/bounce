@@ -2,6 +2,13 @@
 #include <bounce/game/game.hpp>
 #include <bounce/scene/scene.hpp>
 
+/**
+ * Convert a screen position into world units based on the position and size of the current camera as well as the window
+ * size
+ * .
+ * @param screen_pos Position in screen coords.
+ * @return Position in world coords.
+ */
 arma::vec2 Renderer::screen_pos_to_world_pos(const arma::vec2 &screen_pos) const
 {
     arma::vec2 flipped = screen_pos;

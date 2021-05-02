@@ -1,5 +1,9 @@
 #include <bounce/renderer/renderer.hpp>
 
+/**
+ * Target a texture instead of the screen. Used when applying screen effects.
+ * @param id ID of the Texture which is to be targeted.
+ */
 void Renderer::set_target_to_texture(GLuint id)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, this->fbo);
@@ -17,6 +21,9 @@ void Renderer::set_target_to_texture(GLuint id)
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, id, 0);
 }
 
+/**
+ * Set render target to the screen.
+ */
 void Renderer::set_target_to_screen()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

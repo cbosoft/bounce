@@ -1,6 +1,11 @@
 #include <bounce/renderer/renderer.hpp>
 #include <bounce/logging/logger.hpp>
 
+/**
+ * Check for an OpenGL error. Does not raise exception, but logs the error.
+ *
+ * @param from String giving information about where the method was called, which is used to infer where the error ocurred.
+ */
 void Renderer::error_check(const std::string &from) const
 {
     GLenum err;

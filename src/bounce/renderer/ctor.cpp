@@ -1,5 +1,11 @@
 #include <bounce/renderer/renderer.hpp>
 
+/**
+ * Construct Renderer. Set most things to zero. Create an empty fallback Texture called "null".
+ *
+ * This creates the Renderer object, but it still needs to be initialised by calling the Renderer#init method. This is
+ * done in Game#setup.
+ */
 Renderer::Renderer()
 : game(nullptr)
 , window_size({0, 0})
@@ -17,7 +23,6 @@ Renderer::Renderer()
 , _min_mspf(1)
 , _actual_fps(1)
 {
-    // do nothing
-    this->set_max_fps(30);
+    this->set_max_fps(60);
     this->textures["null"] = new Texture(nullptr);
 }

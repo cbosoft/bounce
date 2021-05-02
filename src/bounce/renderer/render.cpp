@@ -3,11 +3,17 @@
 #include <bounce/game/game.hpp>
 #include <bounce/scene/scene.hpp>
 
+/** @return Current GLFW window. Used when dealing with input. */
 GLFWwindow  *Renderer::get_window()
 {
     return this->window;
 }
 
+/**
+ * Check if the a render pass is required at all based on the time since the previous render. This calculates and
+ * enforces frame rate.
+ *
+ * @return Whether the render should go ahead. */
 bool Renderer::should_render()
 {
     this->error_check("once-per-frame error check");
@@ -24,6 +30,22 @@ bool Renderer::should_render()
     return true;
 }
 
+/**
+ * Main call which renders the scene.
+ *
+ * First checks if the render is needed by checking Renderer::should_render. Then, the current active scene is updated
+ * (by calling the Scene::update method). After, the scenes which need to be rendered are gathered and passed to
+ * Renderer::render_scene.
+ *
+ * Scenes which need rendering may not just be the active scene. Scenes can be "insubstantial" which essentially means
+ * it has no background and is intended to be rendered on the backdrop of a previous scene. This is useful for drawing a
+ * menu atop some gameplay (for example, in a pause menu or conversation).
+ *
+ * Once the scenes are rendered, any screen effects are applied. Then, finally, the freame is rendered to screen.
+ *
+ * \sa Scene::is_insubstantial
+ * \sa Renderer::render_scene
+ */
 void Renderer::render()
 {
     if (!this->should_render()) {
@@ -64,44 +86,15 @@ void Renderer::render()
     glfwPollEvents();
 }
 
-
-void Renderer::update_shader_uniforms(const RectTransform *camera) const
-{
-    arma::vec2 position = camera->get_position(), size = camera->get_size(), w = this->window_size;
-    for (const auto &kv : this->shaders) {
-        GLuint shader_id = kv.second;
-        glUseProgram(shader_id);
-        int loc = glGetUniformLocation(shader_id, "time");
-        if (loc != -1) glUniform1f(loc, float(PhysicsEngine::ref().get_time()));
-
-        loc = glGetUniformLocation(shader_id, "camera_position");
-        auto cp = position;
-        if (loc != -1) glUniform2f(loc, float(cp[0]), float(cp[1]));
-
-        loc = glGetUniformLocation(shader_id, "camera_size");
-        auto cs = size;
-        if (loc != -1) glUniform2f(loc, float(cs[0]), float(cs[1]));
-
-        loc = glGetUniformLocation(shader_id, "camera_angle");
-        if (loc != -1) glUniform1f(loc, 0.0 /* TODO */);
-
-        loc = glGetUniformLocation(shader_id, "window_size");
-        if (loc != -1) glUniform2f(loc, float(w[0]), float(w[1]));
-    }
-}
-
-void Renderer::set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args)
-{
-    int loc = glGetUniformLocation(shader_id, "kernel_norm");
-    if (loc != -1) glUniform1f(loc, kernel_norm);
-    loc = glGetUniformLocation(shader_id, "kernel_a");
-    if (loc != -1) glUniform3f(loc, args[0], args[1], args[2]);
-    loc = glGetUniformLocation(shader_id, "kernel_b");
-    if (loc != -1) glUniform3f(loc, args[3], args[4], args[5]);
-    loc = glGetUniformLocation(shader_id, "kernel_c");
-    if (loc != -1) glUniform3f(loc, args[6], args[7], args[8]);
-}
-
+/**
+ * Render scene. This gets a list of Renderable(s) in the scene and draws them. The Renderable(s) are drawn in order of
+ * their z value. The Renderable actually handles its own drawing - Renderable::draw.
+ *
+ * \sa Renderable::get_z
+ * \sa Renderable::set_z
+ *
+ * @param scene
+ */
 void Renderer::render_scene(const Scene *scene)
 {
     if (scene) {

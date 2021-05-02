@@ -140,3 +140,40 @@ void Renderer::check_shaders() const
         throw std::runtime_error("Cannot find default screen effect shader.");
     }
 }
+
+void Renderer::update_shader_uniforms(const RectTransform *camera) const
+{
+    arma::vec2 position = camera->get_position(), size = camera->get_size(), w = this->window_size;
+    for (const auto &kv : this->shaders) {
+        GLuint shader_id = kv.second;
+        glUseProgram(shader_id);
+        int loc = glGetUniformLocation(shader_id, "time");
+        if (loc != -1) glUniform1f(loc, float(PhysicsEngine::ref().get_time()));
+
+        loc = glGetUniformLocation(shader_id, "camera_position");
+        auto cp = position;
+        if (loc != -1) glUniform2f(loc, float(cp[0]), float(cp[1]));
+
+        loc = glGetUniformLocation(shader_id, "camera_size");
+        auto cs = size;
+        if (loc != -1) glUniform2f(loc, float(cs[0]), float(cs[1]));
+
+        loc = glGetUniformLocation(shader_id, "camera_angle");
+        if (loc != -1) glUniform1f(loc, 0.0 /* TODO */);
+
+        loc = glGetUniformLocation(shader_id, "window_size");
+        if (loc != -1) glUniform2f(loc, float(w[0]), float(w[1]));
+    }
+}
+
+void Renderer::set_shader_filter_kernel(GLuint shader_id, float kernel_norm, const std::array<float, 9> &args)
+{
+    int loc = glGetUniformLocation(shader_id, "kernel_norm");
+    if (loc != -1) glUniform1f(loc, kernel_norm);
+    loc = glGetUniformLocation(shader_id, "kernel_a");
+    if (loc != -1) glUniform3f(loc, args[0], args[1], args[2]);
+    loc = glGetUniformLocation(shader_id, "kernel_b");
+    if (loc != -1) glUniform3f(loc, args[3], args[4], args[5]);
+    loc = glGetUniformLocation(shader_id, "kernel_c");
+    if (loc != -1) glUniform3f(loc, args[6], args[7], args[8]);
+}
