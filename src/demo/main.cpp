@@ -24,6 +24,9 @@ int main()
     //r.set_screen_effect("1bit");
     r.set_screen_effect("crt");
 
+    r.set_shader_variable("1bit", "dark_colour", arma::vec4({0, 0, 0, 255}));
+    r.set_shader_variable("1bit", "light_colour", arma::vec4({255, 255, 255, 255}));
+
     game.add_scene(new DemoMainMenu());
     game.add_scene(new DemoSpaceShooter());
     game.add_scene(new DemoPlatformer());

@@ -4,6 +4,9 @@ in vec2 TexCoords;
 out vec4 color;
 
 uniform sampler2D screenTexture;
+uniform vec4 dark_colour = vec4(35.f, 44.f, 40.f, 255.f)/255.f;
+uniform vec4 light_colour = vec4(125.f, 162.f, 138.f, 255.f)/255.f;
+
 // http://alex-charlton.com/posts/Dithering_on_the_GPU/
 const int imat[64] = int[](0,  32, 8,  40, 2,  34, 10, 42,
 48, 16, 56, 24, 50, 18, 58, 26,
@@ -29,8 +32,6 @@ float dither(float gray) {
     return (distance <= d) ? closest_colour : second_place;
 }
 
-const vec4 dark_colour = vec4(35.f, 44.f, 40.f, 255.f)/255.f;
-const vec4 light_colour = vec4(125.f, 162.f, 138.f, 255.f)/255.f;
 void main() {
     vec4 rgb = texture(screenTexture, TexCoords);
     float gy = (rgb.x + rgb.y + rgb.z)/3.f;

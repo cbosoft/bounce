@@ -199,7 +199,7 @@ public:
 
     void on_activate() override
     {
-        Renderer::get().set_screen_effect("crt");
+        Renderer::get().set_screen_effect("1bit");
     }
 
     void back_pressed() override { Game::ref().quit(); };
