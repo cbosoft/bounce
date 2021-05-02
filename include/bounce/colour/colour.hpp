@@ -1,5 +1,13 @@
 #pragma once
 
+/**
+ * \brief Class containing colour information.
+ *
+ * Allows creation of RGB colour from HSV, grayscale; both 0-255 integer definitions and 0.f - 1.f floating point scaled
+ * values.
+ *
+ * \sa Colours
+ */
 class Colour {
 public:
 
@@ -10,16 +18,23 @@ public:
     static Colour from_grayscale(int gy, int a=255) noexcept;
     static Colour from_grayscale_f(double gy, double a=1.0) noexcept;
 
-    float rf() const;
-    float gf() const;
-    float bf() const;
-    float af() const;
+    [[nodiscard]] float rf() const;
+    [[nodiscard]] float gf() const;
+    [[nodiscard]] float bf() const;
+    [[nodiscard]] float af() const;
 
     int r, g, b, a;
 private:
     Colour(int r, int g, int b, int a);
 };
 
+/**
+ * \brief Container of pre-defined colours.
+ *
+ * Nothing fancy, just the basic palette of six colours as well as some shades from white up to black.
+ *
+ * \sa Colour
+ */
 class Colours {
 public:
     static const Colour red;
