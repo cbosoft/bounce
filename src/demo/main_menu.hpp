@@ -44,32 +44,12 @@ public:
 //     int _speed, _countdown;
 // };
 
-class AnimIcon final: public RectangleMeshRenderable {
-public:
-    AnimIcon()
-    :   RectangleMeshRenderable(20, 20)
-    ,   dtheta(0.01)
-    {
-        this->set_texture_name("icon");
-    }
-
-    void on_update() override
-    {
-        double theta = this->get_angle();
-        if (std::abs(theta) > 0.3)this->dtheta *= -1.0;
-        this->set_angle(theta + this->dtheta);
-    }
-private:
-    double dtheta;
-
-};
-
 class DemoMainMenu final: public Menu {
 public:
     explicit DemoMainMenu()
             :   Menu("menu")
     {
-        this->icon = new AnimIcon();
+        this->icon = new AnimatedBounceIcon();
         this->attach_renderable(this->icon);
         this->icon->set_position({0, 40});
 
@@ -195,11 +175,6 @@ public:
     void on_update() override
     {
         check_select_buttons();
-    }
-
-    void on_activate() override
-    {
-        Renderer::get().set_screen_effect("1bit");
     }
 
     void back_pressed() override { Game::ref().quit(); };
