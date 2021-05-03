@@ -2,7 +2,7 @@
 #include <bounce/game/game.hpp>
 #include <bounce/events.hpp>
 
-BounceEngineLogoSplash::BounceEngineLogoSplash(const std::string &target)
+BounceEngineLogoSplash::BounceEngineLogoSplash(const std::string &target, const std::string &font)
 :   Scene("bounce engine logo")
 {
     Game::ref().add_event(new DelayRunOtherEvent(3500, new PushSceneTransitionEvent(target)));
@@ -14,7 +14,7 @@ BounceEngineLogoSplash::BounceEngineLogoSplash(const std::string &target)
     bounce->set_shape(CollisionShape::rectangle(10, 10));
 
     auto *eng = new Object(this);
-    eng->attach_renderable(new TextRenderable("bounce by cbo", "DOS_VGA_437", 150));
+    eng->attach_renderable(new TextRenderable("bounce by cbo", font, 150));
     eng->set_position({0, -5});
     eng->set_shape(CollisionShape::rectangle(10, 10));
 
