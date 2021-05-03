@@ -4,6 +4,7 @@
 #include "events.hpp"
 #include "game/game.hpp"
 #include "scene/scene.hpp"
+#include "scene/splash/splash.hpp"
 #include "scene/menu/menu.hpp"
 #include "scene/menu/menuitem/menuitem.hpp"
 #include "renderer/renderables.hpp"
