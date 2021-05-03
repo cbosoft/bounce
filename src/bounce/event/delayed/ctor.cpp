@@ -6,3 +6,10 @@ TimeDelayedEvent::TimeDelayedEvent(long ms)
 {
     // do nothing
 }
+
+DelayRunOtherEvent::DelayRunOtherEvent(long ms, Event *payload)
+:   TimeDelayedEvent(ms)
+,   _payload(payload)
+{
+
+}
