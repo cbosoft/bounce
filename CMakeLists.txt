@@ -2,6 +2,7 @@
 # Some settings
 
 cmake_minimum_required(VERSION 3.0)
+project(Bounce)
 
 if(MSVC)
     add_compile_options(/W4 /WX)
@@ -27,7 +28,6 @@ add_dependencies(git check_git)
 ###################################################################################################
 ## LIBRARY
 
-project(Bounce)
 set(LIB bounce)
 
 file(GLOB_RECURSE LIBRARY_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/bounce/*.cpp")
@@ -85,7 +85,7 @@ list(APPEND EXT_LIB portaudio)
 
 set(EXE bounce-demo)
 file(GLOB_RECURSE DEMO_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/demo/*.cpp")
-add_executable(${EXE} ${DEMO_SOURCES} ${COMMON_SOURCES})
+add_executable(${EXE} ${DEMO_SOURCES})
 set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 20)
 
 target_link_libraries(${EXE} ${LIB} ${EXT_LIB})
