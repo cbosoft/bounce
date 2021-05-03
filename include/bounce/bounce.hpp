@@ -13,3 +13,4 @@
 #include "ui/bar/bar.hpp"
 #include "procedural/perlin/perlin.hpp"
 #include "sound/sounds.hpp"
+#include "version/version.hpp"
