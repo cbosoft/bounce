@@ -116,7 +116,7 @@ GLuint Renderer::get_shader(const std::string &name) const
     }
 
     Logger::ref() << LL_WARN << "Cannot find shader \"" << name << "\": falling back to default.\n";
-    return this->shaders.at(name);
+    return this->shaders.at("default");
 }
 
 void Renderer::check_shaders() const
