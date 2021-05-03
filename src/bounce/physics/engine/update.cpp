@@ -24,6 +24,11 @@ void PhysicsEngine::timestep_objects()
 {
     this->time += this->dt/this->timescale;
     auto *scene = Game::ref().get_active_scene();
+
+    // No active scene; don't run physics
+    if (!scene)
+        return;
+
     std::list<Object *> active_objects = this->get_active_objects();
 
     // resolve force fields acting on objects
