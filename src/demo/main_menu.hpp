@@ -93,13 +93,17 @@ public:
         this->cursor->set_position({10, 0});
         this->attach_renderable("cursor", this->cursor);
 
-        auto *tagline = new TextRenderable("A demonstration of the great and powerful", DEFAULT_FONT, 50);
+        std::string tag = TextManager::ref().get_string("tagline", "tagline");
+        tag += " ";
+        auto *tagline = new TextRenderable(tag, DEFAULT_FONT, 50);
+        tagline->set_alignment(HA_right, VA_centre);
         tagline->set_colour(Colour::from_grayscale(127));
-        tagline->set_position({0, -70});
+        tagline->set_position({0, -75});
         this->attach_renderable(tagline);
         auto *tagline2 = new TextRenderable("BounceEngine", DEFAULT_FONT, 80);
+        tagline2->set_alignment(HA_left, VA_centre);
         tagline2->set_colour(Colour::from_grayscale(200));
-        tagline2->set_position({0, -80});
+        tagline2->set_position({0, -75});
         this->attach_renderable(tagline2);
 
         auto *bg = new RectangleMeshRenderable(500, 300);
