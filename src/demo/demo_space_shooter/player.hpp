@@ -11,6 +11,7 @@ public:
         this->attach_renderable("proj", new RegularPolygonMeshRenderable(20));
         this->set_colour(Colours::cyan);
         this->set_position(pos);
+        this->set_identifier("projectile");
     }
 
     void on_update() override
@@ -38,6 +39,7 @@ public:
             ,   _score(0.0)
     {
         this->set_position(position);
+        this->set_identifier("player");
 
         this->body = new RegularPolygonMeshRenderable(20);
         this->body->set_texture_name("ufo_body");

@@ -90,14 +90,14 @@ public:
 
     void on_collision(Object *other) override
     {
-        if ((Transform *)other == (Transform *)this->_target) {
+        if (other->is_a("player")) {
             this->_target->damage(10);
         }
-        else {
+        else if (other->is_a("projectile")) {
             this->_target->score(100);
+            //Game::ref().add_event(new TemporaryTimePause(10));
             Game::ref().add_event(new TransformDestroyEvent(this));
         }
-        Game::ref().add_event(new TemporaryTimePause(10));
     }
 
 private:
