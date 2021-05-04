@@ -36,6 +36,8 @@ public:
     const std::string &get_shader_name() const;
     void set_shader_name(const std::string &name);
 
+    void set_frame(unsigned int frame);
+
     void set_target(Texture *texture);
 
     bool get_visible() const;

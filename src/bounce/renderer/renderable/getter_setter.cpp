@@ -122,3 +122,8 @@ void Renderable::set_angle(double angle)
 {
     this->_angle = angle;
 }
+
+void Renderable::set_frame(unsigned int frame)
+{
+    this->_current_frame = frame;
+}
