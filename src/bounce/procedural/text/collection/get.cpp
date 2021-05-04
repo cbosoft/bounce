@@ -1,4 +1,5 @@
 #include <bounce/procedural/text/collection/collection.hpp>
+#include <bounce/procedural/util/select_randomly.hpp>
 
 const std::string & TextCollection::get_string(const std::string &id)
 {
@@ -12,6 +13,5 @@ const std::string & TextCollection::get_string(const std::string &id)
     if (vec.empty())
         return whoopsie;
 
-    // TODO get randeom element from vector
-    return it->second[0];
+    return *select_randomly(vec.begin(), vec.end());
 }
