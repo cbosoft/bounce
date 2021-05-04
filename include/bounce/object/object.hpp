@@ -60,7 +60,12 @@ class Object : public Transform {
     [[nodiscard]] const CollisionShape &get_shape() const;
     void set_shape(const CollisionShape &shape);
 
-  private:
+    bool is_a(const std::string &s) const;
+
+protected:
+    void set_identifier(const std::string &s);
+
+private:
     CollisionShape _shape;
     arma::vec2 new_position;
     arma::vec2 velocity;
@@ -75,4 +80,6 @@ class Object : public Transform {
 
     bool _fixed;
     MeshRenderable *_renderable_collider;
+
+    std::size_t _type_identifier;
 };

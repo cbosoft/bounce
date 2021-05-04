@@ -16,6 +16,6 @@ Object::Object(Transform *parent)
     ,   _fixed(false)
     ,   _renderable_collider(nullptr)
 {
-    // nothing
     PhysicsEngine::ref().register_object(this);
+    this->set_identifier("object");
 }
