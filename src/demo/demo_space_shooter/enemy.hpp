@@ -6,10 +6,11 @@
 class DemoEnemy : public Object {
 public:
     DemoEnemy(Transform *parent, const arma::vec2 &position, DemoPlayer *target)
-            :   Object(parent, position, 1.0)
+            :   Object(parent)
             ,   evasive_mult(1.0)
             ,   _target(target)
     {
+        this->set_position(position);
         this->body = new RegularPolygonMeshRenderable(20);
         body->set_colour(Colour::from_rgb(255, 225, 225));
         body->set_texture_name("enemy");

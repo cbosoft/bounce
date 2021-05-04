@@ -72,6 +72,11 @@ bool Object::fixed() const
     return this->_fixed;
 }
 
+void Object::set_fixed(bool value)
+{
+    this->_fixed = value;
+}
+
 const Colour &Object::get_colour() const
 {
     return this->c;

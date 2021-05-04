@@ -2,7 +2,7 @@
 #include "player.hpp"
 
 DemoPlatformerPlayer::DemoPlatformerPlayer(Transform *parent)
-        :   Object(parent, {0, 0}, false)
+        :   Object(parent)
         ,   _dir{0.0}
         ,   _jump{false}
 {

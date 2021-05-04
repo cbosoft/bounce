@@ -6,10 +6,11 @@
 class DemoProjectile final: public Object {
 public:
     DemoProjectile(Transform *parent, const arma::vec2 &pos)
-            :   Object(parent, pos, false, 1.0)
+            :   Object(parent)
     {
         this->attach_renderable("proj", new RegularPolygonMeshRenderable(20));
         this->set_colour(Colours::cyan);
+        this->set_position(pos);
     }
 
     void on_update() override
@@ -30,12 +31,14 @@ public:
 class DemoPlayer final: public Object {
 public:
     DemoPlayer(Scene *parent, const arma::vec2 &position)
-            :   Object(parent, position, false, 1.0)
+            :   Object(parent)
             ,   _speed(1000.0)
             ,   _last_shot(std::chrono::system_clock::now())
             ,   _cooldown_frames(50)
             ,   _score(0.0)
     {
+        this->set_position(position);
+
         this->body = new RegularPolygonMeshRenderable(20);
         this->body->set_texture_name("ufo_body");
         this->body->set_size({10.0, 10.0});

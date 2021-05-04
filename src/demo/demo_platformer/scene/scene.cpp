@@ -4,15 +4,21 @@ DemoPlatformer::DemoPlatformer()
 :   Scene("demo platformer")
 {
     {
-        auto *platform = new Object(this, {0, -50}, true);
+        auto *platform = new Object(this);
+        platform->set_fixed(true);
+        platform->set_position({0, -50});
         platform->set_shape(CollisionShape::rectangle(50, 1));
     }
     {
-        auto *platform = new Object(this, {25, -25}, true);
+        auto *platform = new Object(this);
+        platform->set_fixed(true);
+        platform->set_position({25, -25});
         platform->set_shape(CollisionShape::rectangle(50, 1));
     }
     {
-        auto *platform = new Object(this, {50, 0}, true);
+        auto *platform = new Object(this);
+        platform->set_fixed(true);
+        platform->set_position({50, 0});
         platform->set_shape(CollisionShape::rectangle(50, 1));
     }
 

@@ -19,19 +19,3 @@ Object::Object(Transform *parent)
     // nothing
     PhysicsEngine::ref().register_object(this);
 }
-
-Object::Object(Transform *parent, const arma::vec2 &position, bool fixed, double cor)
-    :   Object(parent)
-{
-    this->_fixed = fixed;
-    this->_material.bounciness = cor;
-    this->set_position(position);
-}
-
-Object::Object(Transform *parent, const arma::vec2 &position, double mass, double cor)
-    :   Object(parent)
-{
-    this->_material.bounciness = cor;
-    this->set_position(position);
-    this->set_mass(mass);
-}

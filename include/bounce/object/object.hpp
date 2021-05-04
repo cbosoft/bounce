@@ -11,8 +11,6 @@
 class Object : public Transform {
   public:
     Object(Transform *parent);
-    Object(Transform *parent, const arma::vec2 &position, bool fixed=false, double cor=1.0);
-    Object(Transform *parent, const arma::vec2 &position, double mass, double cor=1.0);
     ~Object();
 
     virtual void physics_update() {}
@@ -25,6 +23,7 @@ class Object : public Transform {
     double get_mass() const;
 
     bool fixed() const;
+    void set_fixed(bool value);
 
     const Colour &get_colour() const;
     void set_colour(const Colour &colour);
