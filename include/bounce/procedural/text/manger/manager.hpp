@@ -12,7 +12,7 @@ public:
     TextManager &operator=(const TextManager &other) =delete;
     ~TextManager();
 
-    const std::string &get_string(const std::string &collection_name, const std::string &id);
+    TextCollection *get_collection(const std::string &collection_name);
 
 private:
     TextManager();

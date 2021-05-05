@@ -93,7 +93,7 @@ public:
         this->cursor->set_position({10, 0});
         this->attach_renderable("cursor", this->cursor);
 
-        std::string tag = TextManager::ref().get_string("tagline", "tagline");
+        std::string tag = TextManager::ref().get_collection("tagline")->get_string("tagline");
         tag += " ";
         auto *tagline = new TextRenderable(tag, DEFAULT_FONT, 50);
         tagline->set_alignment(HA_right, VA_centre);
