@@ -5,6 +5,12 @@ arma::vec2 TextRenderable::aligned_origin() const
 {
     arma::vec2 rv = this->get_position();
     arma::vec2 text_size = this->measure();
+    float line_height = 0;
+    for (auto c : this->_text) {
+        auto ch = this->_font->get_char(c);
+        if (ch->bearing_y > line_height)
+            line_height = ch->bearing_y;
+    }
     switch (this->_h_align) {
         case HA_left:
             // nothing to do
@@ -18,13 +24,15 @@ arma::vec2 TextRenderable::aligned_origin() const
     }
     switch (this->_v_align) {
         case VA_bottom:
-            // nothing to do
+            rv[1] += text_size[1];
+            rv[1] -= line_height;
             break;
         case VA_centre:
-            rv[1] -= text_size[1]/2;
+            rv[1] += text_size[1]/2;
+            rv[1] -= line_height;
             break;
         case VA_top:
-            rv[1] -= text_size[1];
+            rv[1] -= line_height;
             break;
     }
     return rv;
@@ -44,13 +52,36 @@ void TextRenderable::draw() const
     glEnableVertexAttribArray(2);
 
     arma::vec2 origin = this->aligned_origin();
+
+    float line_height = 0.f, width = 0.f;
+    int idx_last_breaking_char = -1;
+    auto fw = this->_typesetting_width;
+    bool restricted_width = this->_typesetting_width > 0;
+    std::vector<bool> breaks(this->_text.size(), false);
+    for (int i = 0; i < int(this->_text.size()); i++) {
+        auto c = this->_text[i];
+
+        if (c == ' ') idx_last_breaking_char = i;
+        auto ch = this->_font->get_char(c);
+        if (ch->bearing_y > line_height)
+            line_height = ch->bearing_y;
+        if (restricted_width) {
+            width += ch->advance;
+            if (width > fw && idx_last_breaking_char > 0) {
+                breaks[idx_last_breaking_char] = true;
+                width = 0.f;
+            }
+        }
+    }
+
     auto x = float(origin[0]);
     auto y = float(origin[1]);
 
     const Colour &colour = this->get_colour();
     float cr = colour.rf(), cg = colour.gf(), cb = colour.bf(), ca = colour.af();
 
-    for (auto c : this->_text) {
+    for (int i = 0; i < int(this->_text.size()); i++) {
+        auto c = this->_text[i];
         auto ch = this->_font->get_char(c);
         float h = ch->h, w = ch->w;
         float dy = ch->bearing_y - h, dx = ch->bearing_x;
@@ -66,6 +97,10 @@ void TextRenderable::draw() const
         vertices[5] = {xm,   ym+h, 0.0f, cr, cg, cb, ca, 0.f, 0.f};
 
         x += ch->advance;
+        if (breaks[i]) {
+            x = float(origin[0]);
+            y -= line_height*_line_spacing;
+        }
 
         glBindTexture(GL_TEXTURE_2D, ch->texture_id);
         glBindBuffer(GL_ARRAY_BUFFER, renderer.get_vbuf());

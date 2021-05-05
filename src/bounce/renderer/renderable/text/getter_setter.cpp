@@ -42,3 +42,23 @@ void TextRenderable::set_alignment(TextHAlign h_align, TextVAlign v_align)
     this->_h_align = h_align;
     this->_v_align = v_align;
 }
+
+float TextRenderable::get_typeset_width() const
+{
+    return this->_typesetting_width;
+}
+
+void TextRenderable::set_typeset_width(float v)
+{
+    this->_typesetting_width = v;
+}
+
+float TextRenderable::get_line_spacing() const
+{
+    return this->_line_spacing;
+}
+
+void TextRenderable::set_line_spacing(float line_spacing)
+{
+    this->_line_spacing = line_spacing;
+}
