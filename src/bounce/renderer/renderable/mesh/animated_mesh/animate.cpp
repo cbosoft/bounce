@@ -2,15 +2,16 @@
 
 void AnimatedMeshRenderable::animate_to(MeshRenderable *target_mesh, int n_frames)
 {
-    this->set_target_get_gradients(target_mesh->_points, target_mesh->get_size(), target_mesh->get_angle(), n_frames);
+    this->set_target_get_gradients(target_mesh->_points, target_mesh->get_size(), target_mesh->get_position(), target_mesh->get_angle(), n_frames);
 }
 
 void AnimatedMeshRenderable::animate_to_original(int n_frames)
 {
-    this->set_target_get_gradients(this->_original_points, this->_original_size, this->_original_angle, n_frames);
+    this->set_target_get_gradients(this->_original_points, this->_original_size, this->_original_pos, this->_original_angle, n_frames);
 }
 
-void AnimatedMeshRenderable::set_target_get_gradients(const std::vector<arma::vec2> &target, const arma::vec2 &size, double angle, int n_frames)
+void AnimatedMeshRenderable::set_target_get_gradients(const std::vector<arma::vec2> &target, const arma::vec2 &size,
+                                                      const arma::vec2 &position, double angle, int n_frames)
 {
     auto n = int(target.size()), cn = int(this->_points.size());
     this->_target_points = target;
@@ -47,7 +48,10 @@ void AnimatedMeshRenderable::set_target_get_gradients(const std::vector<arma::ve
     }
     this->_scale_grad = (size - this->get_size())/df;
     this->_angle_grad = (angle - this->get_angle())/df;
+    this->_position_grad = (position - this->get_position())/df;
     all_zero = all_zero && arma::sum(arma::abs(this->_scale_grad)) < eps;
+    all_zero = all_zero && std::abs(this->_angle_grad) < eps;
+    all_zero = all_zero && arma::sum(arma::abs(this->_position_grad)) < eps;
 
     this->_movement_frames_left = all_zero ? 0 : n_frames;
 }
@@ -59,6 +63,8 @@ void AnimatedMeshRenderable::step_animation()
         this->_points[i] += this->_gradients[i];
     this->set_size(this->get_size() + this->_scale_grad);
     this->set_angle(this->get_angle() + this->_angle_grad);
+    if (this->_animate_position)
+        this->set_position(this->get_position() + this->_position_grad);
 }
 
 void AnimatedMeshRenderable::on_update()
