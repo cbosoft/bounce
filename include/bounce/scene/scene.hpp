@@ -13,8 +13,6 @@ class Scene: public InputContext, public Transform {
 public:
     Scene(const std::string &name);
 
-    virtual void on_activate() {}
-    virtual void on_deactivate() {}
     virtual void on_update() {}
 
     const std::string &get_name() const;

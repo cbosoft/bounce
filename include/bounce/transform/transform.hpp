@@ -29,7 +29,9 @@ public:
     unsigned long count() const;
 
     void activate();
+    virtual void on_activate() {}
     void deactivate();
+    virtual void on_deactivate() {}
     bool is_active() const;
 
     virtual void attach_renderable(const std::string &name, Renderable *rbl);

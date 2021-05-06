@@ -18,7 +18,7 @@ void Game::add_scene(Scene *scene)
     if (this->get_active_scene() == nullptr) {
         this->scene_stack.push_back(scene);
         Logger::ref() << LL_INFO << "Active scene set to \"" << scene->get_name() << "\".\n";
-        scene->on_activate();
+        scene->activate();
     }
 }
 
@@ -40,7 +40,7 @@ void Game::push_active_scene(const std::string &scene_name)
         Scene *scene = it->second;
         this->scene_stack.push_back(scene);
         Logger::ref() << LL_INFO << "Pushed scene. Active scene now \"" << scene_name << "\".\n";
-        scene->on_activate();
+        scene->activate();
     }
     else {
         Logger::ref() << LL_ERROR << "Scene with name\"" << scene_name << "\" not found.\n";
@@ -67,12 +67,12 @@ Scene *Game::get_active_scene() const
 Scene *Game::pop_active_scene()
 {
     auto *s = this->scene_stack.back();
-    s->on_deactivate();
+    s->deactivate();
     this->scene_stack.pop_back();
     Scene *active = this->get_active_scene();
     if (active) {
         Logger::ref() << LL_INFO << "Popped active scene; active scene now \"" << active->get_name() << "\".\n";
-        this->scene_stack.back()->on_activate();
+        this->scene_stack.back()->activate();
     }
     else {
         Logger::ref() << LL_INFO << "Popped active scene; no scene active. Quitting.\n";
