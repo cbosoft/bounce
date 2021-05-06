@@ -74,6 +74,7 @@ unsigned long Transform::count() const
 void Transform::activate()
 {
     this->_active = true;
+    this->on_activate();
     for (Transform *child : this->_children)
         child->activate();
 }
@@ -81,6 +82,7 @@ void Transform::activate()
 void Transform::deactivate()
 {
     this->_active = false;
+    this->on_deactivate();
     for (Transform *child : this->_children)
         child->deactivate();
 }
