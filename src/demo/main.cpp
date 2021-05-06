@@ -24,7 +24,7 @@ int main()
     //r.set_screen_effect("1bit");
     r.set_screen_effect("crt");
 
-    game.add_scene(new BounceEngineLogoSplash("menu"));
+    // game.add_scene(new BounceEngineLogoSplash("menu"));
     game.add_scene(new DemoMainMenu());
     game.add_scene(new DemoSpaceShooter());
     game.add_scene(new DemoPlatformer());

@@ -35,7 +35,6 @@ void DemoPlatformer::on_activate()
 {
     Game::ref().show_colliders();
     PhysicsEngine::ref().set_timescale(3.0);
-    Renderer::get().set_screen_effect("1bit");
 }
 
 void DemoPlatformer::on_deactivate()

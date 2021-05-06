@@ -51,40 +51,40 @@ public:
     {
         this->icon = new AnimatedBounceIcon();
         this->attach_renderable(this->icon);
-        this->icon->set_position({0, 40});
+        this->icon->set_position({0, 35});
 
         auto *txt = new TextRenderable("Bounce Demo Collection", DEFAULT_FONT, 150);
         txt->set_colour(Colour::from_rgb(240, 240, 220));
-        txt->set_position({0, 20});
+        txt->set_position({0, 60});
         this->attach_renderable(txt);
 
         {
             auto *b = new DemoMenuButton(this, "space shooter (pew pew)");
-            b->set_position({0, 0});
+            b->set_position({0, 10});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::free_roam_callback);
         }
         {
             auto *b = new DemoMenuButton(this, "platformer (jump around)");
-            b->set_position({0, -15});
+            b->set_position({0, -5});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::platformer_cb);
         }
         {
             auto *b = new DemoMenuButton(this, "music (doo bee doo)");
-            b->set_position({0, -30});
+            b->set_position({0, -20});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::music_cb);
         }
         {
             auto *b = new DemoMenuButton(this, "demo #4");
-            b->set_position({0, -45});
+            b->set_position({0, -35});
             this->add_item(b);
             // TODO b->set_callback_action(DemoMainMenu::/* callback */);
         }
         {
             auto *b = new DemoMenuButton(this, "quit");
-            b->set_position({0, -60});
+            b->set_position({0, -55});
             this->add_item(b);
             b->set_callback_action(DemoMainMenu::quit_callback);
         }
