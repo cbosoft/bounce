@@ -6,6 +6,8 @@ class CollisionShape {
 public:
     double w, h;
 
+    CollisionShape(const CollisionShape &other) =default;
+
     [[nodiscard]] ShapeType get_type() const { return this->shape_type; }
     [[nodiscard]] bool is_circle() const { return this->shape_type == ST_CIRCLE; }
     [[nodiscard]] bool is_rectangle() const { return this->shape_type == ST_RECT; }
