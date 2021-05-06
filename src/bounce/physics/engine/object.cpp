@@ -14,7 +14,8 @@ PhysicsMaterial PhysicsEngine::get_overall_material_properties(const PhysicsMate
 CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
 {
     // If both are fixed, don't resolve collision
-    if (a->fixed() && b->fixed()) {
+    bool afixed = a->fixed(), bfixed = b->fixed();
+    if (afixed && bfixed) {
         this->_cached_collision.happens = false;
         return this->_cached_collision;
     }
@@ -27,8 +28,8 @@ CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
     // objects collide
     // TODO only run collision event if the collision is new
     Game::ref().add_event(new CollisionEvent(a, b));
-    if (a->fixed() || b->fixed()) {
-        return this->resolve_collision_one_fixed(b->fixed()?a:b, b->fixed()?b:a);
+    if (afixed || bfixed) {
+        return this->resolve_collision_one_fixed(bfixed?a:b, bfixed?b:a);
     }
 
     return this->resolve_collision_free_bodies(a, b);
@@ -37,7 +38,7 @@ CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
 CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed_body)
 {
     const arma::vec &norm = this->_cached_collision.normal;
-    const arma::vec &v = free_body->get_velocity();
+    const arma::vec &v = free_body->get_velocity() - fixed_body->get_velocity()*2.f;
     double nn = arma::dot(norm, norm);
     double vn = arma::dot(v, norm);
     arma::vec2 vel_parallel_to_norm = (vn/nn)*norm;
