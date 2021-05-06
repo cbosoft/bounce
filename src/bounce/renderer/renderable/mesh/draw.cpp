@@ -4,9 +4,9 @@
 
 void MeshRenderable::draw() const
 {
+    this->draw_main();
     if (this->get_border_size() > 1e-2)
         this->draw_border();
-    this->draw_main();
 }
 
 
@@ -19,21 +19,27 @@ void MeshRenderable::draw_border() const
     auto x = float(opos[0]) + float(this->_anchor[0])*sx;
     auto y = float(opos[1]) + float(this->_anchor[1])*sy;
 
-    const int n = int(this->_points.size());
-
     Colour colour = this->get_border_colour();
     float r = colour.rf(), g = colour.gf(), b = colour.bf(), a = colour.af();
     auto border_size = (float)this->get_border_size();
 
-    // first draw a mesh border_size bigger than the mesh
     std::vector<Vertex> vertices;
-    for (int i = 0; i < n; i++) {
-        auto dx = float(this->_points[i][0]);
-        auto dy = float(this->_points[i][1]);
-        float bx = (dx < 0.0 ? -1.f : 1.f)*border_size;
-        float by = (dy < 0.0 ? -1.f : 1.f)*border_size;
+    for (int j = 0; j < int(this->_points.size()) + 1; j++) {
+        int i = j % this->_points.size();
+        const arma::vec2 &pt = this->_points[i];
+        auto dx = float(pt[0]);
+        auto dy = float(pt[1]);
         vertices.push_back({
-            x + bx + dx * sx, y + by + dy * sy, 0.0f,
+            x + dx * sx, y + dy * sy, 0.0f,
+            r, g, b, a,
+            0.5f + dx/2.0f, 0.5f + dy/2.0f
+        });
+
+        arma::vec2 d = arma::normalise(pt);
+        auto bx = float(d[0])*border_size;
+        auto by = float(d[1])*border_size;
+        vertices.push_back({
+            x + dx * sx - bx, y + dy * sy - by, 0.0f,
             r, g, b, a,
             0.5f + dx/2.0f, 0.5f + dy/2.0f
         });
@@ -58,7 +64,7 @@ void MeshRenderable::draw_border() const
     loc = glGetUniformLocation(shader, "object_angle");
     if (loc != -1) glUniform1f(loc, float(this->get_angle()));
 
-    glDrawArrays(GL_TRIANGLE_FAN, 0, int(vertices.size()));
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, int(vertices.size()));
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
