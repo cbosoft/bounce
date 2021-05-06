@@ -7,6 +7,4 @@ void Object::timestep(double dt)
 
     this->velocity += this->inv_mass*dt*this->force;
     this->new_position = this->get_position() + this->velocity*dt;
-
-    this->physics_update();
 }

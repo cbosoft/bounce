@@ -13,8 +13,6 @@ class Object : public Transform {
     Object(Transform *parent);
     ~Object();
 
-    virtual void physics_update() {}
-
     void timestep(double dt);
 
     void accept_position();
