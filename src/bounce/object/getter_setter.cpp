@@ -132,6 +132,9 @@ void Object::set_shape(const CollisionShape &shape)
             break;
     }
 
+    this->_renderable_collider->set_border_size(0.5);
+    this->_renderable_collider->set_colour(Colours::clear);
+    this->_renderable_collider->set_border_colour(Colours::yellow);
     this->_renderable_collider->set_parent(this);
     this->_renderable_collider->set_z(1000);
 }
