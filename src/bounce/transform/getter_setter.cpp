@@ -37,9 +37,9 @@ void Transform::set_parent(Transform *parent)
     this->_parent->add_child(this);
 }
 
-const arma::vec2 & Transform::get_relative_position() const
+arma::vec2 Transform::get_relative_position() const
 {
-    return this->_relative_position;
+    return this->_relative_position*this->get_scale();
 }
 
 void Transform::set_relative_position(const arma::vec2 &relative_position)
@@ -49,7 +49,7 @@ void Transform::set_relative_position(const arma::vec2 &relative_position)
 
 arma::vec2 Transform::get_position() const
 {
-    auto rv = this->get_relative_position();
+    arma::vec2 rv = this->get_relative_position();
     if (this->_parent)
         rv += this->_parent->get_position();
     return rv;
@@ -90,4 +90,17 @@ void Transform::deactivate()
 bool Transform::is_active() const
 {
     return this->_active;
+}
+
+void Transform::set_scale(double scale)
+{
+    this->_scale = scale;
+}
+
+double Transform::get_scale() const
+{
+    double scale = this->_scale;
+    if (_parent)
+        scale *= this->_parent->get_scale();
+    return scale;
 }

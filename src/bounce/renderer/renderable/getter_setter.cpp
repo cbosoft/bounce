@@ -12,9 +12,9 @@ void Renderable::set_size(const arma::vec2 &size)
     this->_size = size;
 }
 
-const arma::vec2 &Renderable::get_size() const
+arma::vec2 Renderable::get_size() const
 {
-    return this->_size;
+    return this->_size*this->get_scale();
 }
 
 void Renderable::set_object(Object *object)
@@ -65,7 +65,7 @@ void Renderable::set_border_colour(const Colour &colour)
 
 double Renderable::get_border_size() const
 {
-    return this->_border_size;
+    return this->_border_size*this->get_scale();
 }
 
 void Renderable::set_border_size(double border_size)

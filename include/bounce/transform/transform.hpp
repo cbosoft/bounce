@@ -14,7 +14,7 @@ public:
     virtual ~Transform() =default;
     void destroy();
 
-    const arma::vec2 &get_relative_position() const;
+    arma::vec2 get_relative_position() const;
     arma::vec2 get_position() const;
 
     virtual void set_relative_position(const arma::vec2 &relative_position);
@@ -34,6 +34,9 @@ public:
     virtual void on_deactivate() {}
     bool is_active() const;
 
+    void set_scale(double scale);
+    double get_scale() const;
+
     virtual void attach_renderable(const std::string &name, Renderable *rbl);
     virtual void attach_renderable(Renderable *rbl);
     virtual void get_renderables(std::list<const Renderable *> &out) const;
@@ -47,6 +50,7 @@ private:
     Transform *_parent;
     arma::vec2 _relative_position;
     bool _active;
+    double _scale;
 
     std::list<Transform *> _children;
     std::map<std::string, Renderable *> _named_renderables;

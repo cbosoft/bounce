@@ -16,7 +16,7 @@ public:
     void set_aspect_preserve_diagonal(double aspect);
     double get_aspect() const;
     void set_size(const arma::vec2 &size);
-    const arma::vec2 &get_size() const;
+    arma::vec2 get_size() const;
     double get_angle() const;
     void set_angle(double angle);
 
