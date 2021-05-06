@@ -30,6 +30,7 @@ class Object : public Transform {
     const arma::vec2 &get_velocity() const;
     const arma::vec2 &get_force() const;
 
+    void set_relative_position(const arma::vec2 &position) override;
     void set_position(const arma::vec2 &position) override;
     void set_new_position(const arma::vec2 &new_position);
     void set_new_position(const arma::vec2 &&new_position);

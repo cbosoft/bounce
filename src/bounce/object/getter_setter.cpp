@@ -47,6 +47,12 @@ void Object::set_position(const arma::vec2 &position)
     Transform::set_position(position);
 }
 
+void Object::set_relative_position(const arma::vec2 &position)
+{
+    Transform::set_relative_position(position);
+    this->new_position = this->get_position();
+}
+
 const arma::vec2 &Object::get_new_position() const
 {
     return this->new_position;
