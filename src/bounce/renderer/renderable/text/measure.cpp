@@ -22,18 +22,25 @@ arma::vec2 TextRenderable::measure() const
                 width = 0.f;
             }
         }
+        if (c == '\n') {
+            width = 0.f;
+            breaks[i] = true;
+        }
     }
 
     for (int i = 0; i < int(this->_text.size()); i++) {
         auto c = this->_text[i];
-        Character *ch = this->_font->get_char(c);
-        width += ch->advance;
+
         if (restricted_width) {
             if (breaks[i]) {
                 width = 0.0f;
                 nlines ++;
             }
         }
+        if (c == '\n')
+            continue;
+        Character *ch = this->_font->get_char(c);
+        width += ch->advance;
         if (width > max_width) {
             max_width = width;
         }
