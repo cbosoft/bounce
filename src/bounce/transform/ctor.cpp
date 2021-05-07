@@ -5,6 +5,7 @@ Transform::Transform()
 ,   _relative_position({0.0, 0.0})
 ,   _active{true}
 ,   _scale(1.0)
+,   _relative_z(0)
 {
     // do nothing
 }

@@ -104,3 +104,29 @@ double Transform::get_scale() const
         scale *= this->_parent->get_scale();
     return scale;
 }
+
+void Transform::set_z(int z)
+{
+    int rel_z = z;
+    if (this->_parent)
+        rel_z -= this->_parent->get_z();
+    this->set_relative_z(rel_z);
+}
+
+void Transform::set_relative_z(int rel_z)
+{
+    this->_relative_z = rel_z;
+}
+
+int Transform::get_relative_z() const
+{
+    return this->_relative_z;
+}
+
+int Transform::get_z() const
+{
+    int z = this->_relative_z;
+    if (this->_parent)
+        z += this->_parent->get_z();
+    return z;
+}

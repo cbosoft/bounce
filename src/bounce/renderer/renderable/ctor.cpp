@@ -14,7 +14,6 @@ Renderable::Renderable()
 ,   _texture(Renderer::get().get_texture("null"))
 ,   _current_texture_loop(Texture::default_loop)
 ,   _current_frame(0)
-,   _z(0)
 ,   _visible(true)
 {
     // do nothing

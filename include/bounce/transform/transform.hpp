@@ -37,6 +37,11 @@ public:
     void set_scale(double scale);
     double get_scale() const;
 
+    void set_z(int z);
+    void set_relative_z(int rel_z);
+    int get_z() const;
+    int get_relative_z() const;
+
     virtual void attach_renderable(const std::string &name, Renderable *rbl);
     virtual void attach_renderable(Renderable *rbl);
     virtual void get_renderables(std::list<const Renderable *> &out) const;
@@ -51,6 +56,7 @@ private:
     arma::vec2 _relative_position;
     bool _active;
     double _scale;
+    int _relative_z;
 
     std::list<Transform *> _children;
     std::map<std::string, Renderable *> _named_renderables;

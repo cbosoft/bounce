@@ -45,9 +45,6 @@ public:
     void hide();
     void show();
 
-    void set_z(int z);
-    int get_z() const;
-
     static bool z_sort(const Renderable *left, const Renderable *right) { return left->get_z() < right->get_z(); }
 
 protected:
@@ -59,7 +56,6 @@ protected:
     Texture *_texture;
     TextureAnimLoop _current_texture_loop;
     unsigned int _current_frame;
-    int _z;
     bool _visible;
     GLuint _target;
 };

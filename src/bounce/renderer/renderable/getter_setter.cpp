@@ -73,16 +73,6 @@ void Renderable::set_border_size(double border_size)
     this->_border_size = border_size;
 }
 
-void Renderable::set_z(int z)
-{
-    this->_z = z;
-}
-
-int Renderable::get_z() const
-{
-    return this->_z;
-}
-
 void Renderable::set_visible(bool visibility)
 {
     this->_visible = visibility;
