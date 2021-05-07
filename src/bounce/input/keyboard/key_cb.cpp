@@ -41,7 +41,9 @@ void KeyboardInputManager::key_press(GLFWwindow *win, int key, int scancode, int
             .cursor_moved = false,
             .zoomed = false,
             .cursor = {0., 0.},
-            .zoom = {0., 0.}
+            .zoom = {0., 0.},
+            .char_state = BTN_NULL,
+            .ch = ' '
     };
     switch (key) {
         case GLFW_KEY_F:

@@ -39,7 +39,9 @@ void KeyboardInputManager::mouse_btn(GLFWwindow* window, int button, int action,
             .cursor_moved = false,
             .zoomed = false,
             .cursor = {0, 0},
-            .zoom = {0, 0}
+            .zoom = {0, 0},
+            .char_state = BTN_NULL,
+            .ch = ' '
     };
     switch (button) {
         case GLFW_MOUSE_BUTTON_LEFT:
@@ -75,7 +77,9 @@ void KeyboardInputManager::mouse_pos(GLFWwindow *win, double x, double y)
             .cursor_moved = true,
             .zoomed = false,
             .cursor = {x, y},
-            .zoom = {0, 0}
+            .zoom = {0, 0},
+            .char_state = BTN_NULL,
+            .ch = ' '
     });
 }
 
@@ -98,6 +102,8 @@ void KeyboardInputManager::scroll_pos(GLFWwindow *win, double xoff, double yoff)
         .cursor_moved = false,
         .zoomed = true,
         .cursor = {0, 0},
-        .zoom = {xoff, yoff}
+        .zoom = {xoff, yoff},
+        .char_state = BTN_NULL,
+        .ch = ' '
     });
 }
