@@ -34,6 +34,8 @@ public:
     DemoPlayer(Scene *parent, const arma::vec2 &position)
             :   Object(parent)
             ,   _speed(1000.0)
+            ,   _hp(10.0)
+            ,   _max_hp(10.0)
             ,   _last_shot(std::chrono::system_clock::now())
             ,   _cooldown_frames(50)
             ,   _score(0.0)
@@ -79,9 +81,14 @@ public:
         this->_score += amount;
     }
 
-    void damage(long amount)
+    void damage(double amount)
     {
-        this->_score -= amount;
+        this->_hp -= amount;
+    }
+
+    [[nodiscard]] double get_hp_fraction() const
+    {
+        return this->_hp/this->_max_hp;
     }
 
     void up_pressed() { this->_dir[1] += 1; }
@@ -124,15 +131,43 @@ public:
             projectile->set_velocity(v);
             this->_score -= 1;
         }
+
+        if (this->_hp < 1.0) {
+            Game::ref().add_event(new PushSceneTransitionEvent("shooter end game"));
+        }
     }
 
     Renderable *gun, *body;
 
 private:
     arma::vec2 _dir{0, 0};
-    double _speed;
+    double _speed, _hp, _max_hp;
     bool _should_shoot;
 
     std::chrono::system_clock::time_point _last_shot;
     long _cooldown_frames, _score;
+};
+
+class DemoPlayerHPBar final: public BarGraph {
+public:
+    DemoPlayerHPBar(DemoPlayer *player)
+    :   BarGraph(100, 10)
+    ,   player(player)
+    {
+
+    }
+
+private:
+
+    double measure_value() const override
+    {
+        return this->player->get_hp_fraction();
+    }
+
+    double measure_maximum() const override
+    {
+        return 1.0;
+    }
+
+    DemoPlayer *player;
 };
