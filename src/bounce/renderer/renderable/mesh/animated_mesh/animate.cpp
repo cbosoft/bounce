@@ -1,3 +1,4 @@
+#include <cassert>
 #include <bounce/renderer/renderable/mesh/animated_mesh/animated_mesh.hpp>
 
 void AnimatedMeshRenderable::animate_to(MeshRenderable *target_mesh, int n_frames)
