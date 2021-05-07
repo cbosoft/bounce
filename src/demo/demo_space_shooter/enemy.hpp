@@ -38,11 +38,18 @@ public:
         this->set_force(f);
     }
 
+    void retreat_from_target()
+    {
+        auto dp = this->_target->get_position() - this->get_position();
+        arma::vec2 f = -arma::normalise(dp)*15e3;
+        this->set_force(f);
+    }
+
     void enforce_max_vel()
     {
         auto v = this->get_velocity();
         double vm = arma::norm(v);
-        constexpr double MAX_VEL = 50.0;
+        constexpr double MAX_VEL = 60.0;
         if (vm > MAX_VEL) {
             auto nv = arma::normalise(v);
             this->set_velocity(MAX_VEL*nv);
@@ -53,7 +60,7 @@ public:
     {
         if (arma::randu() < 1./60.) {
             this->_state = ENEMY_EVASIVE;
-            this->cooldown = 10;
+            this->cooldown = 30;
             if (arma::randu() < 0.1)
                 this->evasive_mult *= -1.0;
         }
@@ -83,6 +90,11 @@ public:
             case ENEMY_EVASIVE:
                 this->evasive_manoeuvre();
                 break;
+
+            case ENEMY_RETREATING:
+                this->retreat_from_target();
+                this->maybe_change_state();
+                break;
         }
 
         this->face_forward();
@@ -93,6 +105,7 @@ public:
     {
         if (other->is_a("player")) {
             this->_target->damage(1.0);
+            this->_state = ENEMY_RETREATING;
         }
         else if (other->is_a("projectile")) {
             this->_hp -= 1.0;
@@ -105,7 +118,7 @@ public:
     }
 
 private:
-    enum AI_STATE { ENEMY_ATTACKING, ENEMY_EVASIVE };
+    enum AI_STATE { ENEMY_ATTACKING, ENEMY_EVASIVE, ENEMY_RETREATING };
     AI_STATE _state = ENEMY_ATTACKING;
     int cooldown = 0;
     double evasive_mult, _hp;
