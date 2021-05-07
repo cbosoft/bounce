@@ -3,6 +3,7 @@
 #include "main_menu.hpp"
 #include "demo_space_shooter/free_roam.hpp"
 #include "demo_space_shooter/tut_menu.hpp"
+#include "demo_space_shooter/end_game.hpp"
 #include "demo_platformer/platformer.hpp"
 #include "demo_music/music.hpp"
 
@@ -29,6 +30,7 @@ int main()
     game.add_scene(new DemoSpaceShooter());
     game.add_scene(new DemoPlatformer());
     game.add_scene(new DemoSpaceShooterTutorialMenu());
+    game.add_scene(new DemoSpaceShooterEndGameMenu());
     game.add_scene(new DemoMusic());
 
     game.run();

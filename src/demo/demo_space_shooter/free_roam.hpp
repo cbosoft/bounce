@@ -42,10 +42,15 @@ public:
         bg->set_parent(cam);
 
         this->score_display = new TextRenderable("0", DEFAULT_FONT, 150);
-        this->score_display->set_alignment(HA_centre, VA_top);
+        this->score_display->set_alignment(HA_right, VA_top);
         this->attach_renderable(this->score_display);
-        this->score_display->set_parent(cam);
-        this->score_display->set_relative_position({0, 70});
+        this->score_display->set_parent(cam->get_tr());
+        this->score_display->set_relative_position({-10, -10});
+
+        this->hp_display = new DemoPlayerHPBar(this->player);
+        this->attach_renderable(this->hp_display);
+        this->hp_display->set_parent(cam->get_tl());
+        this->hp_display->set_relative_position({10, -10});
 
         auto *enemy = new DemoEnemy(this, {100, 100}, this->player);
         (void) enemy;
@@ -198,4 +203,5 @@ private:
     DemoPlayer *player;
     DemoReticule *reticule;
     TextRenderable *fpscntr, *score_display;
+    BarGraph *hp_display;
 };
