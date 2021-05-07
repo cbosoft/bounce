@@ -8,6 +8,7 @@ public:
     DemoEnemy(Transform *parent, const arma::vec2 &position, DemoPlayer *target)
             :   Object(parent)
             ,   evasive_mult(1.0)
+            ,   _hp(3.0)
             ,   _target(target)
     {
         this->set_position(position);
@@ -91,12 +92,15 @@ public:
     void on_collision(Object *other) override
     {
         if (other->is_a("player")) {
-            this->_target->damage(10);
+            this->_target->damage(1.0);
         }
         else if (other->is_a("projectile")) {
-            this->_target->score(100);
-            //Game::ref().add_event(new TemporaryTimePause(10));
-            Game::ref().add_event(new TransformDestroyEvent(this));
+            this->_hp -= 1.0;
+            if (this->_hp < 1.0) {
+                this->_target->score(100);
+                //Game::ref().add_event(new TemporaryTimePause(10));
+                Game::ref().add_event(new TransformDestroyEvent(this));
+            }
         }
     }
 
@@ -104,7 +108,7 @@ private:
     enum AI_STATE { ENEMY_ATTACKING, ENEMY_EVASIVE };
     AI_STATE _state = ENEMY_ATTACKING;
     int cooldown = 0;
-    double evasive_mult;
+    double evasive_mult, _hp;
     DemoPlayer *_target;
     MeshRenderable *body;
 };
