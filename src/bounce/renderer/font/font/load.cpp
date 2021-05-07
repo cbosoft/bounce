@@ -11,7 +11,13 @@ void Font::load_char_from_font(unsigned long charcode)
     FT_UInt glyph_index = FT_Get_Char_Index(this->_face, charcode);
 
     if (FT_Load_Glyph(this->_face, glyph_index, FT_LOAD_RENDER)) {
-        std::cerr << "char '" << wchar_t(charcode) << "' not in font." << std::endl;
+        if (charcode < 127) {
+            auto ch = (char)charcode;
+            std::cerr << "char '" << ch << "' not in font." << std::endl;
+        }
+        else {
+            std::cerr << "char (code=" << charcode << ") not in font." << std::endl;
+        }
         return;
     }
 
