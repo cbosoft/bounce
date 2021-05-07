@@ -76,7 +76,7 @@ endif()
 list(APPEND EXT_LIB ${GLFW_LIB} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${EXTRA_LIBS})
 include_directories(${OPENGL_INCLUDE_DIR} ${GLFW_INCLUDE_DIR} ${GLEW_INCLUDE_DIR})
 
-find_package(portaudio REQUIRED)
+# find_package(portaudio REQUIRED)
 include_directories(/usr/local/include)
 list(APPEND EXT_LIB portaudio)
 
