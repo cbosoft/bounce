@@ -37,6 +37,7 @@ public:
             ,   _hp(10.0)
             ,   _max_hp(10.0)
             ,   _last_shot(std::chrono::system_clock::now())
+            ,   _last_got_hurt(std::chrono::system_clock::now())
             ,   _cooldown_frames(50)
             ,   _score(0.0)
     {
@@ -83,7 +84,12 @@ public:
 
     void damage(double amount)
     {
-        this->_hp -= amount;
+        if (!this->invincible) {
+            this->_hp -= amount;
+            this->invincible = true;
+            this->body->set_colour(Colour::from_grayscale(255, 127));
+            this->_last_got_hurt = std::chrono::system_clock::now();
+        }
     }
 
     [[nodiscard]] double get_hp_fraction() const
@@ -100,6 +106,17 @@ public:
     void right_pressed() { this->_dir[0] += 1; }
     void right_released() { this->_dir[0] -= 1; }
 
+    void enforce_max_vel()
+    {
+        auto v = this->get_velocity();
+        double vm = arma::norm(v);
+        constexpr double MAX_VEL = 50.0;
+        if (vm > MAX_VEL) {
+            auto nv = arma::normalise(v);
+            this->set_velocity(MAX_VEL*nv);
+        }
+    }
+
     void on_update() override
     {
 
@@ -107,10 +124,10 @@ public:
         // or
         this->add_force(this->_dir*this->_speed);
 
-        arma::vec2 vd = arma::normalise(this->get_velocity());
-        arma::vec2 f = vd%arma::pow(this->get_velocity(), 2.0);
-        this->add_force(-.1*f);
-
+        // arma::vec2 vd = arma::normalise(this->get_velocity());
+        // arma::vec2 f = vd%arma::pow(this->get_velocity(), 2.0);
+        // this->add_force(-.1*f);
+        this->enforce_max_vel();
         // double len = arma::norm(vd);
         // if (len > 0.0) {
         //     double angle = std::acos(vd[0] / len);
@@ -119,17 +136,29 @@ public:
         // }
         this->body->set_angle(this->gun->get_angle());
 
-        if (this->_cooldown_frames) this->_cooldown_frames--;
-        if (!this->_cooldown_frames && this->_should_shoot) {
-            this->_cooldown_frames = 10;
-            double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
-            arma::vec2 pos = arma::mat22{{c, -s},
-                                         {s, c}} * arma::vec2{1, 0};
-            auto *projectile = new DemoProjectile(this, pos * this->gun->get_size()[0] * .5 + this->get_position());
-            arma::vec2 v = pos * 100 + this->get_velocity();
-            // this->add_force(-1e4 * pos);
-            projectile->set_velocity(v);
-            this->_score -= 1;
+        auto now = std::chrono::system_clock::now();
+
+        if (this->_should_shoot) {
+            long time_since_shoot = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->_last_shot).count();
+            if (time_since_shoot > 100) {
+                double c = std::cos(this->gun->get_angle()), s = std::sin(this->gun->get_angle());
+                arma::vec2 pos = arma::mat22{{c, -s},
+                                             {s, c}} * arma::vec2{1, 0};
+                auto *projectile = new DemoProjectile(this, pos * this->gun->get_size()[0] * .5 + this->get_position());
+                arma::vec2 v = pos * 100 + this->get_velocity();
+                // this->add_force(-1e4 * pos);
+                projectile->set_velocity(v);
+                this->_score -= 1;
+                this->_last_shot = now;
+            }
+        }
+
+        if (this->invincible) {
+            long time_since_hurt = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->_last_got_hurt).count();
+            if (time_since_hurt > 300) {
+                this->invincible = false;
+                this->body->set_colour(Colours::white);
+            }
         }
 
         if (this->_hp < 1.0) {
@@ -143,8 +172,9 @@ private:
     arma::vec2 _dir{0, 0};
     double _speed, _hp, _max_hp;
     bool _should_shoot;
+    int invincible;
 
-    std::chrono::system_clock::time_point _last_shot;
+    std::chrono::system_clock::time_point _last_shot, _last_got_hurt;
     long _cooldown_frames, _score;
 };
 
