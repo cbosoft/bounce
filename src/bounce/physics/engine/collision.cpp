@@ -29,6 +29,8 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::v
             }
             break;
     }
+
+    return false;
 }
 
 bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at)
