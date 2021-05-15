@@ -2,6 +2,7 @@
 #include <bounce/sound/manager/manager.hpp>
 
 SoundAfterEffect::SoundAfterEffect()
+:   _enabled(false)
 {
     SoundManager::ref().add_effect(this);
 }
