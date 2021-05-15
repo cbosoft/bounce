@@ -5,6 +5,7 @@
 
 Sound::Sound()
 :   _balance(.0f)
+,   _volume_mult(1.f)
 ,   _playing{false}
 {
     SoundManager::ref().add_sound(this);
@@ -68,4 +69,14 @@ void Sound::set_lr_balance(float f)
 float Sound::get_lr_balance() const
 {
     return this->_balance;
+}
+
+void Sound::set_volume_multiplier(float volume_mult)
+{
+    this->_volume_mult = volume_mult;
+}
+
+float Sound::get_volume_multiplier() const
+{
+    return this->_volume_mult;
 }

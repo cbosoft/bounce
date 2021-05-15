@@ -20,6 +20,9 @@ public:
     void enable_effect(SoundAfterEffect *effect);
     void disable_effect(SoundAfterEffect *effect);
 
+    void set_volume_mult(float volume);
+    float get_volume_mult() const;
+
 private:
     /* Private constructor, enforcing singleton */
     SoundManager();
@@ -38,6 +41,7 @@ private:
     /* After effects */
     void distort();
 
+    float _volume_mult;
     std::list<Sound *> _sounds;
     std::list<SoundAfterEffect *> _sound_after_effects;
     std::list<SoundAfterEffect *> _enabled_effects;

@@ -41,7 +41,10 @@ public:
     void set_lr_balance(float f);
     float get_lr_balance() const;
 
+    void set_volume_multiplier(float volume_mult);
+    float get_volume_multiplier() const;
+
 private:
-    float _balance;
+    float _balance, _volume_mult;
     bool _playing;
 };

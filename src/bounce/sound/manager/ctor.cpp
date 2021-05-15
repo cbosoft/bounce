@@ -2,7 +2,9 @@
 #include <bounce/logging/logger.hpp>
 
 SoundManager::SoundManager()
-: _stream{nullptr}
+:   _volume_mult(.5f)
+,   _buffer({0})
+,   _stream{nullptr}
 {
     PaError err = Pa_Initialize();
     if (err != paNoError) {

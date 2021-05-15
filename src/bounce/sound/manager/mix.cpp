@@ -11,16 +11,21 @@ const AudioBuffer &SoundManager::get_buffer()
             for (auto *fx : this->_enabled_effects)
                 fx->apply(f);
 
-            float bal = (sound->get_lr_balance() + 1.f)*.5f;
-            float lmult = bal, rmult = 1.f - bal;
+            const auto volume_mult = sound->get_volume_multiplier();
+
+            float balance = (sound->get_lr_balance() + 1.f) * .5f;
+            float left_mult = balance, right_mult = 1.f - balance;
             for (int i = 0; i < _SND_BUFFER_SIZE; i++) {
                 // left
-                this->_buffer[i*2] += f[i]*lmult;
+                this->_buffer[i*2] += f[i] * left_mult * volume_mult;
                 // right
-                this->_buffer[i*2 + 1] += f[i]*rmult;
+                this->_buffer[i*2 + 1] += f[i] * right_mult * volume_mult;
             }
         }
     }
+
+    for (int i = 0; i < (int)this->_buffer.size(); i++)
+        this->_buffer[i] = this->_buffer[i]*this->_volume_mult;
 
     return this->_buffer;
 }
