@@ -5,3 +5,8 @@ SoundAfterEffect::SoundAfterEffect()
 {
     SoundManager::ref().add_effect(this);
 }
+
+SoundAfterEffect::~SoundAfterEffect()
+{
+    SoundManager::ref().remove_effect(this);
+}

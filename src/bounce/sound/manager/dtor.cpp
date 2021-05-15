@@ -7,11 +7,13 @@ SoundManager::~SoundManager()
 {
     this->stop();
 
-    for (auto *snd : this->_sounds) {
+    auto sounds_copy = this->_sounds;
+    for (auto *snd : sounds_copy) {
         delete snd;
     }
 
-    for (auto *fx : this->_sound_after_effects) {
+    auto fx_copy = this->_sound_after_effects;
+    for (auto *fx : fx_copy) {
         delete fx;
     }
 

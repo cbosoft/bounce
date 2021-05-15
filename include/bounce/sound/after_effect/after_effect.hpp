@@ -5,7 +5,7 @@
 class SoundAfterEffect {
 public:
     SoundAfterEffect();
-    virtual ~SoundAfterEffect() =default;
+    virtual ~SoundAfterEffect();
 
     void enable();
     void disable();
