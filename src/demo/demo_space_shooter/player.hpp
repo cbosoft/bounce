@@ -38,7 +38,6 @@ public:
             ,   _max_hp(10.0)
             ,   _last_shot(std::chrono::system_clock::now())
             ,   _last_got_hurt(std::chrono::system_clock::now())
-            ,   _cooldown_frames(50)
             ,   _score(0.0)
     {
         this->set_position(position);
@@ -175,7 +174,7 @@ private:
     int invincible;
 
     std::chrono::system_clock::time_point _last_shot, _last_got_hurt;
-    long _cooldown_frames, _score;
+    long _score;
 };
 
 class DemoPlayerHPBar final: public BarGraph {
