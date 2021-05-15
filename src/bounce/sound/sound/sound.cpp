@@ -4,7 +4,8 @@
 #include <bounce/sound/manager/manager.hpp>
 
 Sound::Sound()
-:   _playing{false}
+:   _balance(.0f)
+,   _playing{false}
 {
     SoundManager::ref().add_sound(this);
 }
@@ -57,4 +58,14 @@ float Sound::freq_from_note(MusicNote note, int octave)
     float freq = a4 * std::pow(2.f, pwr/12.f + foctave - 4.f);
 
     return freq;
+}
+
+void Sound::set_lr_balance(float f)
+{
+    this->_balance = f;
+}
+
+float Sound::get_lr_balance() const
+{
+    return this->_balance;
 }

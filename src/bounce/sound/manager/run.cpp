@@ -2,7 +2,7 @@
 #include <bounce/sound/sound/sound.hpp>
 #include <bounce/sound/manager/manager.hpp>
 
-static int stream_run_callback(
+int stream_run_callback(
         const void *input_buffer, void *output_buffer,
         unsigned long frames_per_buffer, const PaStreamCallbackTimeInfo* time_info,
         PaStreamCallbackFlags status_flags, void *user_data)
@@ -14,8 +14,7 @@ static int stream_run_callback(
     (void) time_info;
     (void) status_flags;
 
-    for (auto v : manager->get_frame()) {
-        *(out++) = v;
+    for (auto v : manager->get_buffer()) {
         *(out++) = v;
     }
 
@@ -26,7 +25,7 @@ void SoundManager::start()
 {
     /* Open an audio I/O stream. */
     PaError err = Pa_OpenDefaultStream(
-            &this->_stream, 0, 2, paFloat32, _SND_SAMPLE_RATE, _SND_FRAME_SIZE, stream_run_callback, (void *)this);
+            &this->_stream, 0, 2, paFloat32, _SND_SAMPLE_RATE, _SND_BUFFER_SIZE, stream_run_callback, (void *)this);
     if (err != paNoError) {
         Logger::ref() << LL_ERROR << "Error initialising sound stream: " << Pa_GetErrorText(err) << "\n";
         throw std::runtime_error("could not init sound");

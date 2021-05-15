@@ -19,9 +19,9 @@ typedef std::list<MidiMessage> MidiMessages;
 
 class MidiTrack : public Sound {
 public:
-    MidiTrack(const MidiMessages &messages);
+    explicit MidiTrack(const MidiMessages &messages);
 
-    Frame get_frame();
+    AudioMonoBuffer get_mono_buffer() override;
 
 private:
     void do_action(const MidiMessage &message);

@@ -2,9 +2,9 @@
 
 #include <bounce/sound/sound/midi_track/midi_track.hpp>
 
-Frame MidiTrack::get_frame()
+AudioMonoBuffer MidiTrack::get_mono_buffer()
 {
-    long next_end = this->_tape_head + long(_SND_FRAME_SIZE);
+    long next_end = this->_tape_head + long(_SND_BUFFER_SIZE);
 
     // if (next_end > this->_end) {
     //     this->pause();
@@ -32,5 +32,5 @@ Frame MidiTrack::get_frame()
     //        }
     //    }
     //}
-    return Frame{0};
+    return AudioMonoBuffer{0};
 }

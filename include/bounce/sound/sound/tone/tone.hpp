@@ -4,10 +4,10 @@
 
 class Tone : public Sound {
 public:
-    Tone(float freq);
+    explicit Tone(float freq);
     Tone(MusicNote note, int octave);
 
-    Frame get_frame();
+    AudioMonoBuffer get_mono_buffer() override;
 
 private:
     float freq, t, dt;
