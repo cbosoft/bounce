@@ -66,6 +66,9 @@ public:
         auto *note3 = new TextRenderable("<esc> to go back to the menu", DEFAULT_FONT, 70);
         this->attach_renderable(note3);
         note3->set_position({0, -10});
+
+        this->fx = new ClipAfterEffect();
+        this->fx->enable();
     }
 
     void key_char_pressed(char c) override
@@ -73,6 +76,8 @@ public:
         auto it = this->sounds.find(c);
         if (it != this->sounds.end())
             it->second->play();
+
+        if (c == '#') this->fx->enable();
     }
 
     void key_char_released(char c) override
@@ -80,6 +85,8 @@ public:
         auto it = this->sounds.find(c);
         if (it != this->sounds.end())
             it->second->pause();
+
+        if (c == '#') this->fx->disable();
     }
 
     void back_pressed() override
@@ -94,4 +101,5 @@ public:
 
 private:
     std::map<char, Sound *> sounds;
+    ClipAfterEffect *fx;
 };

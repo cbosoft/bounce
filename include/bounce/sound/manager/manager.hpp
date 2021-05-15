@@ -3,7 +3,7 @@
 #include <map>
 
 #include <portaudio.h>
-
+#include "../after_effect/after_effect.hpp"
 #include "../settings.hpp"
 
 class Sound;
@@ -14,6 +14,11 @@ public:
 
     void add_sound(Sound *sound);
     void remove_sound(Sound *sound);
+    void add_effect(SoundAfterEffect *effect);
+    void remove_effect(SoundAfterEffect *effect);
+
+    void enable_effect(SoundAfterEffect *effect);
+    void disable_effect(SoundAfterEffect *effect);
 
 private:
     /* Private constructor, enforcing singleton */
@@ -30,7 +35,12 @@ private:
      * for stereo. */
     const AudioBuffer &get_buffer();
 
+    /* After effects */
+    void distort();
+
     std::list<Sound *> _sounds;
+    std::list<SoundAfterEffect *> _sound_after_effects;
+    std::list<SoundAfterEffect *> _enabled_effects;
     AudioBuffer _buffer;
     PaStream *_stream;
 

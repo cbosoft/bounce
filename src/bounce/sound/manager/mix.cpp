@@ -7,6 +7,10 @@ const AudioBuffer &SoundManager::get_buffer()
     for (const auto &sound : this->_sounds) {
         if (sound->is_playing()) {
             auto f = sound->get_mono_buffer();
+
+            for (auto *fx : this->_enabled_effects)
+                fx->apply(f);
+
             float bal = (sound->get_lr_balance() + 1.f)*.5f;
             float lmult = bal, rmult = 1.f - bal;
             for (int i = 0; i < _SND_BUFFER_SIZE; i++) {

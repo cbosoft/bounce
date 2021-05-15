@@ -14,4 +14,5 @@
 #include "procedural/perlin/perlin.hpp"
 #include "procedural/text/manger/manager.hpp"
 #include "sound/sounds.hpp"
+#include "sound/after_effect/after_effects.hpp"
 #include "version/version.hpp"
