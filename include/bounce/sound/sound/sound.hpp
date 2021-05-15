@@ -31,8 +31,8 @@ public:
     Sound();
     virtual ~Sound();
 
-    void play();
-    void pause();
+    virtual void play();
+    virtual void pause();
     bool is_playing() const;
 
     virtual AudioMonoBuffer get_mono_buffer() =0;
