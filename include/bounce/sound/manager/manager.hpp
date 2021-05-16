@@ -23,7 +23,7 @@ public:
     void disable_effect(SoundAfterEffect *effect);
 
     void set_volume_mult(float volume);
-    float get_volume_mult() const;
+    [[nodiscard]] float get_volume_mult() const;
 
 private:
     /* Private constructor, enforcing singleton */
