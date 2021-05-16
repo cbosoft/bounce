@@ -9,6 +9,8 @@
 class Sound;
 class SoundManager {
 public:
+    SoundManager(const SoundManager &other) =delete;
+    SoundManager &operator=(SoundManager &other) =delete;
     static SoundManager &ref();
     ~SoundManager();
 
