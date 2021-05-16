@@ -40,9 +40,6 @@ private:
      * for stereo. */
     const AudioBuffer &get_buffer();
 
-    /* After effects */
-    void distort();
-
     float _volume_mult;
     std::list<Sound *> _sounds;
     std::list<SoundAfterEffect *> _sound_after_effects;
