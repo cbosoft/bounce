@@ -5,12 +5,15 @@
 #include <string>
 #include <armadillo>
 
+#include "../serialisation/json.hpp"
+
 class Renderable;
 class Transform {
 public:
     Transform();
-    Transform(Transform *parent);
+    explicit Transform(Transform *parent);
     Transform(Transform *parent, const arma::vec2 &position);
+    explicit Transform(json j);
     virtual ~Transform() =default;
     void destroy();
 
@@ -48,6 +51,8 @@ public:
     virtual void on_update() {}
 
     [[nodiscard]] virtual bool is_physics_object() const { return false; }
+
+    json serialise();
 
 private:
     Transform *_parent;

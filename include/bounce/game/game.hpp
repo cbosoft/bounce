@@ -15,6 +15,7 @@
 #include "../serialisation/json.hpp"
 
 class Scene;
+class Deserialiser;
 
 /**
  * \brief Singleton managing the general running of the game.
@@ -179,6 +180,9 @@ class Game {
     /* Load game from save file in specified slot */
     void load_game(int slot);
 
+    void set_deserialiser(Deserialiser *deserialiser);
+    Transform *deserialise(json j);
+
 protected:
     Game();
 
@@ -204,4 +208,5 @@ private:
     std::string _name;
 
     json _settings, _state;
+    Deserialiser *_deserialiser;
 };

@@ -16,6 +16,7 @@ Game::Game()
   , renderer(Renderer::get())
   , sound(SoundManager::ref())
   , _name("bounce")
+  , _deserialiser(nullptr)
 {
     Logger::ref() << LL_INFO << VersionInfo::version_string();
 }
