@@ -81,6 +81,16 @@ include_directories(/usr/local/include)
 list(APPEND EXT_LIB portaudio)
 
 ###################################################################################################
+## Level Editor
+
+set(EXE bounce-level-editor)
+file(GLOB_RECURSE LVL_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/level_editor/*.cpp")
+add_executable(${EXE} ${LVL_SOURCES})
+set_property(TARGET ${EXE} PROPERTY CXX_STANDARD 20)
+
+target_link_libraries(${EXE} ${LIB} ${EXT_LIB})
+
+###################################################################################################
 ## DEMO
 
 set(EXE bounce-demo)
