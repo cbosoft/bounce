@@ -1,4 +1,5 @@
 #include <bounce/physics/engine/engine.hpp>
+#include <bounce/logging/logger.hpp>
 
 bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at)
 {
@@ -56,72 +57,46 @@ bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object
     return false;
 }
 
-bool pt_in_rect(const arma::vec2 &pt, const arma::vec2 &c, double w, double h, arma::vec2 &normal)
-{
-    const double hw = w*0.5, hh = h*0.5;
-    const double left = c[0] - hw, right = c[0] + hw;
-    const double bottom = c[1] - hh, top = c[1] + hh;
-    const double x = pt[0], y = pt[1];
-
-    constexpr double thresh = 1e-1;
-    if ((left <= x) && (x <= right) && (bottom <= y) && (y <= top)) {
-        if (std::abs(y - top) < thresh) {
-            normal = {0, 1};
-        }
-        else if (std::abs(y - bottom) < thresh) {
-            normal = {0, -1};
-        }
-        else if (std::abs(x - left) < thresh) {
-            normal = {1, 0};
-        }
-        else if (std::abs(x - right) < thresh) {
-            normal = {-1, 0};
-        }
-        return true;
-    }
-    return false;
-}
-
-void get_rect_corners(std::list<arma::vec2> &out, const arma::vec2 &c, double w, double h)
-{
-    double hw = w*0.5, hh = h*0.5;
-    double left = c[0] - hw, right = c[0] + hw;
-    double bottom = c[1] - hh, top = c[1] + hh;
-    out = {
-            {left, top},
-            {right, top},
-            {right, bottom},
-            {left, bottom},
-    };
-}
-
-
 bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at)
 {
     const arma::vec2 &apos = a->get_new_position();
     const arma::vec2 &bpos = b->get_new_position();
     double aw = a->get_shape().w, ah = a->get_shape().h;
     double bw = b->get_shape().w, bh = b->get_shape().h;
+    double ax = apos[0], ay = apos[1], bx = bpos[0], by = bpos[1];
+    arma::vec2 rel_vel = b->get_velocity() - a->get_velocity();
+    arma::vec2 uray = arma::normalise(rel_vel);
+    double df_x = 1./uray[0], df_y = 1./uray[1];
 
-    std::list<arma::vec2> corners;
-    get_rect_corners(corners, apos, aw, ah);
+    double h_ww = (aw + bw)*.5;
+    double h_hh = (ah + bh)*.5;
 
-    for (const auto &corner : corners) {
-        if (pt_in_rect(corner, bpos, bw, bh, normal)) {
-            at = corner;
-            return true;
-        }
+    double l = ax - h_ww, r = ax+h_ww;
+    double B = ay - h_hh, t = ay+h_hh;
+
+    double t2left   = (l - bx)*df_x;
+    double t2right  = (r - bx)*df_x;
+    double t2bottom = (B - by)*df_y;
+    double t2top    = (t - by)*df_y;
+
+    double tmin = std::max(std::min(t2left, t2right), std::min(t2bottom, t2top));
+    double tmax = std::min(std::max(t2left, t2right), std::max(t2bottom, t2top));
+
+    if (tmax < 0. || tmin > tmax)
+        return false;
+
+    if (tmin == t2left) {
+        normal = {-1, 0};
+    }
+    else if (tmin == t2right) {
+        normal = {1, 0};
+    }
+    else if (tmin == t2bottom) {
+        normal = {0, -1};
+    }
+    else if (tmin == t2top) {
+        normal = {0, 1};
     }
 
-    // corners.clear();
-    // get_rect_corners(corners, bpos, bw, bh);
-
-    // for (const auto &corner : corners) {
-    //     if (pt_in_rect(corner, apos, aw, ah, normal)) {
-    //         at = corner;
-    //         return true;
-    //     }
-    // }
-
-    return false;
+    return tmin < this->dt;
 }
