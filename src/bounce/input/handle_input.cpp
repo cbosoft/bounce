@@ -51,9 +51,9 @@ void InputManager::run_input_state(const InputState &input_state)
         }
         switch (input_state.alternative) {
             case BTN_NULL:                               break;
-            case BTN_PRESSED:  context->left_pressed();  break;
-            case BTN_REPEATED: context->left_repeated(); break;
-            case BTN_RELEASED: context->left_released(); break;
+            case BTN_PRESSED:  context->alternate_pressed();  break;
+            case BTN_REPEATED: context->alternate_repeated(); break;
+            case BTN_RELEASED: context->alternate_released(); break;
         }
         switch (input_state.back) {
             case BTN_NULL:                               break;
