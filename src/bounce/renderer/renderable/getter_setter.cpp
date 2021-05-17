@@ -117,3 +117,11 @@ void Renderable::set_frame(unsigned int frame)
 {
     this->_current_frame = frame;
 }
+
+void Renderable::get_renderables(std::list<const Renderable *> &out) const
+{
+    if (this->is_active()) {
+        out.push_back(this);
+        Transform::get_renderables(out);
+    }
+}

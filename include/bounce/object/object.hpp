@@ -44,9 +44,6 @@ class Object : public Transform {
     void set_bounciness(double bounciness);
     void set_friction(double friction);
 
-    void attach_renderable(const std::string &name, Renderable *rbl) override;
-    void attach_renderable(Renderable *rbl) override;
-
     void set_layer(const std::string &layer);
     const std::string &get_layer() const;
 

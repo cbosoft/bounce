@@ -42,8 +42,6 @@ public:
     int get_z() const;
     int get_relative_z() const;
 
-    virtual void attach_renderable(const std::string &name, Renderable *rbl);
-    virtual void attach_renderable(Renderable *rbl);
     virtual void get_renderables(std::list<const Renderable *> &out) const;
 
     void update();

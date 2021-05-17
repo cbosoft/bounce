@@ -47,6 +47,8 @@ public:
 
     static bool z_sort(const Renderable *left, const Renderable *right) { return left->get_z() < right->get_z(); }
 
+    void get_renderables(std::list<const Renderable *> &out) const override;
+
 protected:
     Colour _colour, _border_colour;
     double _aspect_ratio, _angle, _border_size;

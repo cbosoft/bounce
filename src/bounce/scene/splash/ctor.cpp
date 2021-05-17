@@ -8,13 +8,15 @@ BounceEngineLogoSplash::BounceEngineLogoSplash(const std::string &target, const 
     Game::ref().add_event(new DelayRunOtherEvent(3500, new PushSceneTransitionEvent(target)));
 
     auto *bounce = new Object(this);
-    bounce->attach_renderable(new AnimatedBounceIcon());
+    auto *icon = new AnimatedBounceIcon();
+    icon->set_parent(bounce);
     bounce->set_position({0, 200});
     bounce->set_velocity({0, -80});
     bounce->set_shape(CollisionShape::rectangle(10, 10));
 
     auto *eng = new Object(this);
-    eng->attach_renderable(new TextRenderable("bounce by cbo", font, 150));
+    auto *txt = new TextRenderable("bounce by cbo", font, 150);
+    txt->set_parent(eng);
     eng->set_position({0, -5});
     eng->set_shape(CollisionShape::rectangle(10, 10));
 

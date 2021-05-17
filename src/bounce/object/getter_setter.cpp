@@ -93,18 +93,6 @@ void Object::set_colour(const Colour &colour)
     this->c = colour;
 }
 
-void Object::attach_renderable(const std::string &name, Renderable *renderable)
-{
-    renderable->set_object(this);
-    Transform::attach_renderable(name, renderable);
-}
-
-void Object::attach_renderable(Renderable *rbl)
-{
-    rbl->set_object(this);
-    Transform::attach_renderable(rbl);
-}
-
 const std::string &Object::get_layer() const
 {
     return this->_layer;
