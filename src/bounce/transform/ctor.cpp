@@ -22,16 +22,3 @@ Transform::Transform(Transform *parent, const arma::vec2 &position)
 {
     this->set_position(position);
 }
-
-Transform::Transform(json j)
-:   Transform()
-{
-    this->_relative_position = { j["relative position"][0], j["relative position"][1] };
-    this->_relative_z = j["relative z"];
-    this->_scale = j["scale"];
-
-    for (json child : j["children"]) {
-        Transform *ch = Game::ref().deserialise(child);
-        ch->set_parent(ch);
-    }
-}
