@@ -11,20 +11,21 @@ bool Transform::is_a(const std::string &tag) const
 
 bool Transform::is_a(std::size_t tag_hash) const
 {
-    auto it = std::find(this->_tags.begin(), this->_tags.end(), tag_hash);
-    return it != this->_tags.end();
+    auto it = std::find(this->_tag_hashes.begin(), this->_tag_hashes.end(), tag_hash);
+    return it != this->_tag_hashes.end();
 }
 
 void Transform::add_tag(const std::string &tag)
 {
+    this->_tags.push_back(tag);
     this->add_tag(string_hasher(tag));
 }
 
 void Transform::add_tag(std::size_t tag_hash)
 {
-    this->_tags.push_back(tag_hash);
-    this->_tags.sort();
-    this->_tags.unique();
+    this->_tag_hashes.push_back(tag_hash);
+    this->_tag_hashes.sort();
+    this->_tag_hashes.unique();
 }
 
 void Transform::find_in_children(const std::string &tag, std::list<Transform *> &out) const

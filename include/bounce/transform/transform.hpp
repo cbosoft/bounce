@@ -85,5 +85,6 @@ private:
     int _relative_z;
 
     std::list<Transform *> _children;
-    std::list<std::size_t> _tags;
+    std::list<std::string> _tags;
+    std::list<std::size_t> _tag_hashes;
 };

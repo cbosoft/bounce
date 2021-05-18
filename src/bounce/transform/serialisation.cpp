@@ -1,5 +1,6 @@
 #include <bounce/transform/transform.hpp>
 #include <bounce/renderer/renderable/renderable.hpp>
+#include <bounce/game/game.hpp>
 
 Transform::Transform(json j)
         :   Transform()
@@ -8,9 +9,14 @@ Transform::Transform(json j)
     this->_relative_z = j["relative z"];
     this->_scale = j["scale"];
 
-    for (json child : j["children"]) {
+    for (const json &child : j["children"]) {
         Transform *ch = Game::ref().deserialise(child);
         ch->set_parent(ch);
+    }
+
+    for (const json &tag : j["tags"]) {
+        std::string stag = tag;
+        this->add_tag(stag);
     }
 }
 
@@ -25,6 +31,12 @@ json Transform::serialise()
     for (auto *child : this->_children) {
         rv["children"].push_back(child->serialise());
     }
+
+    json tags;
+    for (const auto &tag : this->_tags) {
+        tags.push_back(tag);
+    }
+    rv["tags"] = tags;
 
     return rv;
 }
