@@ -56,10 +56,6 @@ class Object : public Transform {
     [[nodiscard]] const CollisionShape &get_shape() const;
     void set_shape(const CollisionShape &shape);
 
-    bool is_a(const std::string &s) const;
-
-protected:
-    void set_identifier(const std::string &s);
 
 private:
     CollisionShape _shape;
@@ -76,6 +72,4 @@ private:
 
     bool _fixed;
     MeshRenderable *_renderable_collider;
-
-    std::size_t _type_identifier;
 };

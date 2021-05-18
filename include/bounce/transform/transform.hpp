@@ -54,6 +54,29 @@ public:
 
     virtual json serialise();
 
+    [[nodiscard]] bool is_a(const std::string &tag) const;
+    [[nodiscard]] bool is_a(std::size_t tag_hash) const;
+    void add_tag(const std::string &tag);
+    void add_tag(const std::size_t);
+    void find_in_children(const std::string &tag, std::list<Transform *> &out) const;
+    void find_in_children(std::size_t tag_hash, std::list<Transform *> &out) const;
+
+    template<typename T>
+    void find_in_children_cast(const std::string &tag, std::list<T> &out) const
+    {
+        this->template find_in_children_cast<T>(std::hash<std::string>{}(tag), out);
+    }
+
+    template<typename T>
+    void find_in_children_cast(std::size_t tag_hash, std::list<T> &out) const
+    {
+        std::list<Transform *> transforms;
+        this->find_in_children(tag_hash, transforms);
+        for (auto *transform: transforms) {
+            out.push_back((T)transform);
+        }
+    }
+
 private:
     Transform *_parent;
     arma::vec2 _relative_position;
@@ -62,4 +85,5 @@ private:
     int _relative_z;
 
     std::list<Transform *> _children;
+    std::list<std::size_t> _tags;
 };

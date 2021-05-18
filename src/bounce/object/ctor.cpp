@@ -17,5 +17,5 @@ Object::Object(Transform *parent)
     ,   _renderable_collider(nullptr)
 {
     PhysicsEngine::ref().register_object(this);
-    this->set_identifier("object");
+    this->add_tag("object");
 }
