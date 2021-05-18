@@ -11,17 +11,17 @@
 
 class Scene: public InputContext, public Transform {
 public:
-    Scene(const std::string &name);
 
     virtual void on_update() {}
+    explicit Scene(const std::string &name);
 
-    const std::string &get_name() const;
+    [[nodiscard]] const std::string &get_name() const;
     std::vector<Object *> find_objects_near_to(Transform *t, double radius) const;
 
     void add_field(ForceField *field);
-    const std::vector<ForceField *> &get_fields() const;
+    [[nodiscard]] const std::vector<ForceField *> &get_fields() const;
 
-    bool is_insubstantial() const;
+    [[nodiscard]] bool is_insubstantial() const;
 
     void set_active_camera(const std::string &name);
     void add_camera(const std::string &name, RectTransform *t);

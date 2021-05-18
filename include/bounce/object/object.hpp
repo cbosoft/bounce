@@ -10,7 +10,7 @@
 
 class Object : public Transform {
   public:
-    Object(Transform *parent);
+    explicit Object(Transform *parent);
     ~Object();
 
     void timestep(double dt);

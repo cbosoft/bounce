@@ -10,7 +10,7 @@ public:
     void set_aspect_preserve_diagonal(double aspect);
     void set_diagonal_and_aspect(double diagonal, double aspect);
     void set_size(const arma::vec2 &size);
-    const arma::vec2 &get_size() const;
+    [[nodiscard]] const arma::vec2 &get_size() const;
 
     Transform *get_bl();
     Transform *get_br();
