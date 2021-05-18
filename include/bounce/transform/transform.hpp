@@ -52,7 +52,7 @@ public:
 
     [[nodiscard]] virtual bool is_physics_object() const { return false; }
 
-    json serialise();
+    virtual json serialise();
 
 private:
     Transform *_parent;
