@@ -11,8 +11,6 @@
 
 class Scene: public InputContext, public Transform {
 public:
-
-    virtual void on_update() {}
     explicit Scene(const std::string &name);
 
     [[nodiscard]] const std::string &get_name() const;
