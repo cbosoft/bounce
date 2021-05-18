@@ -1,6 +1,10 @@
 #include <list>
 
 #include <bounce/serialisation/deserialiser/deserialiser.hpp>
+#include <bounce/scene/scene.hpp>
+#include <bounce/object/object.hpp>
+#include <bounce/logging/logger.hpp>
+#include <bounce/renderer/renderables.hpp>
 
 Transform *Deserialiser::deserialise(json j)
 {
@@ -9,27 +13,29 @@ Transform *Deserialiser::deserialise(json j)
         throw std::runtime_error("error loading from json; type not specified.");
     }
 
-    const static std::size_t transform_hash = std::hash<std::string>{}("transform");
-    const static std::size_t object_hash = std::hash<std::string>{}("object");
-    const static std::size_t scene_hash = std::hash<std::string>{}("scene");
-    const static std::size_t menu_hash = std::hash<std::string>{}("menu");
-    const static std::size_t menuitem_hash = std::hash<std::string>{}("menuitem");
-
-    std::size_t type_hash = std::hash<std::string>{}(type_s);
     Transform *rv = nullptr;
-    if (type_hash == transform_hash) {
+    if (type_s == "transform") {
         rv = new Transform(j);
     }
-    else if (type_hash == object_hash) {
+    else if (type_s == "object") {
+        rv = new Object(j);
+    }
+    else if (type_s == "scene") {
+        rv = new Scene(j, 0);
+    }
+    else if (type_s == "mesh renderable") {
+        rv = new MeshRenderable(j);
+    }
+    else if (type_s == "camera") {
+        rv = new Camera(j);
+    }
+    else if (type_s == "rectangle transform") {
+        rv = new RectTransform(j);
+    }
+    else if (type_s == "menu") {
         // TODO
     }
-    else if (type_hash == scene_hash) {
-        // TODO
-    }
-    else if (type_hash == menu_hash) {
-        // TODO
-    }
-    else if (type_hash == menuitem_hash) {
+    else if (type_s == "menuitem") {
         // TODO
     }
 
