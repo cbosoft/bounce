@@ -9,6 +9,7 @@
 #include "scene/menu/menuitem/menuitem.hpp"
 #include "renderer/renderables.hpp"
 #include "renderer/renderer.hpp"
+#include "resources/manager.hpp"
 #include "physics/field/force_fields.hpp"
 #include "ui/bar/bar.hpp"
 #include "procedural/perlin/perlin.hpp"
