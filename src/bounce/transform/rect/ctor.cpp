@@ -9,4 +9,5 @@ RectTransform::RectTransform(Transform *parent, const arma::vec2 &size)
 ,   _tr(new Transform(this))
 {
     this->set_size(size);
+    this->add_tag("rectangle transform");
 }

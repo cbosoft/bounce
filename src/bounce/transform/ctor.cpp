@@ -8,7 +8,7 @@ Transform::Transform()
 ,   _scale(1.0)
 ,   _relative_z(0)
 {
-    // do nothing
+    this->add_tag("transform");
 }
 
 Transform::Transform(Transform *parent)

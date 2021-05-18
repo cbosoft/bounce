@@ -16,5 +16,5 @@ Renderable::Renderable()
 ,   _current_frame(0)
 ,   _visible(true)
 {
-    // do nothing
+    this->add_tag("renderable");
 }

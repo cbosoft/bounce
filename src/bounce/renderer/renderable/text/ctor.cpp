@@ -18,4 +18,5 @@ TextRenderable::TextRenderable(const std::wstring &text, const std::string &font
         ,   _h_align(HA_centre)
 {
     this->refresh_font();
+    this->add_tag("text renderable");
 }
