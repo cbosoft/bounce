@@ -3,9 +3,15 @@
 Object::Object(json j)
 :   Transform(j)
 ,   _shape(CollisionShape(j["shape"]))
+,   new_position({0, 0})
+,   velocity({0, 0})
+,   force({0, 0})
 ,   mass(1.0)
 ,   inv_mass(1.0)
-,   _material({0.0, 0.0})
+,   _layer("unset")
+,   _material({1.0, 0.0})
+,   _fixed(false)
+,   _renderable_collider(nullptr)
 {
     this->velocity = jsonvec2(j["velocity"]);
     this->force = jsonvec2(j["force"]);
@@ -20,10 +26,12 @@ Object::Object(json j)
 json Object::serialise()
 {
     // detach collider rbl so it doesn't get included in ser.
-    this->_renderable_collider->set_parent(nullptr);
+    if (this->_renderable_collider)
+        this->_renderable_collider->set_parent(nullptr);
     json rv = Transform::serialise();
     // reattach collider rbl
-    this->_renderable_collider->set_parent(this);
+    if (this->_renderable_collider)
+        this->_renderable_collider->set_parent(this);
 
     rv["type"] = "object";
     rv["shape"] = this->_shape.serialise();
@@ -34,6 +42,7 @@ json Object::serialise()
     json material;
     material["dynamic friction"] = this->_material.dynamic_friction;
     material["bounciness"] = this->_material.bounciness;
+    rv["material"] = material;
     rv["fixed"] = this->_fixed;
 
     return rv;
