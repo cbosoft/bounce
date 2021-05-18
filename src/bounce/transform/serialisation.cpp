@@ -11,7 +11,7 @@ Transform::Transform(json j)
 
     for (const json &child : j["children"]) {
         Transform *ch = Game::ref().deserialise(child);
-        ch->set_parent(ch);
+        ch->set_parent(this);
     }
 
     for (const json &tag : j["tags"]) {
