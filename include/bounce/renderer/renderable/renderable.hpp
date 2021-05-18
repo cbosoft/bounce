@@ -13,16 +13,12 @@ public:
 
     virtual void draw() const =0;
 
-    bool is_fixed() const;
     void set_aspect_preserve_diagonal(double aspect);
     double get_aspect() const;
     void set_size(const arma::vec2 &size);
     arma::vec2 get_size() const;
     double get_angle() const;
     void set_angle(double angle);
-
-    void set_object(Object *object);
-    Object *get_object() const;
 
     const Colour &get_colour() const;
     void set_colour(const Colour &colour);
@@ -56,7 +52,6 @@ protected:
     Colour _colour, _border_colour;
     double _aspect_ratio, _angle, _border_size;
     arma::vec2 _size;
-    Object *_object;
     std::string _shader_name;
     Texture *_texture;
     TextureAnimLoop _current_texture_loop;

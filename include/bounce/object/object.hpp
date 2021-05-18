@@ -24,9 +24,6 @@ class Object : public Transform {
     bool fixed() const;
     void set_fixed(bool value);
 
-    const Colour &get_colour() const;
-    void set_colour(const Colour &colour);
-
     const arma::vec2 &get_new_position() const;
     const arma::vec2 &get_velocity() const;
     const arma::vec2 &get_force() const;
@@ -69,8 +66,6 @@ private:
     std::string _layer;
 
     PhysicsMaterial _material;
-
-    Colour c;
 
     bool _fixed;
     MeshRenderable *_renderable_collider;

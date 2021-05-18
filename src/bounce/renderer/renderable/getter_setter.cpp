@@ -2,11 +2,6 @@
 #include <bounce/renderer/renderer.hpp>
 #include <bounce/object/object.hpp>
 
-bool Renderable::is_fixed() const
-{
-    return this->_object == nullptr;
-}
-
 void Renderable::set_size(const arma::vec2 &size)
 {
     this->_size = size;
@@ -15,17 +10,6 @@ void Renderable::set_size(const arma::vec2 &size)
 arma::vec2 Renderable::get_size() const
 {
     return this->_size*this->get_scale();
-}
-
-void Renderable::set_object(Object *object)
-{
-    this->_object = object;
-    this->set_parent(object);
-}
-
-Object *Renderable::get_object() const
-{
-    return this->_object;
 }
 
 bool Renderable::has_texture() const

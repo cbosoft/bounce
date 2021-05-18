@@ -6,7 +6,6 @@ Object::Object(json j)
 ,   mass(1.0)
 ,   inv_mass(1.0)
 ,   _material({0.0, 0.0})
-,   c(Colours::white)
 {
     this->velocity = jsonvec2(j["velocity"]);
     this->force = jsonvec2(j["force"]);

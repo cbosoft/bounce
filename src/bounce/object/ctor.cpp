@@ -12,7 +12,6 @@ Object::Object(Transform *parent)
     ,   inv_mass(1.0)
     ,   _layer("unset")
     ,   _material({1.0, 0.0})
-    ,   c(Colour::from_grayscale(255))
     ,   _fixed(false)
     ,   _renderable_collider(nullptr)
 {

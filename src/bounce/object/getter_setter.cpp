@@ -83,16 +83,6 @@ void Object::set_fixed(bool value)
     this->_fixed = value;
 }
 
-const Colour &Object::get_colour() const
-{
-    return this->c;
-}
-
-void Object::set_colour(const Colour &colour)
-{
-    this->c = colour;
-}
-
 const std::string &Object::get_layer() const
 {
     return this->_layer;
