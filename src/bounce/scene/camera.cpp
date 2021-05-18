@@ -5,7 +5,7 @@ void Scene::set_active_camera(const std::string &name)
 {
     auto it = this->_cameras.find(name);
     if (it == this->_cameras.end()) {
-        std::cerr << "w) \"" << name << "\" is not the name of an active camera in scene \"" << this->get_name() << "\": cannot set active." << std::endl;
+        Logger::ref() << LL_WARN << "\"" << name << "\" is not the name of a camera in scene \"" << this->get_name() << "\": cannot set active.\n";
     }
     else {
         this->_active_camera = it->second;
