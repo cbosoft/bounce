@@ -1,7 +1,10 @@
 #include <bounce/scene/scene.hpp>
 
 Scene::Scene(json j, int dummy)
-:   Scene(std::string(j["name"]))
+:   Transform(j)
+,   _insubstantial{false}
+,   _name(j["name"])
+,   _active_camera(nullptr)
 {
     (void) dummy;
     this->_insubstantial = j["insubstantial"];
@@ -11,7 +14,6 @@ Scene::Scene(json j, int dummy)
     std::list<Camera *> cameras;
     this->find_in_children_cast("camera", cameras);
     for (auto *camera : cameras) {
-        // TODO fix memory leak: this will re-add the default camera which would have been created in the ctor
         this->add_camera(camera);
     }
     this->set_active_camera(j["active camera"]);
