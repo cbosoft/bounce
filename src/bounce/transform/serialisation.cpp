@@ -32,11 +32,9 @@ json Transform::serialise()
         rv["children"].push_back(child->serialise());
     }
 
-    json tags;
     for (const auto &tag : this->_tags) {
-        tags.push_back(tag);
+        rv["tags"].push_back(tag);
     }
-    rv["tags"] = tags;
 
     return rv;
 }
