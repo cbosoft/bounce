@@ -5,6 +5,7 @@
 class RectTransform : public Transform {
 public:
     RectTransform(Transform *parent, const arma::vec2 &size);
+    explicit RectTransform(json j);
 
     void set_diagonal_preserve_aspect(double diagonal);
     void set_aspect_preserve_diagonal(double aspect);
@@ -16,6 +17,8 @@ public:
     Transform *get_br();
     Transform *get_tl();
     Transform *get_tr();
+
+    json serialise() override;
 
 private:
     arma::vec2 _size;
