@@ -9,12 +9,8 @@ json Transform::serialise()
     rv["relative z"] = this->_relative_z;
     rv["scale"] = this->_scale;
 
-    for (auto *rbl : this->_anonymous_renderables) {
-        rv["anonymous renderables"].push_back(rbl->serialise());
-    }
-
-    for (auto kv : this->_named_renderables) {
-        rv["named renderables"][kv.first] = kv.second->serialise();
+    for (auto *child : this->_children) {
+        rv["children"].push_back(child->serialise());
     }
 
     return rv;

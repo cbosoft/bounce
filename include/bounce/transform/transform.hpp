@@ -62,6 +62,4 @@ private:
     int _relative_z;
 
     std::list<Transform *> _children;
-    std::map<std::string, Renderable *> _named_renderables;
-    std::list<Renderable *> _anonymous_renderables;
 };
