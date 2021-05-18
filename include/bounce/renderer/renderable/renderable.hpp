@@ -9,6 +9,7 @@ class Object;
 class Renderable : public Transform {
 public:
     Renderable();
+    explicit Renderable(json s);
 
     virtual void draw() const =0;
 
@@ -48,6 +49,8 @@ public:
     static bool z_sort(const Renderable *left, const Renderable *right) { return left->get_z() < right->get_z(); }
 
     void get_renderables(std::list<const Renderable *> &out) const override;
+
+    json serialise() override;
 
 protected:
     Colour _colour, _border_colour;

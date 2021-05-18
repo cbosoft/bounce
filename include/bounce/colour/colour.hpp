@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../serialisation/json.hpp"
+
 /**
  * \brief Class containing colour information.
  *
@@ -17,11 +19,13 @@ public:
     static Colour from_rgb_f(double r, double g, double b, double a=1.0) noexcept;
     static Colour from_grayscale(int gy, int a=255) noexcept;
     static Colour from_grayscale_f(double gy, double a=1.0) noexcept;
+    static Colour from_json(json j) noexcept;
 
     [[nodiscard]] float rf() const;
     [[nodiscard]] float gf() const;
     [[nodiscard]] float bf() const;
     [[nodiscard]] float af() const;
+    [[nodiscard]] json serialise() const;
 
     int r, g, b, a;
 private:

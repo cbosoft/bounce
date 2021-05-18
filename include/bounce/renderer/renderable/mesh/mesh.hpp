@@ -9,11 +9,14 @@ enum MeshRenderable_VerticalAnchor {MR_VA_CENTRE, MR_VA_TOP, MR_VA_BOTTOM};
 
 class MeshRenderable : public Renderable {
 public:
+    explicit MeshRenderable(json j);
     explicit MeshRenderable(const std::vector<arma::vec2> &points);
 
     void draw() const override;
 
     void set_alignment(MeshRenderable_HorizontalAnchor ha, MeshRenderable_VerticalAnchor va);
+
+    json serialise() override;
 
 protected:
     MeshRenderable();
@@ -40,10 +43,10 @@ public:
 
 class RegularPolygonMeshRenderable : public MeshRenderable {
 public:
-    RegularPolygonMeshRenderable(int n, double theta=M_PI_2);
+    explicit RegularPolygonMeshRenderable(int n, double theta=M_PI_2);
 };
 
 class CircleMeshRenderable : public MeshRenderable {
 public:
-    CircleMeshRenderable(double radius=0.5);
+    explicit CircleMeshRenderable(double radius=0.5);
 };

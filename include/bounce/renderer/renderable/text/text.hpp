@@ -12,6 +12,7 @@ enum TextHAlign { HA_left, HA_centre, HA_right };
 
 class TextRenderable : public Renderable {
 public:
+    explicit TextRenderable(json j);
     TextRenderable(const std::wstring &text, const std::string &font_name, int height, float width=-1.f);
     TextRenderable(const std::string &text, const std::string &font_name, int height, float width=-1.f);
 
@@ -30,6 +31,8 @@ public:
 
     void draw() const override;
     arma::vec2 measure() const;
+
+    json serialise() override;
 
 private:
 
