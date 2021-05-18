@@ -7,8 +7,7 @@ Renderable::Renderable(json j)
 ,   _border_colour(Colours::white)
 {
     this->_angle = j["angle"];
-    this->_size[0] = j["size"][0];
-    this->_size[1] = j["size"][1];
+    this->_size = jsonvec2(j["size"]);
     this->_shader_name = j["shader"];
     this->_visible = j["visible"];
     this->_colour = Colour::from_json(j["colour"]);
@@ -21,7 +20,7 @@ json Renderable::serialise()
     json rv = Transform::serialise();
     rv["type"] = "renderable";
     rv["angle"] = this->_angle;
-    rv["size"] = {this->_size[0], this->_size[1]};
+    rv["size"] = vec2json(this->_size);
     rv["shader"] = this->_shader_name;
     rv["visible"] = this->_visible;
     rv["colour"] = this->_colour.serialise();

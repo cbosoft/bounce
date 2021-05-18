@@ -5,11 +5,9 @@ MeshRenderable::MeshRenderable(json j)
 {
     json points_json = j["points"];
     for (auto point_json : points_json) {
-        double x = point_json[0], y = point_json[1];
-        this->_points.push_back({x, y});
+        this->_points.push_back(jsonvec2(point_json));
     }
-    double x = j["anchor"][0], y = j["anchor"][1];
-    this->_anchor = {x, y};
+    this->_anchor = jsonvec2(j["anchor"]);
 }
 
 json MeshRenderable::serialise()
@@ -17,11 +15,10 @@ json MeshRenderable::serialise()
     json rv = Renderable::serialise();
     rv["type"] = "mesh renderable";
     json points;
-    for (auto point : this->_points) {
-        json point_json = {points[0], point[1]};
-        points.push_back(point_json);
+    for (const auto &point : this->_points) {
+        points.push_back(vec2json(point));
     }
     rv["points"] = points;
-    rv["anchor"] = {this->_anchor[0], this->_anchor[1]};
+    rv["anchor"] = vec2json(this->_anchor);
     return rv;
 }
