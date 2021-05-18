@@ -8,8 +8,8 @@
 const TextureAnimLoop Texture::default_loop = {0, 1};
 const TextureFrameCoords Texture::default_framing = {{0.f, 0.f}, {1.f, 1.f}};
 
-Texture::Texture(const std::string &texture_name)
-:   Texture()
+Texture::Texture(const std::string &texture_name, const std::string &name)
+:   Texture(name)
 {
     auto &rm = ResourceManager::ref();
     std::string path = rm.get_path("textures", texture_name, ".png");
@@ -54,12 +54,14 @@ Texture::Texture(const std::string &texture_name)
     Logger::ref() << LL_INFO << "Loaded texture \"" << texture_name << "\".\n";
 }
 
-Texture::Texture()
+Texture::Texture(const std::string &name)
+:   _name(name)
 {
     glGenTextures(1, &this->_id);
 }
 
 Texture::Texture(void *vptr)
+:   _name("null")
 {
     (void) vptr;
     this->_id = -1;

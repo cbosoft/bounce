@@ -18,8 +18,8 @@ class Colour;
 
 class Texture : public GLObject {
 public:
-    explicit Texture(const std::string &path);
-    Texture();
+    Texture(const std::string &path, const std::string &name);
+    explicit Texture(const std::string &name);
 
     void use() const override;
 
@@ -32,8 +32,12 @@ public:
     const static TextureAnimLoop default_loop;
     const static TextureFrameCoords default_framing;
 
+    [[nodiscard]] const std::string &get_name() const;
+
 private:
     explicit Texture(void *vptr);
+
+    const std::string _name;
 
     std::vector<TextureFrameCoords> _frame_texcoords;
     std::map<std::string, TextureAnimLoop> _loops;

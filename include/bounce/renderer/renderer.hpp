@@ -79,7 +79,7 @@ public:
 
     /* Create and get textures. */
     void add_texture(const std::string &path);
-    void add_texture(const std::string &name, Texture *texture);
+    void add_texture(Texture *texture);
     Texture *get_texture(const std::string &name);
 
     /* Get GLObjects */

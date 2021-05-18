@@ -15,18 +15,17 @@
  */
 void Renderer::add_texture(const std::string &name)
 {
-    this->textures[name] = new Texture(name);
+    this->textures[name] = new Texture(name, name);
 }
 
 /**
- * Give a texture to the Renderer, with \p name. The Texture pointer is then owned by the Renderer.
+ * Give a texture to the Renderer. The Texture pointer is then owned by the Renderer.
  *
- * @param name Name of the texture, this is used when setting the texture on a renderable.
  * @param texture Pointer to the Texture.
  */
-void Renderer::add_texture(const std::string &name, Texture *texture)
+void Renderer::add_texture(Texture *texture)
 {
-    this->textures[name] = texture;
+    this->textures[texture->get_name()] = texture;
 }
 
 /**
