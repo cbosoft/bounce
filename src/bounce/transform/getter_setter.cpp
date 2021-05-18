@@ -33,8 +33,12 @@ void Transform::set_parent(Transform *parent)
     if (this->_parent) {
         this->_parent->remove_child(this);
     }
+
     this->_parent = parent;
-    this->_parent->add_child(this);
+
+    if (this->_parent) {
+        this->_parent->add_child(this);
+    }
 }
 
 arma::vec2 Transform::get_relative_position() const
