@@ -2,16 +2,18 @@
 
 #include <map>
 #include <string>
+
+#include "camera/camera.hpp"
 #include "../input/context/context.hpp"
 #include "../object/object.hpp"
 #include "../transform/transform.hpp"
-#include "../transform/rect/rect.hpp"
 #include "../physics/field/field.hpp"
 #include "../game/game.hpp"
 
 class Scene: public InputContext, public Transform {
 public:
     explicit Scene(const std::string &name);
+    Scene(json j, int dummy);
 
     [[nodiscard]] const std::string &get_name() const;
     std::vector<Object *> find_objects_near_to(Transform *t, double radius) const;
@@ -22,10 +24,11 @@ public:
     [[nodiscard]] bool is_insubstantial() const;
 
     void set_active_camera(const std::string &name);
-    void add_camera(const std::string &name, RectTransform *t);
-    RectTransform *new_camera(const std::string &name);
+    void add_camera(Camera *cam);
+    Camera *new_camera(const std::string &name);
     void remove_camera(const std::string &name);
-    RectTransform *get_active_camera() const;
+    [[nodiscard]] Camera *get_active_camera() const;
+    [[nodiscard]] Camera *get_camera(const std::string &name) const;
 
     template<typename T>
     void set_state_value(const std::string &name, const T &value)
@@ -39,12 +42,14 @@ public:
         return Game::ref().get_state_value<T>(this->_name, name);
     }
 
+    json serialise() override;
+
 protected:
     bool _insubstantial;
 
 private:
     std::vector<ForceField *> _fields;
     std::string _name;
-    std::map<std::string, RectTransform *> _cameras;
-    RectTransform *_active_camera;
+    std::map<std::string, Camera *> _cameras;
+    Camera *_active_camera;
 };
