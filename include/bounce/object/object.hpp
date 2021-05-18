@@ -11,6 +11,7 @@
 class Object : public Transform {
   public:
     explicit Object(Transform *parent);
+    explicit Object(json j);
     ~Object();
 
     void timestep(double dt);
@@ -56,6 +57,7 @@ class Object : public Transform {
     [[nodiscard]] const CollisionShape &get_shape() const;
     void set_shape(const CollisionShape &shape);
 
+    json serialise() override;
 
 private:
     CollisionShape _shape;
