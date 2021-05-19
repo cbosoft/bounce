@@ -1,6 +1,6 @@
 #include <bounce/physics/field/field.hpp>
 
-arma::vec2 ForceField::measure_at(const arma::vec2 &p) const
+arma::vec2 ForceField::measure_at(Object *obj) const
 {
-    return this->f(p);
+    return this->f(obj);
 }

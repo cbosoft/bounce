@@ -33,9 +33,11 @@ void PhysicsEngine::timestep_objects()
 
     // resolve force fields acting on objects
     for (auto *obj : active_objects) {
+        arma::vec2 f = obj->get_force();
         for (auto *field : scene->get_fields()) {
-            obj->set_force(obj->get_force() + field->measure_at(obj->get_position()));
+            f += field->measure_at(obj);
         }
+        obj->set_force(f);
     }
 
     // Get proposed new positions for objects

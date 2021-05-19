@@ -9,8 +9,9 @@ UnboundedLinearForceField::UnboundedLinearForceField(double mx, double cx, doubl
     // do nothing
 }
 
-arma::vec2 UnboundedLinearForceField::f(const arma::vec2 &p) const
+arma::vec2 UnboundedLinearForceField::f(Object *obj) const
 {
+    arma::vec2 p = obj->get_position();
     double fx = this->mx*p[0] + this->cx;
     double fy = this->my*p[1] + this->cy;
     return arma::vec2{fx, fy};
