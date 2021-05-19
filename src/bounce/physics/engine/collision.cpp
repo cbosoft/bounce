@@ -42,7 +42,7 @@ bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Obje
 {
     arma::vec2 dp = a->get_position() - b->get_position();
     arma::vec2 dv = a->get_velocity() - b->get_velocity();
-    double l = arma::norm(dp);
+    double l = arma::norm(dp) - (a->get_shape().w + b->get_shape().w)*.5;
     double v = arma::norm(dv);
     double t = l/v;
     normal = arma::normalise(dv);
