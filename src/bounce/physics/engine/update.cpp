@@ -52,9 +52,20 @@ void PhysicsEngine::timestep_objects()
     for (const auto &kv : by_layer) {
         const auto &objs = kv.second;
         for (size_t i = 0; i < objs.size(); i++) {
+            Object *a = objs[i];
+            CollisionInformation next_collision = {nullptr, {0, 0}, {0, 0}, 1e9};
             for (size_t j = 0; j < objs.size(); j++) {
                 if (j >= i) break;
-                this->resolve_collision(objs[i], objs[j]);
+                Object *b = objs[j];
+                CollisionInformation ci = {b, {0, 0}, {0, 0}, 1e9};
+                if (this->check_will_collide(a, b, ci.normal, ci.at, ci.when)) {
+                    if (ci.when < next_collision.when) {
+                        next_collision = ci;
+                    }
+                }
+            }
+            if (next_collision.b) {
+                this->resolve_collision(a, next_collision.b, next_collision.normal);
             }
         }
     }

@@ -11,7 +11,7 @@ Object::Object(Transform *parent)
     ,   mass(1.0)
     ,   inv_mass(1.0)
     ,   _layer("unset")
-    ,   _material({1.0, 0.0})
+    ,   _material({0.0, 0.0})
     ,   _fixed(false)
     ,   _renderable_collider(nullptr)
 {

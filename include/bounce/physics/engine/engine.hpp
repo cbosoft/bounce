@@ -10,11 +10,12 @@
 typedef std::chrono::high_resolution_clock Clock;
 typedef std::chrono::duration<double, std::ratio<1, 1>> Duration;
 
-typedef struct {
-    bool happens;
+struct CollisionInformation {
+    Object *b;
     arma::vec2 normal;
     arma::vec2 at;
-} CollisionInformation;
+    double when;
+};
 
 class Game;
 class PhysicsEngine {
@@ -24,9 +25,9 @@ public:
 
     void timestep();
     void timestep_objects();
-    CollisionInformation &resolve_collision(Object *a, Object *b);
-    CollisionInformation &resolve_collision_free_bodies(Object *a, Object *b);
-    CollisionInformation &resolve_collision_one_fixed(Object *free_body, Object *fixed_body);
+    void resolve_collision(Object *a, Object *b, const arma::vec2 &normal);
+    void resolve_collision_free_bodies(Object *a, Object *b, const arma::vec2 &normal);
+    void resolve_collision_one_fixed(Object *free_body, Object *fixed_body, const arma::vec2 &normal);
 
     static PhysicsMaterial get_overall_material_properties(const PhysicsMaterial &a, const PhysicsMaterial &b);
     void check_set_time();
@@ -38,12 +39,12 @@ public:
     void unregister_object(Object *obj);
     std::list<Object *> get_active_objects() const;
 
-    bool check_will_collide(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at);
+    bool check_will_collide(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at, double &when);
 
 private:
-    bool check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at);
-    bool check_will_collide_circle_rect(const Object *circle, const Object *rect, arma::vec2 &norm, arma::vec2 &at);
-    bool check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at);
+    bool check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at, double &when);
+    bool check_will_collide_circle_rect(const Object *circle, const Object *rect, arma::vec2 &norm, arma::vec2 &at, double &when);
+    bool check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at, double &when);
 
     void traverse_get_objects(Transform *t, std::list<Object *> &out) const;
 
@@ -51,7 +52,5 @@ private:
 
     double dt, time, irl_time, timescale;
     Clock::time_point epoch;
-    CollisionInformation _cached_collision;
     std::list<Object *> _all_objects;
-    static constexpr double COLLISION_THRESH = 5e-2;
 };

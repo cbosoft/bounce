@@ -1,8 +1,12 @@
 #include <bounce/physics/engine/engine.hpp>
 #include <bounce/logging/logger.hpp>
 
-bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at)
+bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
 {
+    if (a->fixed() && b->fixed()) {
+        return false;
+    }
+
     arma::vec2 dv = arma::abs(a->get_velocity() - b->get_velocity());
     normal = dv[1] > dv[0] ? arma::vec2{0, 1} : arma::vec2{1, 0};
 
@@ -16,17 +20,17 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::v
         case ST_CIRCLE:
             switch (b->get_shape().get_type()) {
                 case ST_CIRCLE:
-                    return this->check_will_collide_circle_circle(a, b, normal, at);
+                    return this->check_will_collide_circle_circle(a, b, normal, at, when);
                 case ST_RECT:
-                    return this->check_will_collide_circle_rect(a, b, normal, at);
+                    return this->check_will_collide_circle_rect(a, b, normal, at, when);
             }
             break;
         case ST_RECT:
             switch (b->get_shape().get_type()) {
                 case ST_CIRCLE:
-                    return this->check_will_collide_circle_rect(b, a, normal, at);
+                    return this->check_will_collide_circle_rect(b, a, normal, at, when);
                 case ST_RECT:
-                    return this->check_will_collide_rect_rect(a, b, normal, at);
+                    return this->check_will_collide_rect_rect(a, b, normal, at, when);
             }
             break;
     }
@@ -34,30 +38,39 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::v
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at)
+bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
 {
-    arma::vec2 dp = a->get_new_position() - b->get_new_position();
-    double dist = arma::norm(dp);
-    double tdist = (a->get_shape().w + b->get_shape().w)*.5;
-    if (dist <= tdist) {
-        normal = arma::normalise(dp);
-        at = a->get_position() + normal*a->get_shape().w*.5;
-        return true;
-    }
+    arma::vec2 dp = a->get_position() - b->get_position();
+    arma::vec2 dv = a->get_velocity() - b->get_velocity();
+    double l = arma::norm(dp);
+    double v = arma::norm(dv);
+    double t = l/v;
+    normal = arma::normalise(dv);
+    at = a->get_position() + normal*a->get_shape().w*.5;
+    when = t;
+    return t < this->get_dt();
 
-    return false;
+    // arma::vec2 dp = a->get_new_position() - b->get_new_position();
+    // double dist = arma::norm(dp);
+    // double tdist = (a->get_shape().w + b->get_shape().w)*.5;
+    // if (dist <= tdist) {
+    //     return true;
+    // }
+
+    // return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at)
+bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
 {
     (void) a;
     (void) b;
     (void) normal;
     (void) at;
+    (void) when;
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at)
+bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
 {
     const arma::vec2 &apos = a->get_new_position();
     const arma::vec2 &bpos = b->get_new_position();
@@ -65,7 +78,7 @@ bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *
     double bw = b->get_shape().w, bh = b->get_shape().h;
     double ax = apos[0], ay = apos[1], bx = bpos[0], by = bpos[1];
     arma::vec2 rel_vel = b->get_velocity() - a->get_velocity();
-    arma::vec2 uray = arma::normalise(rel_vel);
+    arma::vec2 &uray = rel_vel; //arma::normalise(rel_vel);
     double df_x = 1./uray[0], df_y = 1./uray[1];
 
     double h_ww = (aw + bw)*.5;
@@ -97,6 +110,8 @@ bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *
     else if (tmin == t2top) {
         normal = {0, 1};
     }
+
+    when = tmin;
 
     return tmin < this->dt;
 }

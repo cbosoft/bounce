@@ -11,51 +11,38 @@ PhysicsMaterial PhysicsEngine::get_overall_material_properties(const PhysicsMate
         };
 }
 
-CollisionInformation &PhysicsEngine::resolve_collision(Object *a, Object *b)
+void PhysicsEngine::resolve_collision(Object *a, Object *b, const arma::vec2 &normal)
 {
     // If both are fixed, don't resolve collision
     bool afixed = a->fixed(), bfixed = b->fixed();
-    if (afixed && bfixed) {
-        this->_cached_collision.happens = false;
-        return this->_cached_collision;
-    }
-
-    if (!this->check_will_collide(a, b, this->_cached_collision.normal, this->_cached_collision.at)) {
-        this->_cached_collision.happens = false;
-        return this->_cached_collision;
-    }
 
     // objects collide
     // TODO only run collision event if the collision is new
     Game::ref().add_event(new CollisionEvent(a, b));
     if (afixed || bfixed) {
-        return this->resolve_collision_one_fixed(bfixed?a:b, bfixed?b:a);
+        return this->resolve_collision_one_fixed(bfixed?a:b, bfixed?b:a, normal);
     }
 
-    return this->resolve_collision_free_bodies(a, b);
+    return this->resolve_collision_free_bodies(a, b, normal);
 }
 
-CollisionInformation &PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed_body)
+void PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed_body, const arma::vec2 &normal)
 {
-    const arma::vec &norm = this->_cached_collision.normal;
     const arma::vec &v = free_body->get_velocity() - fixed_body->get_velocity()*2.f;
-    double nn = arma::dot(norm, norm);
-    double vn = arma::dot(v, norm);
-    arma::vec2 vel_parallel_to_norm = (vn/nn)*norm;
+    double nn = arma::dot(normal, normal);
+    double vn = arma::dot(v, normal);
+    arma::vec2 vel_parallel_to_norm = (vn/nn)*normal;
     arma::vec2 vel_perpendicular_to_norm = v - vel_parallel_to_norm;
 
     const PhysicsMaterial overall = PhysicsEngine::get_overall_material_properties(
             free_body->get_material(), fixed_body->get_material());
     free_body->set_velocity(((1. - overall.dynamic_friction)*vel_perpendicular_to_norm - overall.bounciness*vel_parallel_to_norm));
     free_body->set_new_position(free_body->get_velocity()*this->dt + free_body->get_position());
-
-    return this->_cached_collision;
 }
 
-CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(Object *a, Object *b)
+void PhysicsEngine::resolve_collision_free_bodies(Object *a, Object *b, const arma::vec2 &normal)
 {
-    const arma::vec2 &norm = this->_cached_collision.normal;
-    if (norm.has_nan())
+    if (normal.has_nan())
         throw std::runtime_error("nan in norm");
     // collision response - https://en.wikipedia.org/wiki/Collision_response
     // const double cor = PhysicsEngine::get_overall_cor(a->get_cor(), b->get_cor());
@@ -83,8 +70,6 @@ CollisionInformation &PhysicsEngine::resolve_collision_free_bodies(Object *a, Ob
 
     a->set_new_position(a->get_velocity()*this->dt + a->get_position());
     b->set_new_position(b->get_velocity()*this->dt + b->get_position());
-
-    return this->_cached_collision;
 }
 
 void PhysicsEngine::register_object(Object *obj)
