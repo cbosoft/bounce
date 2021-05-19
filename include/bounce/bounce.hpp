@@ -7,6 +7,7 @@
 #include "scene/splash/splash.hpp"
 #include "scene/menu/menu.hpp"
 #include "scene/menu/menuitem/menuitem.hpp"
+#include "scene/menu/text_input_popup/text_input_popup.hpp"
 #include "renderer/renderables.hpp"
 #include "renderer/renderer.hpp"
 #include "resources/manager.hpp"
