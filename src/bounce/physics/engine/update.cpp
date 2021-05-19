@@ -29,7 +29,8 @@ void PhysicsEngine::timestep_objects()
     if (!scene)
         return;
 
-    std::list<Object *> active_objects = this->get_active_objects();
+    std::list<Object *> active_objects;
+    scene->find_in_children_cast("object", active_objects);
 
     // resolve force fields acting on objects
     for (auto *obj : active_objects) {
@@ -44,7 +45,7 @@ void PhysicsEngine::timestep_objects()
     std::map<std::string, std::vector<Object *> > by_layer;
     for (auto *obj : active_objects) {
         obj->on_physics_update();
-        obj->timestep(this->dt);
+        obj->timestep_force(this->dt);
         by_layer[obj->get_layer()].emplace_back(obj);
     }
 
@@ -72,7 +73,7 @@ void PhysicsEngine::timestep_objects()
 
     // Accept resolved positions; zero forces
     for (auto *obj : active_objects) {
-        obj->accept_position();
+        obj->timestep_velocity(this->get_dt());
         obj->set_force({0, 0});
     }
 }

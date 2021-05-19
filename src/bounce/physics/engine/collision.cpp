@@ -72,8 +72,8 @@ bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object
 
 bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
 {
-    const arma::vec2 &apos = a->get_new_position();
-    const arma::vec2 &bpos = b->get_new_position();
+    const arma::vec2 &apos = a->get_position();
+    const arma::vec2 &bpos = b->get_position();
     double aw = a->get_shape().w, ah = a->get_shape().h;
     double bw = b->get_shape().w, bh = b->get_shape().h;
     double ax = apos[0], ay = apos[1], bx = bpos[0], by = bpos[1];

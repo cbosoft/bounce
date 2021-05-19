@@ -28,7 +28,7 @@ void PhysicsEngine::resolve_collision(Object *a, Object *b, const arma::vec2 &no
 
 void PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed_body, const arma::vec2 &normal)
 {
-    const arma::vec &v = free_body->get_velocity() - fixed_body->get_velocity()*2.f;
+    const arma::vec &v = free_body->get_velocity() - fixed_body->get_velocity();
     double nn = arma::dot(normal, normal);
     double vn = arma::dot(v, normal);
     arma::vec2 vel_parallel_to_norm = (vn/nn)*normal;
@@ -37,7 +37,6 @@ void PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed
     const PhysicsMaterial overall = PhysicsEngine::get_overall_material_properties(
             free_body->get_material(), fixed_body->get_material());
     free_body->set_velocity(((1. - overall.dynamic_friction)*vel_perpendicular_to_norm - overall.bounciness*vel_parallel_to_norm));
-    free_body->set_new_position(free_body->get_velocity()*this->dt + free_body->get_position());
 }
 
 void PhysicsEngine::resolve_collision_free_bodies(Object *a, Object *b, const arma::vec2 &normal)
@@ -67,9 +66,6 @@ void PhysicsEngine::resolve_collision_free_bodies(Object *a, Object *b, const ar
     arma::vec2 avel = a->get_velocity(), bvel = b->get_velocity();
     a->set_velocity( bvel*b->get_mass()/a->get_mass());
     b->set_velocity( avel*a->get_mass()/b->get_mass());
-
-    a->set_new_position(a->get_velocity()*this->dt + a->get_position());
-    b->set_new_position(b->get_velocity()*this->dt + b->get_position());
 }
 
 void PhysicsEngine::register_object(Object *obj)
