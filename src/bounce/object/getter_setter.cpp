@@ -103,6 +103,7 @@ void Object::set_shape(const CollisionShape &shape)
     this->_shape = shape;
 
     if (this->_renderable_collider) {
+        this->remove_child(this->_renderable_collider);
         delete this->_renderable_collider;
         this->_renderable_collider = nullptr;
     }
