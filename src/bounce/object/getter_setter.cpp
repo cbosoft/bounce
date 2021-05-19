@@ -1,76 +1,39 @@
 #include <bounce/object/object.hpp>
 
-void Object::set_mass(double _mass)
+void Object::set_mass(double mass)
 {
-    this->mass = _mass;
-    this->inv_mass = 1./_mass;
+    this->_mass = mass;
+    this->_inv_mass = 1./mass;
 }
 
 double Object::get_mass() const
 {
-    return this->mass;
-}
-
-void Object::set_new_position(const arma::vec2 &_new_position)
-{
-    this->new_position = _new_position;
-}
-
-void Object::set_new_position(const arma::vec2 &&_new_position)
-{
-    this->new_position = _new_position;
+    return this->_mass;
 }
 
 void Object::set_velocity(const arma::vec2 &_velocity)
 {
-    this->velocity = _velocity;
-}
-
-void Object::set_velocity(const arma::vec2 &&_velocity)
-{
-    this->velocity = _velocity;
+    this->_velocity = _velocity;
 }
 
 void Object::set_force(const arma::vec2 &_force)
 {
-    this->force = _force;
-}
-
-void Object::set_force(const arma::vec2 &&_force)
-{
-    this->force = _force;
-}
-
-void Object::set_position(const arma::vec2 &position)
-{
-    this->new_position = position;
-    Transform::set_position(position);
-}
-
-void Object::set_relative_position(const arma::vec2 &position)
-{
-    Transform::set_relative_position(position);
-    this->new_position = this->get_position();
-}
-
-const arma::vec2 &Object::get_new_position() const
-{
-    return this->new_position;
+    this->_force = _force;
 }
 
 const arma::vec2 &Object::get_velocity() const
 {
-    return this->velocity;
+    return this->_velocity;
 }
 
 const arma::vec2 &Object::get_force() const
 {
-    return this->force;
+    return this->_force;
 }
 
 void Object::add_force(const arma::vec2 &dforce)
 {
-    this->force += dforce;
+    this->_force += dforce;
 }
 
 bool Object::fixed() const

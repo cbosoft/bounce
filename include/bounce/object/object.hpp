@@ -14,9 +14,8 @@ class Object : public Transform {
     explicit Object(json j);
     ~Object();
 
-    void timestep(double dt);
-
-    void accept_position();
+    void timestep_force(double dt);
+    void timestep_velocity(double dt);
 
     void set_mass(double mass);
     double get_mass() const;
@@ -24,19 +23,12 @@ class Object : public Transform {
     bool fixed() const;
     void set_fixed(bool value);
 
-    const arma::vec2 &get_new_position() const;
+    void set_velocity(const arma::vec2 &velocity);
     const arma::vec2 &get_velocity() const;
-    const arma::vec2 &get_force() const;
 
-    void set_relative_position(const arma::vec2 &position) override;
-    void set_position(const arma::vec2 &position) override;
-    void set_new_position(const arma::vec2 &new_position);
-    void set_new_position(const arma::vec2 &&new_position);
-    void set_velocity(const arma::vec2 &new_position);
-    void set_velocity(const arma::vec2 &&new_position);
     void set_force(const arma::vec2 &force);
-    void set_force(const arma::vec2 &&force);
     void add_force(const arma::vec2 &force);
+    const arma::vec2 &get_force() const;
 
     const PhysicsMaterial &get_material() const;
     void set_bounciness(double bounciness);
@@ -58,11 +50,9 @@ class Object : public Transform {
 
 private:
     CollisionShape _shape;
-    arma::vec2 new_position;
-    arma::vec2 velocity;
-    arma::vec2 force;
+    arma::vec2 _velocity, _previous_velocity, _force;
 
-    double mass, inv_mass;
+    double _mass, _inv_mass;
     std::string _layer;
 
     PhysicsMaterial _material;
