@@ -20,6 +20,14 @@ public:
     }
 };
 
+class TilePalette : public Transform {
+public:
+    TilePalette(Transform *parent)
+    {
+
+    }
+};
+
 class LevelEditor final : public Scene {
 public:
     LevelEditor()
@@ -30,25 +38,46 @@ public:
         this->cursor->set_z(100);
         this->cursor->set_parent(this);
 
-        auto *tile = new Tile(this, {0,0});
-        this->_tiles[std::pair<int, int>(0, 0)] = tile;
-
         this->player = new EditorPlayer(this);
         this->player->set_position({0, 30});
 
-        auto *gravity = new UnboundedLinearForceField(0, 0, 0, -10);
+        auto *gravity = new GravityField(200);
         this->add_field(gravity);
+        auto *airres = new AirResField(0.7);
+        this->add_field(airres);
 
         this->get_active_camera()->set_parent(this->player);
+
+        try {
+            json j = ResourceManager::ref().get_metadata("scene", "test");
+            this->target = (Scene *)Game::ref().deserialise(j);
+            std::list<Object *> objs;
+            this->target->find_in_children_cast("object", objs);
+            for (auto *obj : objs) {
+                arma::vec2 ipos = arma::round(obj->get_position()/10.0);
+                std::pair<int, int> i{ipos[0], ipos[1]};
+                this->_tiles[i] = (Tile *)obj;
+            }
+        }
+        catch (const std::runtime_error &e) {
+            this->target = new Scene("test");
+            auto *tile = new Tile(this->target, {0, 0});
+            this->_tiles[std::pair<int, int>(0, 0)] = tile;
+        }
+        this->target->set_parent(this);
     }
 
     void on_activate() override
     {
-        PhysicsEngine::ref().set_timescale(4.0);
+        //PhysicsEngine::ref().set_timescale(4.0);
     }
 
     void back_pressed() override
     {
+        json j = this->target->serialise();
+        std::string json_str = j.dump(2);
+        std::ofstream of("../resources/scene/test.json");
+        of << json_str;
         Game::ref().quit();
     }
 
@@ -87,7 +116,7 @@ public:
         pindex.second = int(p[1]);
         auto it = this->_tiles.find(pindex);
         if (it == this->_tiles.end()) {
-            auto *tile = new Tile(this, p * tile_size);
+            auto *tile = new Tile(this->target, p * tile_size);
             this->_tiles[pindex] = tile;
         }
     }
@@ -116,15 +145,23 @@ public:
     void left_released() override { this->player->left_released(); }
     void right_pressed() override { this->player->right_pressed(); }
     void right_released() override { this->player->right_released(); }
-    void up_pressed() override { this->player->jump_pressed(); }
-    //void up_released() override { this->player->jump_released(); }
+    void up_pressed() override { this->player->up_pressed(); }
+    void up_released() override { this->player->up_released(); }
+    void down_pressed() override { this->player->down_pressed(); }
+    void down_released() override { this->player->down_released(); }
 
     void action_pressed() override { this->placing_tiles = true; this->removing_tiles = false; }
     void action_released() override { this->placing_tiles = false; this->removing_tiles = false; }
     void alternate_pressed() override { this->placing_tiles = false; this->removing_tiles = true; }
     void alternate_released() override { this->placing_tiles = false; this->removing_tiles = false; }
 
+    void key_char_pressed(char ch) override {
+        if (ch == 'q')
+            this->player->toggle_fly_mode();
+    }
+
 private:
+    Scene *target;
     arma::vec2 cursor_window_position;
     RectangleMeshRenderable *cursor;
     std::map<std::pair<int, int>, Tile *> _tiles;
