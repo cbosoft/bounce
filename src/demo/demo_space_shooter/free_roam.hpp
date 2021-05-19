@@ -20,35 +20,30 @@ public:
 
         this->reticule = new DemoReticule(this);
         this->reticule->set_position({10, 0});
-        this->attach_renderable(this->reticule);
+        this->reticule->set_parent(this);
         this->_cursor_window_position = Renderer::get().get_window_size()%arma::vec2{.5,-.5};
 
         this->fpscntr = new TextRenderable("FPS: ", DEFAULT_FONT, 100);
         this->fpscntr->set_alignment(HA_left, VA_bottom);
         this->fpscntr->set_position({5, 5});
-        this->attach_renderable("FPS counter", this->fpscntr);
         this->fpscntr->set_parent(cam->get_bl());
 
         auto *tut = new TextRenderable("<WASD>: move  <mouse>: aim  <lclick>: shoot  <esc>: back to menu", DEFAULT_FONT, 30);
         tut->set_alignment(HA_right, VA_bottom);
         tut->set_position({-5, 5});
-        this->attach_renderable("position counter", tut);
         tut->set_parent(cam->get_br());
 
         auto *bg = new RectangleMeshRenderable(400, 400);
         bg->set_colour(Colour::from_rgb(0, 0, 30));
         bg->set_z(-1000);
-        this->attach_renderable(bg);
         bg->set_parent(cam);
 
         this->score_display = new TextRenderable("0", DEFAULT_FONT, 150);
         this->score_display->set_alignment(HA_right, VA_top);
-        this->attach_renderable(this->score_display);
         this->score_display->set_parent(cam->get_tr());
         this->score_display->set_relative_position({-10, -10});
 
         this->hp_display = new DemoPlayerHPBar(this->player);
-        this->attach_renderable(this->hp_display);
         this->hp_display->set_parent(cam->get_tl());
         this->hp_display->set_relative_position({10, -10});
 
@@ -192,7 +187,7 @@ private:
 
     void place_star(Transform *cell, const arma::vec2 &at) {
         auto *star = new DemoStar(cell, at);
-        cell->attach_renderable(star);
+        (void)star;
     }
 
     bool _tut_shown = false;

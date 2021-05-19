@@ -6,7 +6,9 @@ DemoPlatformerPlayer::DemoPlatformerPlayer(Transform *parent)
         ,   _dir{0.0}
         ,   _jump{false}
 {
-    this->set_shape(CollisionShape::rectangle(1, 1));
+    this->set_shape(CollisionShape::rectangle(5, 5));
+    auto *rbl = new RectangleMeshRenderable(5, 5);
+    rbl->set_parent(this);
     this->set_bounciness(0.1);
     this->set_friction(0.01);
 }

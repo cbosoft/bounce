@@ -11,10 +11,10 @@ public:
     ,   MenuItem(owner)
     {
         rbl = new RectangleMeshRenderable(10, 10);
-        this->attach_renderable(rbl);
+        rbl->set_parent(this);
         auto *txt = new TextRenderable(name, DEFAULT_FONT, 40);
         txt->set_colour(Colours::black);
-        this->attach_renderable(txt);
+        txt->set_parent(this);
         this->set_position(position);
     }
 
@@ -70,11 +70,11 @@ public:
     {
         this->bg = new RectangleMeshRenderable(1, 1);
         this->bg->set_colour(Colours::black);
-        this->attach_renderable("bg", this->bg);
+        this->bg->set_parent(this);
 
         this->txt = new TextRenderable(label, DEFAULT_FONT, 80);
+        this->txt->set_parent(this);
         this->bg->set_size(this->txt->measure() + 5.);
-        this->attach_renderable("text", this->txt);
 
         this->set_callback_action(cb);
     }
@@ -102,12 +102,12 @@ public:
         this->bg = new RectangleMeshRenderable(1, 1);
         this->bg->set_colour(Colours::black);
         this->bg->set_alignment(MR_HA_LEFT, MR_VA_CENTRE);
-        this->attach_renderable("bg", this->bg);
+        this->bg->set_parent(this);
 
         this->txt = new TextRenderable(label, DEFAULT_FONT, 80);
         this->txt->set_alignment(HA_left, VA_centre);
         this->bg->set_size(this->txt->measure() + 5.);
-        this->attach_renderable("text", this->txt);
+        this->txt->set_parent(this);
 
         this->set_callback_action(cb);
     }
@@ -206,11 +206,11 @@ public:
             kv.second->unhighlight();
 
         auto *note = new TextRenderable("Mash the keys!", DEFAULT_FONT, 100);
-        this->attach_renderable(note);
+        note->set_parent(this);
         note->set_position({0, 10});
 
         auto *note3 = new TextRenderable("<esc> to go back to the menu", DEFAULT_FONT, 70);
-        this->attach_renderable(note3);
+        note3->set_parent(this);
         note3->set_position({0, -10});
 
         this->clip = new ClipAfterEffect();
@@ -219,12 +219,12 @@ public:
         // this->clip->enable();
 
         this->cursor = new RegularPolygonMeshRenderable(20);
-        this->attach_renderable(cursor);
+        this->cursor->set_parent(this);
 
 
         { // volume bar
             auto *volbar = new DemoVolumeBar();
-            this->attach_renderable(volbar);
+            volbar->set_parent(this);
             volbar->set_position({-50, -20});
             //volbar->set_angle(M_PI_2);
 

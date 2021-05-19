@@ -50,13 +50,13 @@ public:
             :   Menu("menu")
     {
         this->icon = new AnimatedBounceIcon();
-        this->attach_renderable(this->icon);
+        this->icon->set_parent(this);
         this->icon->set_position({0, 35});
 
         auto *txt = new TextRenderable("Bounce Demo Collection", DEFAULT_FONT, 150);
         txt->set_colour(Colour::from_rgb(240, 240, 220));
         txt->set_position({0, 60});
-        this->attach_renderable(txt);
+        txt->set_parent(this);
 
         {
             auto *b = new DemoMenuButton(this, "space shooter (pew pew)");
@@ -91,7 +91,6 @@ public:
 
         this->cursor = new MenuCursor(this);
         this->cursor->set_position({10, 0});
-        this->attach_renderable("cursor", this->cursor);
 
         std::string tag = TextManager::ref().get_collection("tagline")->get_string("tagline");
         tag += " ";
@@ -99,15 +98,15 @@ public:
         tagline->set_alignment(HA_right, VA_centre);
         tagline->set_colour(Colour::from_grayscale(127));
         tagline->set_position({0, -75});
-        this->attach_renderable(tagline);
+        tagline->set_parent(this);
         auto *tagline2 = new TextRenderable("BounceEngine", DEFAULT_FONT, 80);
         tagline2->set_alignment(HA_left, VA_centre);
         tagline2->set_colour(Colour::from_grayscale(200));
         tagline2->set_position({0, -75});
-        this->attach_renderable(tagline2);
+        tagline2->set_parent(this);
 
         auto *bg = new RectangleMeshRenderable(500, 300);
-        this->attach_renderable(bg);
+        bg->set_parent(this);
         bg->set_colour(Colour::from_grayscale(50));
         bg->set_z(-1000);
 
@@ -130,9 +129,9 @@ public:
                 data[xi*h*c + yi*c + 3] = alpha;
             }
         }
-        auto *t = new Texture();
+        auto *t = new Texture("noise1");
         t->set_image_data(data, w, h);
-        Renderer::get().add_texture("noise1", t);
+        Renderer::get().add_texture(t);
     }
 
     static void quit_callback(MenuItem *i)

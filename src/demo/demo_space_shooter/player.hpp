@@ -8,10 +8,11 @@ public:
     DemoProjectile(Transform *parent, const arma::vec2 &pos)
             :   Object(parent)
     {
-        this->attach_renderable("proj", new RegularPolygonMeshRenderable(20));
-        this->set_colour(Colours::cyan);
+        auto *rbl = new RegularPolygonMeshRenderable(20);
+        rbl->set_parent(this);
+        rbl->set_colour(Colours::cyan);
         this->set_position(pos);
-        this->set_identifier("projectile");
+        this->add_tag("projectile");
     }
 
     void on_update() override
@@ -41,17 +42,17 @@ public:
             ,   _score(0.0)
     {
         this->set_position(position);
-        this->set_identifier("player");
+        this->add_tag("player");
 
         this->body = new RegularPolygonMeshRenderable(20);
         this->body->set_texture_name("ufo_body");
         this->body->set_size({10.0, 10.0});
-        this->attach_renderable("body", body);
+        this->body->set_parent(this);
 
         this->gun = new RegularPolygonMeshRenderable(20);
         this->gun->set_texture_name("ufo_gun");
         this->gun->set_size({20.0, 20.0});
-        this->attach_renderable("gun", gun);
+        this->gun->set_parent(this);
 
         this->set_shape(CollisionShape::circle(5.0));
     }

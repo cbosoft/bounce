@@ -17,7 +17,7 @@ public:
         body->set_texture_name("enemy");
         body->set_size({5, 5});
         this->set_shape(CollisionShape::circle(2.5));
-        this->attach_renderable(body);
+        body->set_parent(this);
     }
 
     void face_forward()

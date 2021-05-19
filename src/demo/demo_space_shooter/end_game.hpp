@@ -12,7 +12,7 @@ public:
 
         auto *txt = new TextRenderable("Game Over", DEFAULT_FONT, 100);
         txt->set_colour(Colours::red);
-        this->attach_renderable(txt);
+        txt->set_parent(this);
     }
 
     void back_pressed() override
