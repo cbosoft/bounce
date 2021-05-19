@@ -45,7 +45,7 @@ Texture *Renderer::get_texture(const std::string &name)
         // if the texture name is a resource path, try to load it
         try {
             // raises runtime error if name is not found
-            this->textures[name] = new Texture(name);
+            this->textures[name] = new Texture(name, name);
         }
         catch (const std::runtime_error &e) {
             Logger::ref() << LL_WARN << "Could not find texture \"" << name <<"\" and could not load it from file.\n";
