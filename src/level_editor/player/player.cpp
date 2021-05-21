@@ -36,23 +36,26 @@ void EditorPlayer::on_collision(Object *other)
 
 void EditorPlayer::on_physics_update()
 {
+    constexpr double maxvel = 100.;
     if (this->_fly_mode) {
         arma::vec2 vel{this->_dir, this->_v_dir};
-        vel *= 20.0;
+        vel *= maxvel;
         this->set_velocity(vel);
     }
     else {
         double fy = 0.0;
         if (this->_on_ground && this->_jump) {
             this->_on_ground = this->_jump = false;
-            fy = 8e4;
+            fy = 8.5e4;
         }
 
-        //double spd_mult = this->_on_ground ? 1.0 : 0.01;
-        this->add_force({this->_dir*4e2, fy});
-        if (this->_dir == 0.0 && this->_on_ground) {
-            this->set_velocity(this->get_velocity()*0.99);
-        }
+        double spd_mult = this->_on_ground ? 1.0 : 0.5;
+        this->add_force({this->_dir*spd_mult*4e2, fy});
+
+        arma::vec2 vel = this->get_velocity();
+        if (vel[0] < -maxvel) vel[0] = -maxvel;
+        if (vel[0] > maxvel)  vel[0] = maxvel;
+        this->set_velocity(vel);
 
         this->_on_ground = false;
     }
