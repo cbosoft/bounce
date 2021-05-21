@@ -2,7 +2,7 @@
 
 Object::Object(json j)
 :   Transform(j)
-,   _shape(CollisionShape(j["shape"]))
+,   _shape(CollisionShape::rectangle(1, 1))
 ,   _velocity({0, 0})
 ,   _previous_velocity({0, 0})
 ,   _force({0, 0})
@@ -13,6 +13,7 @@ Object::Object(json j)
 ,   _fixed(false)
 ,   _renderable_collider(nullptr)
 {
+    this->set_shape(CollisionShape(j["shape"]));
     this->_velocity = jsonvec2(j["velocity"]);
     this->_previous_velocity = jsonvec2(j["previous velocity"]);
     this->_force = jsonvec2(j["force"]);
