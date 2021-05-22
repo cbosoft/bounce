@@ -56,6 +56,9 @@ const std::string &Renderable::get_current_anim_loop() const
     return this->_current_texture_loop_name;
 }
 
+void Renderable::x_flip(bool v) { this->_is_x_flipped = v; }
+void Renderable::y_flip(bool v) { this->_is_y_flipped = v; }
+
 const Colour &Renderable::get_colour() const
 {
     return this->_colour;

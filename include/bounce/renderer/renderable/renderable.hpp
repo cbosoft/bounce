@@ -37,6 +37,8 @@ public:
     void set_animated(bool value);
     void set_animation_speed(double frame_per_second);
     [[nodiscard]] bool has_completed_loop_once() const;
+    void x_flip(bool v);
+    void y_flip(bool v);
 
     void on_update() override;
 
@@ -63,6 +65,6 @@ protected:
     Texture *_texture;
     TextureAnimLoop _current_texture_loop;
     unsigned int _current_frame;
-    bool _visible, _animated, _has_completed_loop_once;
+    bool _visible, _animated, _has_completed_loop_once, _is_x_flipped, _is_y_flipped;
     GLuint _target;
 };

@@ -27,10 +27,12 @@ void MeshRenderable::draw_border() const
     for (int j = 0; j < int(this->_points.size()) + 1; j++) {
         int i = j % this->_points.size();
         const arma::vec2 &pt = this->_points[i];
-        auto dx = float(pt[0]);
-        auto dy = float(pt[1]);
+        const float fx = this->_is_x_flipped?-1.f:1.f;
+        const float fy = this->_is_y_flipped?-1.f:1.f;
+        const auto dx = float(pt[0]);
+        const auto dy = float(pt[1]);
         vertices.push_back({
-            x + dx * sx, y + dy * sy, 0.0f,
+            x + dx * sx * fx, y + dy * sy * fy, 0.0f,
             r, g, b, a,
             0.5f + dx/2.0f, 0.5f + dy/2.0f
         });
@@ -109,13 +111,15 @@ void MeshRenderable::draw_main() const
 
     std::vector<Vertex> vertices;
     for (int i = 0; i < n; i++) {
+        float fx = this->_is_x_flipped?-1.f:1.f;
+        float fy = this->_is_y_flipped?-1.f:1.f;
         const auto dx = float(this->_points[i][0]);
         const auto dy = float(this->_points[i][1]);
         arma::Col<float>::fixed<2> st = {(.5f + dx), (.5f + dy)};
         st %= framecoords.wh;
         st += framecoords.bl;
         vertices.push_back({
-                x + dx * sx, y + dy * sy, 0.0f,
+                x + dx * sx * fx, y + dy * sy*fy, 0.0f,
                 r, g, b, a,
                 st[0], st[1]
         });
