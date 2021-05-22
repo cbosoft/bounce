@@ -54,11 +54,11 @@ void PhysicsEngine::timestep_objects()
         const auto &objs = kv.second;
         for (size_t i = 0; i < objs.size(); i++) {
             Object *a = objs[i];
-            CollisionInformation next_collision = {nullptr, {0, 0}, {0, 0}, 1e9};
+            CollisionInformation next_collision = {nullptr, {0, 0}, {0, 0}, 1e9, CD_LEFT, CD_LEFT};
             for (size_t j = 0; j < objs.size(); j++) {
                 if (j >= i) break;
                 Object *b = objs[j];
-                CollisionInformation ci = {b, {0, 0}, {0, 0}, 1e9};
+                CollisionInformation ci = {b, {0, 0}, {0, 0}, 1e9, CD_LEFT, CD_RIGHT};
                 if (this->check_will_collide(a, b, ci)) {
                     if (ci.when < next_collision.when) {
                         next_collision = ci;
@@ -66,6 +66,8 @@ void PhysicsEngine::timestep_objects()
                 }
             }
             if (next_collision.b) {
+                a->set_touching(next_collision.adir);
+                next_collision.b->set_touching(next_collision.bdir);
                 this->resolve_collision(a, next_collision.b, next_collision.normal);
             }
         }

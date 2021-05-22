@@ -98,15 +98,23 @@ bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *
 
     if (tmin == t2left) {
         ci.normal = {-1, 0};
+        ci.adir = CD_LEFT;
+        ci.bdir = CD_RIGHT;
     }
     else if (tmin == t2right) {
         ci.normal = {1, 0};
+        ci.adir = CD_RIGHT;
+        ci.bdir = CD_LEFT;
     }
     else if (tmin == t2bottom) {
         ci.normal = {0, -1};
+        ci.adir = CD_BOTTOM;
+        ci.bdir = CD_TOP;
     }
     else if (tmin == t2top) {
         ci.normal = {0, 1};
+        ci.adir = CD_TOP;
+        ci.bdir = CD_BOTTOM;
     }
 
     ci.when = tmin;

@@ -15,6 +15,7 @@ struct CollisionInformation {
     arma::vec2 normal;
     arma::vec2 at;
     double when;
+    CollisionDirection adir, bdir;
 };
 
 class Game;
