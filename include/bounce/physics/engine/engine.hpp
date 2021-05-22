@@ -32,12 +32,12 @@ public:
     static PhysicsMaterial get_overall_material_properties(const PhysicsMaterial &a, const PhysicsMaterial &b);
     void check_set_time();
     void set_timescale(double v);
-    double get_time() const;
-    double get_dt() const;
+    [[nodiscard]] double get_time() const;
+    [[nodiscard]] double get_dt() const;
 
     void register_object(Object *obj);
     void unregister_object(Object *obj);
-    std::list<Object *> get_active_objects() const;
+    [[nodiscard]] std::list<Object *> get_active_objects() const;
 
     [[nodiscard]] bool check_will_collide(const Object *a, const Object *b, CollisionInformation &ci) const;
 
