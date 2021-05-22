@@ -8,6 +8,8 @@
 #include "../physics/shape/shape.hpp"
 #include "../physics/material/material.hpp"
 
+enum CollisionDirection {CD_TOP, CD_LEFT, CD_BOTTOM, CD_RIGHT, _CD_N};
+
 class Object : public Transform {
   public:
     explicit Object(Transform *parent);
@@ -37,6 +39,7 @@ class Object : public Transform {
     void set_layer(const std::string &layer);
     const std::string &get_layer() const;
 
+    void on_update() override;
     virtual void on_physics_update() {}
     virtual void on_collision(Object *other) {}
 
@@ -45,6 +48,14 @@ class Object : public Transform {
 
     [[nodiscard]] const CollisionShape &get_shape() const;
     void set_shape(const CollisionShape &shape);
+    void set_touching(CollisionDirection dir);
+    void set_not_touching(CollisionDirection dir);
+    void set_not_touching_anything();
+    [[nodiscard]] bool is_touching(CollisionDirection dir) const;
+    [[nodiscard]] bool is_touching_top() const;
+    [[nodiscard]] bool is_touching_left() const;
+    [[nodiscard]] bool is_touching_bottom() const;
+    [[nodiscard]] bool is_touching_right() const;
 
     json serialise() override;
 
@@ -59,4 +70,5 @@ private:
 
     bool _fixed;
     MeshRenderable *_renderable_collider;
+    unsigned int _colliding_flags;
 };

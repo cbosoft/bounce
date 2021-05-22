@@ -12,6 +12,7 @@ Object::Object(json j)
 ,   _material({1.0, 0.0})
 ,   _fixed(false)
 ,   _renderable_collider(nullptr)
+,   _colliding_flags(0)
 {
     this->set_shape(CollisionShape(j["shape"]));
     this->_velocity = jsonvec2(j["velocity"]);

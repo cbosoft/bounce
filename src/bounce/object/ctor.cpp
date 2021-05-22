@@ -14,6 +14,7 @@ Object::Object(Transform *parent)
     ,   _material({0.0, 0.0})
     ,   _fixed(false)
     ,   _renderable_collider(nullptr)
+    ,   _colliding_flags(0)
 {
     PhysicsEngine::ref().register_object(this);
     this->add_tag("object");
