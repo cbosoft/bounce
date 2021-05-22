@@ -1,7 +1,7 @@
 #include <bounce/physics/engine/engine.hpp>
 #include <bounce/logging/logger.hpp>
 
-bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, CollisionInformation &ci)
+bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, CollisionInformation &ci) const
 {
     if (a->fixed() && b->fixed()) {
         return false;
@@ -38,7 +38,7 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, Collisi
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, CollisionInformation &ci)
+bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, CollisionInformation &ci) const
 {
     arma::vec2 dp = a->get_position() - b->get_position();
     arma::vec2 dv = a->get_velocity() - b->get_velocity();
@@ -60,7 +60,7 @@ bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Obje
     // return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object *b, CollisionInformation &ci)
+bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object *b, CollisionInformation &ci) const
 {
     (void) a;
     (void) b;
@@ -68,7 +68,7 @@ bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, CollisionInformation &ci)
+bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, CollisionInformation &ci) const
 {
     const arma::vec2 &apos = a->get_position();
     const arma::vec2 &bpos = b->get_position();
