@@ -29,8 +29,11 @@ void Renderable::set_texture_name(const std::string &name)
 
 void Renderable::set_anim_loop(const std::string &name)
 {
-    if (this->_texture)
+    if (this->_texture && name != this->_current_texture_loop_name) {
         this->_current_texture_loop = this->_texture->get_named_loop(name);
+        this->_current_texture_loop_name = name;
+        this->_has_completed_loop_once = false;
+    }
 }
 
 void Renderable::set_animated(bool value)
@@ -41,6 +44,16 @@ void Renderable::set_animated(bool value)
 void Renderable::set_animation_speed(double frame_per_second)
 {
     this->_animation_period = 1./frame_per_second;
+}
+
+bool Renderable::has_completed_loop_once() const
+{
+    return this->_has_completed_loop_once;
+}
+
+const std::string &Renderable::get_current_anim_loop() const
+{
+    return this->_current_texture_loop_name;
 }
 
 const Colour &Renderable::get_colour() const
