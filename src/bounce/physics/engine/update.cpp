@@ -59,7 +59,7 @@ void PhysicsEngine::timestep_objects()
                 if (j >= i) break;
                 Object *b = objs[j];
                 CollisionInformation ci = {b, {0, 0}, {0, 0}, 1e9};
-                if (this->check_will_collide(a, b, ci.normal, ci.at, ci.when)) {
+                if (this->check_will_collide(a, b, ci)) {
                     if (ci.when < next_collision.when) {
                         next_collision = ci;
                     }

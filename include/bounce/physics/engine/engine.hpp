@@ -39,12 +39,12 @@ public:
     void unregister_object(Object *obj);
     std::list<Object *> get_active_objects() const;
 
-    bool check_will_collide(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at, double &when);
+    bool check_will_collide(const Object *a, const Object *b, CollisionInformation &ci);
 
 private:
-    bool check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at, double &when);
-    bool check_will_collide_circle_rect(const Object *circle, const Object *rect, arma::vec2 &norm, arma::vec2 &at, double &when);
-    bool check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &norm, arma::vec2 &at, double &when);
+    bool check_will_collide_circle_circle(const Object *a, const Object *b, CollisionInformation &ci);
+    bool check_will_collide_circle_rect(const Object *circle, const Object *rect, CollisionInformation &ci);
+    bool check_will_collide_rect_rect(const Object *a, const Object *b, CollisionInformation &ci);
 
     void traverse_get_objects(Transform *t, std::list<Object *> &out) const;
 

@@ -1,14 +1,14 @@
 #include <bounce/physics/engine/engine.hpp>
 #include <bounce/logging/logger.hpp>
 
-bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
+bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, CollisionInformation &ci)
 {
     if (a->fixed() && b->fixed()) {
         return false;
     }
 
     arma::vec2 dv = arma::abs(a->get_velocity() - b->get_velocity());
-    normal = dv[1] > dv[0] ? arma::vec2{0, 1} : arma::vec2{1, 0};
+    ci.normal = dv[1] > dv[0] ? arma::vec2{0, 1} : arma::vec2{1, 0};
 
     // std::cerr
     //     << a->get_shape().get_type() << " " << b->get_shape().get_type()
@@ -20,17 +20,17 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::v
         case ST_CIRCLE:
             switch (b->get_shape().get_type()) {
                 case ST_CIRCLE:
-                    return this->check_will_collide_circle_circle(a, b, normal, at, when);
+                    return this->check_will_collide_circle_circle(a, b, ci);
                 case ST_RECT:
-                    return this->check_will_collide_circle_rect(a, b, normal, at, when);
+                    return this->check_will_collide_circle_rect(a, b, ci);
             }
             break;
         case ST_RECT:
             switch (b->get_shape().get_type()) {
                 case ST_CIRCLE:
-                    return this->check_will_collide_circle_rect(b, a, normal, at, when);
+                    return this->check_will_collide_circle_rect(b, a, ci);
                 case ST_RECT:
-                    return this->check_will_collide_rect_rect(a, b, normal, at, when);
+                    return this->check_will_collide_rect_rect(a, b, ci);
             }
             break;
     }
@@ -38,16 +38,16 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, arma::v
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
+bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, CollisionInformation &ci)
 {
     arma::vec2 dp = a->get_position() - b->get_position();
     arma::vec2 dv = a->get_velocity() - b->get_velocity();
     double l = arma::norm(dp) - (a->get_shape().w + b->get_shape().w)*.5;
     double v = arma::norm(dv);
     double t = l/v;
-    normal = arma::normalise(dv);
-    at = a->get_position() + normal*a->get_shape().w*.5;
-    when = t;
+    ci.normal = arma::normalise(dv);
+    ci.at = a->get_position() + ci.normal*a->get_shape().w*.5;
+    ci.when = t;
     return t < this->get_dt();
 
     // arma::vec2 dp = a->get_new_position() - b->get_new_position();
@@ -60,17 +60,15 @@ bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Obje
     // return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
+bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object *b, CollisionInformation &ci)
 {
     (void) a;
     (void) b;
-    (void) normal;
-    (void) at;
-    (void) when;
+    (void) ci;
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, arma::vec2 &normal, arma::vec2 &at, double &when)
+bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, CollisionInformation &ci)
 {
     const arma::vec2 &apos = a->get_position();
     const arma::vec2 &bpos = b->get_position();
@@ -99,19 +97,19 @@ bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *
         return false;
 
     if (tmin == t2left) {
-        normal = {-1, 0};
+        ci.normal = {-1, 0};
     }
     else if (tmin == t2right) {
-        normal = {1, 0};
+        ci.normal = {1, 0};
     }
     else if (tmin == t2bottom) {
-        normal = {0, -1};
+        ci.normal = {0, -1};
     }
     else if (tmin == t2top) {
-        normal = {0, 1};
+        ci.normal = {0, 1};
     }
 
-    when = tmin;
+    ci.when = tmin;
 
     return tmin < this->dt;
 }
