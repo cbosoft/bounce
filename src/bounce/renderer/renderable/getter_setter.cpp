@@ -27,6 +27,22 @@ void Renderable::set_texture_name(const std::string &name)
     this->_texture = Renderer::get().get_texture(name);
 }
 
+void Renderable::set_anim_loop(const std::string &name)
+{
+    if (this->_texture)
+        this->_current_texture_loop = this->_texture->get_named_loop(name);
+}
+
+void Renderable::set_animated(bool value)
+{
+    this->_animated = value;
+}
+
+void Renderable::set_animation_speed(double frame_per_second)
+{
+    this->_animation_period = 1./frame_per_second;
+}
+
 const Colour &Renderable::get_colour() const
 {
     return this->_colour;

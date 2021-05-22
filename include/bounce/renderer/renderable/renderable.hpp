@@ -32,6 +32,11 @@ public:
     void set_texture_name(const std::string &name);
     const std::string &get_shader_name() const;
     void set_shader_name(const std::string &name);
+    void set_anim_loop(const std::string &name);
+    void set_animated(bool value);
+    void set_animation_speed(double frame_per_second);
+
+    void on_update() override;
 
     void set_frame(unsigned int frame);
 
@@ -50,12 +55,12 @@ public:
 
 protected:
     Colour _colour, _border_colour;
-    double _aspect_ratio, _angle, _border_size;
+    double _aspect_ratio, _angle, _border_size, _time_last_frame_advance, _animation_period;
     arma::vec2 _size;
     std::string _shader_name;
     Texture *_texture;
     TextureAnimLoop _current_texture_loop;
     unsigned int _current_frame;
-    bool _visible;
+    bool _visible, _animated;
     GLuint _target;
 };
