@@ -21,7 +21,7 @@ Collider::Collider(json j)
     }
 
     this->_touching_flags = j["touching flags"];
-    this->_interaction_mask = j["interaction_mask"];
+    this->_interaction_mask = j["interaction mask"];
 }
 
 json Collider::serialise()
@@ -38,7 +38,7 @@ json Collider::serialise()
     json shape;
     switch (this->_shape_type) {
         case ST_RECT:
-            shape["type"] = "rectange";
+            shape["type"] = "rectangle";
             shape["width"] = 2.*this->_hw;
             shape["height"] = 2.*this->_hh;
             break;
