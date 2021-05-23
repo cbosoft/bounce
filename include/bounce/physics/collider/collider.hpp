@@ -13,8 +13,8 @@ public:
     explicit Collider(Transform *parent);
     explicit Collider(json j);
 
-    void on_update() override;
     virtual void on_collision(Collider *other) {}
+    virtual void on_physics_update();
     void get_renderables(std::list<const Renderable *> &out) const override;
 
     void set_shape_rectangle(double w, double h);

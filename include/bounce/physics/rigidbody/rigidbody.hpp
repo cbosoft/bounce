@@ -28,8 +28,6 @@ public:
     void set_bounciness(double bounciness);
     void set_friction(double friction);
 
-    virtual void on_physics_update() {}
-
     json serialise() override;
 
 protected:
