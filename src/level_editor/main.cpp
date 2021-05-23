@@ -7,7 +7,7 @@ int main()
 {
     auto &game = Game::setup("bounce-demo");
     Renderer &r = Renderer::get();
-    r.set_max_fps(100);
+    r.set_max_fps(60);
     r.define_shader("default", "vertex/vertex", "fragment/fragment");
     r.define_shader("sprite", "vertex/vertex", "fragment/sprite");
     r.define_shader("font", "vertex/vertex", "fragment/font");

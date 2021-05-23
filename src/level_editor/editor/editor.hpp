@@ -26,10 +26,10 @@ public:
     }
 };
 
-class Collider : public Object {
+class PlacedCollider : public Rigidbody {
 public:
-    Collider(Transform *parent, const arma::vec2 &position, const arma::vec2 &size)
-    :   Object(parent)
+    PlacedCollider(Transform *parent, const arma::vec2 &position, const arma::vec2 &size)
+    :   Rigidbody(parent)
     ,   p1(position)
     ,   additional_size(size)
     {
@@ -44,7 +44,7 @@ public:
         this->set_position(avpos);
 
         arma::vec2 size = arma::abs(p2 - p1) + this->additional_size;
-        this->set_shape(CollisionShape::rectangle(size[0], size[1]));
+        this->set_shape_rectangle(size[0], size[1]);
     }
 private:
     arma::vec2 p1;
@@ -81,10 +81,10 @@ public:
                 std::pair<int, int> i{ipos[0], ipos[1]};
                 this->_tiles[i] = (Tile *)tile;
             }
-            std::list<Object *> colliders;
-            this->target->find_in_children_cast("collider", colliders);
-            for (auto *collider : colliders) {
-                this->add_collider_to_grid((Collider *)collider);
+            std::list<Rigidbody *> rigidbodies;
+            this->target->find_in_children_cast("rigidbody", rigidbodies);
+            for (auto *rb : rigidbodies) {
+                this->add_collider_to_grid((PlacedCollider *)rb);
             }
         }
         catch (const std::runtime_error &e) {
@@ -99,7 +99,7 @@ public:
     {
         //PhysicsEngine::ref().set_timescale(4.0);
         Game::ref().show_colliders();
-        this->player->set_fly_mode(true);
+        //this->player->set_fly_mode(true);
     }
 
     void back_pressed() override
@@ -153,11 +153,11 @@ public:
         this->removing_stuff = false;
     }
 
-    void add_collider_to_grid(Collider *collider)
+    void add_collider_to_grid(PlacedCollider *collider)
     {
         arma::vec2 p = collider->get_position();
-        double hw = collider->get_shape().w*.5;
-        double hh = collider->get_shape().h*.5;
+        double hw, hh;
+        collider->get_rect_half_extents(hw, hh);
 
         auto left   = int((p[0] - hw)/this->grid_size);
         auto right  = int((p[0] + hw)/this->grid_size);
@@ -202,7 +202,7 @@ public:
     {
         (void) pindex;
         if (!this->current_collider) {
-            this->current_collider = new Collider(this->target, p, {grid_size, grid_size});
+            this->current_collider = new PlacedCollider(this->target, p, {grid_size, grid_size});
         }
         this->current_collider->set_p2(p);
     }
@@ -252,28 +252,30 @@ public:
         }
     }
 
-    void remove_collider(Collider *collider)
+    void remove_collider(Rigidbody *rb)
     {
-        arma::vec2 p = collider->get_position();
-        double hw = collider->get_shape().w*.5;
-        double hh = collider->get_shape().h*.5;
+        (void) rb;
+        // disabled: doesn't work and not going to fix until new collider sys implemented
+        // arma::vec2 p = rb->get_position();
+        // double hw = rb->get_shape().w*.5;
+        // double hh = rb->get_shape().h*.5;
 
-        auto left   = int((p[0] - hw)/this->grid_size);
-        auto right  = int((p[0] + hw)/this->grid_size);
-        auto top    = int((p[0] + hh)/this->grid_size);
-        auto bottom = int((p[0] - hh)/this->grid_size);
-        for (int xi = left; xi <= right; xi ++) {
-            for (int yi = bottom; yi <= top; yi ++) {
-                std::pair<int, int> pindex{xi, yi};
-                auto it = this->_colliders.find(pindex);
-                if (it != this->_colliders.end()) {
-                    if (it->second == collider) {
-                        this->_colliders.erase(it);
-                    }
-                }
-            }
-        }
-        Game::ref().add_event(new TransformDestroyEvent(collider));
+        // auto left   = int((p[0] - hw)/this->grid_size);
+        // auto right  = int((p[0] + hw)/this->grid_size);
+        // auto top    = int((p[0] + hh)/this->grid_size);
+        // auto bottom = int((p[0] - hh)/this->grid_size);
+        // for (int xi = left; xi <= right; xi ++) {
+        //     for (int yi = bottom; yi <= top; yi ++) {
+        //         std::pair<int, int> pindex{xi, yi};
+        //         auto it = this->_colliders.find(pindex);
+        //         if (it != this->_colliders.end()) {
+        //             if (it->second == rb) {
+        //                 this->_colliders.erase(it);
+        //             }
+        //         }
+        //     }
+        // }
+        // Game::ref().add_event(new TransformDestroyEvent(collider));
     }
 
     void left_pressed() override { this->player->left_pressed(); }
@@ -303,6 +305,14 @@ public:
             case '2':
                 this->payload = PL_COLLIDER;
                 break;
+            case '3':
+                Game::ref().show_colliders();
+                break;
+            case '4':
+                Game::ref().hide_colliders();
+                break;
+            default:
+                break;
         }
     }
 
@@ -311,11 +321,11 @@ private:
     arma::vec2 cursor_window_position;
     RectangleMeshRenderable *cursor;
     std::map<std::pair<int, int>, Tile *> _tiles;
-    std::map<std::pair<int, int>, Collider *> _colliders;
+    std::map<std::pair<int, int>, Rigidbody *> _colliders;
     EditorPlayer *player;
     bool placing_stuff = false, removing_stuff = false;
     enum PAYLOAD { PL_TILE, PL_COLLIDER };
     PAYLOAD payload = PL_TILE;
     double grid_size = 10.;
-    Collider *current_collider = nullptr;
+    PlacedCollider *current_collider = nullptr;
 };
