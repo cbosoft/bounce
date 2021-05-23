@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "../menu.hpp"
+#include "../../../renderer/renderables.hpp"
 
 class TextInputPopUp : public Menu {
 public:

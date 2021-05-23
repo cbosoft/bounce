@@ -5,7 +5,6 @@
 #include "../../transform/transform.hpp"
 #include "../texture/texture.hpp"
 
-class Object;
 class Renderable : public Transform {
 public:
     Renderable();

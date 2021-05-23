@@ -7,7 +7,7 @@ public:
     BoundedForceField(const arma::vec2 &topleft,
                       const arma::vec2 &bottomright);
 
-    arma::vec2 measure_at(Object *obj) const override;
+    arma::vec2 measure_at(Rigidbody *obj) const override;
 
 private:
     arma::vec2 topleft, bottomright;

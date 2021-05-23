@@ -5,6 +5,6 @@ public:
     UnboundedLinearForceField(double mx, double cx, double my, double cy);
 
 private:
-    arma::vec2 f(Object *obj) const override;
+    arma::vec2 f(Rigidbody *obj) const override;
     double mx, cx, my, cy;
 };

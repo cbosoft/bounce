@@ -1,4 +1,4 @@
-#include <bounce/object/object.hpp>
+#include <bounce/physics/collider/collider.hpp>
 #include <bounce/event/collision/collision.hpp>
 
 void CollisionEvent::run(Game *game)

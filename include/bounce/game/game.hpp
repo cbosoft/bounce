@@ -201,7 +201,6 @@ private:
 
     std::vector<Scene *> scene_stack;
     std::list<Event *> events;
-    std::vector<Object *> all_objects;
     std::map<std::string, Scene *> scenes_by_name;
     std::list<Transform *> graveyard;
 

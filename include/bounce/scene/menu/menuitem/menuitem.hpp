@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../../object/object.hpp"
 #include "../menu.hpp"
 
 class MenuItem;

@@ -1,9 +1,9 @@
 #include <bounce/physics/engine/engine.hpp>
 #include <bounce/logging/logger.hpp>
 
-bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, CollisionInformation &ci) const
+bool PhysicsEngine::check_will_collide(const Rigidbody *a, const Rigidbody *b, CollisionInformation &ci) const
 {
-    if (a->fixed() && b->fixed()) {
+    if (a->is_fixed() && b->is_fixed()) {
         return false;
     }
 
@@ -16,9 +16,9 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, Collisi
     //     << b->get_position()[0] << "," << b->get_position()[1] << " "
     //     << std::endl;
 
-    switch (a->get_shape().get_type()) {
+    switch (a->get_shape_type()) {
         case ST_CIRCLE:
-            switch (b->get_shape().get_type()) {
+            switch (b->get_shape_type()) {
                 case ST_CIRCLE:
                     return this->check_will_collide_circle_circle(a, b, ci);
                 case ST_RECT:
@@ -26,7 +26,7 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, Collisi
             }
             break;
         case ST_RECT:
-            switch (b->get_shape().get_type()) {
+            switch (b->get_shape_type()) {
                 case ST_CIRCLE:
                     return this->check_will_collide_circle_rect(b, a, ci);
                 case ST_RECT:
@@ -38,15 +38,18 @@ bool PhysicsEngine::check_will_collide(const Object *a, const Object *b, Collisi
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Object *b, CollisionInformation &ci) const
+bool PhysicsEngine::check_will_collide_circle_circle(const Rigidbody *a, const Rigidbody *b, CollisionInformation &ci) const
 {
     arma::vec2 dp = a->get_position() - b->get_position();
     arma::vec2 dv = a->get_velocity() - b->get_velocity();
-    double l = arma::norm(dp) - (a->get_shape().w + b->get_shape().w)*.5;
+    double ar, br;
+    a->get_circle_radius(ar);
+    b->get_circle_radius(br);
+    double l = arma::norm(dp) - (ar + br);
     double v = arma::norm(dv);
     double t = l/v;
     ci.normal = arma::normalise(dv);
-    ci.at = a->get_position() + ci.normal*a->get_shape().w*.5;
+    ci.at = a->get_position() + ci.normal*ar;
     ci.when = t;
     return t < this->get_dt();
 
@@ -60,7 +63,7 @@ bool PhysicsEngine::check_will_collide_circle_circle(const Object *a, const Obje
     // return false;
 }
 
-bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object *b, CollisionInformation &ci) const
+bool PhysicsEngine::check_will_collide_circle_rect(const Rigidbody *a, const Rigidbody *b, CollisionInformation &ci) const
 {
     (void) a;
     (void) b;
@@ -68,19 +71,20 @@ bool PhysicsEngine::check_will_collide_circle_rect(const Object *a, const Object
     return false;
 }
 
-bool PhysicsEngine::check_will_collide_rect_rect(const Object *a, const Object *b, CollisionInformation &ci) const
+bool PhysicsEngine::check_will_collide_rect_rect(const Rigidbody *a, const Rigidbody *b, CollisionInformation &ci) const
 {
     const arma::vec2 &apos = a->get_position();
     const arma::vec2 &bpos = b->get_position();
-    double aw = a->get_shape().w, ah = a->get_shape().h;
-    double bw = b->get_shape().w, bh = b->get_shape().h;
+    double ahw, ahh, bhw, bhh;
+    a->get_rect_half_extents(ahw, ahh);
+    b->get_rect_half_extents(bhw, bhh);
     double ax = apos[0], ay = apos[1], bx = bpos[0], by = bpos[1];
     arma::vec2 rel_vel = b->get_velocity() - a->get_velocity();
     arma::vec2 &uray = rel_vel; //arma::normalise(rel_vel);
     double df_x = 1./uray[0], df_y = 1./uray[1];
 
-    double h_ww = (aw + bw)*.5;
-    double h_hh = (ah + bh)*.5;
+    double h_ww = ahw + bhw;
+    double h_hh = ahh + bhh;
 
     double l = ax - h_ww, r = ax+h_ww;
     double B = ay - h_hh, t = ay+h_hh;

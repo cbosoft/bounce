@@ -6,7 +6,7 @@ class AirResField : public ForceField {
 public:
     [[nodiscard]] AirResField(double strength);
 
-    arma::vec2 f(Object *obj) const override;
+    arma::vec2 f(Rigidbody *obj) const override;
 
     void set_strength(double strength);
 

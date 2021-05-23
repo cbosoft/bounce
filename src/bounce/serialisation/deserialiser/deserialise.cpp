@@ -2,7 +2,8 @@
 
 #include <bounce/serialisation/deserialiser/deserialiser.hpp>
 #include <bounce/scene/scene.hpp>
-#include <bounce/object/object.hpp>
+#include <bounce/physics/collider/collider.hpp>
+#include <bounce/physics/rigidbody/rigidbody.hpp>
 #include <bounce/logging/logger.hpp>
 #include <bounce/renderer/renderables.hpp>
 
@@ -17,8 +18,11 @@ Transform *Deserialiser::deserialise(json j)
     if (type_s == "transform") {
         rv = new Transform(j);
     }
-    else if (type_s == "object") {
-        rv = new Object(j);
+    else if (type_s == "collider") {
+        rv = new Collider(j);
+    }
+    else if (type_s == "rigidbody") {
+        rv = new Rigidbody(j);
     }
     else if (type_s == "scene") {
         rv = new Scene(j, 0);

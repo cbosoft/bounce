@@ -11,10 +11,10 @@ PhysicsMaterial PhysicsEngine::get_overall_material_properties(const PhysicsMate
         };
 }
 
-void PhysicsEngine::resolve_collision(Object *a, Object *b, const arma::vec2 &normal)
+void PhysicsEngine::resolve_collision(Rigidbody *a, Rigidbody *b, const arma::vec2 &normal)
 {
     // If both are fixed, don't resolve collision
-    bool afixed = a->fixed(), bfixed = b->fixed();
+    bool afixed = a->is_fixed(), bfixed = b->is_fixed();
 
     // objects collide
     // TODO only run collision event if the collision is new
@@ -26,7 +26,7 @@ void PhysicsEngine::resolve_collision(Object *a, Object *b, const arma::vec2 &no
     return this->resolve_collision_free_bodies(a, b, normal);
 }
 
-void PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed_body, const arma::vec2 &normal)
+void PhysicsEngine::resolve_collision_one_fixed(Rigidbody *free_body, Rigidbody *fixed_body, const arma::vec2 &normal)
 {
     const arma::vec &v = free_body->get_velocity() - fixed_body->get_velocity();
     double nn = arma::dot(normal, normal);
@@ -39,7 +39,7 @@ void PhysicsEngine::resolve_collision_one_fixed(Object *free_body, Object *fixed
     free_body->set_velocity(((1. - overall.dynamic_friction)*vel_perpendicular_to_norm - overall.bounciness*vel_parallel_to_norm));
 }
 
-void PhysicsEngine::resolve_collision_free_bodies(Object *a, Object *b, const arma::vec2 &normal)
+void PhysicsEngine::resolve_collision_free_bodies(Rigidbody *a, Rigidbody *b, const arma::vec2 &normal)
 {
     if (normal.has_nan())
         throw std::runtime_error("nan in norm");
@@ -66,34 +66,4 @@ void PhysicsEngine::resolve_collision_free_bodies(Object *a, Object *b, const ar
     arma::vec2 avel = a->get_velocity(), bvel = b->get_velocity();
     a->set_velocity( bvel*b->get_mass()/a->get_mass());
     b->set_velocity( avel*a->get_mass()/b->get_mass());
-}
-
-void PhysicsEngine::register_object(Object *obj)
-{
-    this->_all_objects.push_back(obj);
-}
-
-void PhysicsEngine::unregister_object(Object *obj)
-{
-    this->_all_objects.remove(obj);
-}
-
-void PhysicsEngine::traverse_get_objects(Transform *t, std::list<Object *> &out) const
-{
-    for (Transform *child : t->get_children()) {
-        if (child->is_active()) {
-            if (child->is_physics_object()) {
-                out.push_back((Object *) child);
-            }
-            this->traverse_get_objects(child, out);
-        }
-    }
-}
-
-std::list<Object *> PhysicsEngine::get_active_objects() const
-{
-    Transform *root = Game::ref().get_active_scene();
-    std::list<Object *> rv;
-    this->traverse_get_objects(root, rv);
-    return rv;
 }

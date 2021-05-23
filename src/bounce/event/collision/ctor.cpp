@@ -1,6 +1,6 @@
 #include <bounce/event/collision/collision.hpp>
 
-CollisionEvent::CollisionEvent(Object *a, Object *b)
+CollisionEvent::CollisionEvent(Collider *a, Collider *b)
 :   _a(a)
 ,   _b(b)
 {

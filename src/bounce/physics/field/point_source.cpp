@@ -6,7 +6,7 @@ PointSourceForceField::PointSourceForceField(double s)
     // do nothing
 }
 
-arma::vec2 PointSourceForceField::f(Object *obj) const
+arma::vec2 PointSourceForceField::f(Rigidbody *obj) const
 {
     arma::vec dp = obj->get_position() - this->get_position();
     double r = arma::dot(dp, dp);

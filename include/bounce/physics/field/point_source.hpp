@@ -5,7 +5,7 @@
 class PointSourceForceField : public ForceField {
 public:
     PointSourceForceField(double s);
-    arma::vec2 f(Object *obj) const;
+    arma::vec2 f(Rigidbody *obj) const;
 private:
     double s;
 };

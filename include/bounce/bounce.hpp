@@ -12,6 +12,7 @@
 #include "renderer/renderer.hpp"
 #include "resources/manager.hpp"
 #include "physics/field/force_fields.hpp"
+#include "physics/rigidbody/rigidbody.hpp"
 #include "ui/bar/bar.hpp"
 #include "procedural/perlin/perlin.hpp"
 #include "procedural/text/manger/manager.hpp"

@@ -1,6 +1,5 @@
 #include <bounce/renderer/renderable/renderable.hpp>
 #include <bounce/renderer/renderer.hpp>
-#include <bounce/object/object.hpp>
 
 void Renderable::set_size(const arma::vec2 &size)
 {

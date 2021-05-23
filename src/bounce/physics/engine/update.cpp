@@ -29,54 +29,60 @@ void PhysicsEngine::timestep_objects()
     if (!scene)
         return;
 
-    std::list<Object *> active_objects;
-    scene->find_in_children_cast("object", active_objects);
+    std::list<Collider *> colliders;
+    scene->find_in_children_cast("collider", colliders);
+    std::list<Rigidbody *> rigidbodies;
+    for (Collider * collider : colliders) {
+        if (collider->is_a("rigidbody")) {
+            rigidbodies.push_back((Rigidbody *)collider);
+        }
+    }
 
     // resolve force fields acting on objects
-    for (auto *obj : active_objects) {
-        arma::vec2 f = obj->get_force();
+    for (auto *rb : rigidbodies) {
+        arma::vec2 f = rb->get_force();
         for (auto *field : scene->get_fields()) {
-            f += field->measure_at(obj);
+            f += field->measure_at(rb);
         }
-        obj->set_force(f);
+        rb->set_force(f);
     }
 
     // Get proposed new positions for objects
-    std::map<std::string, std::vector<Object *> > by_layer;
-    for (auto *obj : active_objects) {
-        obj->on_physics_update();
-        obj->timestep_force(this->dt);
-        by_layer[obj->get_layer()].emplace_back(obj);
+    for (auto *rb : rigidbodies) {
+        rb->on_physics_update();
+        rb->timestep_force(this->dt);
     }
 
     // Check for and resolve any collisions
-    for (const auto &kv : by_layer) {
-        const auto &objs = kv.second;
-        for (size_t i = 0; i < objs.size(); i++) {
-            Object *a = objs[i];
-            CollisionInformation next_collision = {nullptr, {0, 0}, {0, 0}, 1e9, CD_LEFT, CD_LEFT};
-            for (size_t j = 0; j < objs.size(); j++) {
-                if (j >= i) break;
-                Object *b = objs[j];
-                CollisionInformation ci = {b, {0, 0}, {0, 0}, 1e9, CD_LEFT, CD_RIGHT};
-                if (this->check_will_collide(a, b, ci)) {
-                    if (ci.when < next_collision.when) {
-                        next_collision = ci;
-                    }
+    int i = 0, j = 0;
+    for (auto *a : rigidbodies) {
+        CollisionInformation next_collision = {nullptr, {0, 0}, {0, 0}, 1e9, CD_LEFT, CD_LEFT};
+
+        j = 0;
+        for (auto *b : rigidbodies) {
+            if (j >= i) break;
+            CollisionInformation ci = {b, {0, 0}, {0, 0}, 1e9, CD_LEFT, CD_RIGHT};
+            if (this->check_will_collide(a, b, ci)) {
+                if (ci.when < next_collision.when) {
+                    next_collision = ci;
                 }
             }
-            if (next_collision.b) {
-                a->set_touching(next_collision.adir);
-                next_collision.b->set_touching(next_collision.bdir);
-                this->resolve_collision(a, next_collision.b, next_collision.normal);
-            }
+
+            j++;
         }
+        if (next_collision.b) {
+            a->set_touching(next_collision.adir);
+            next_collision.b->set_touching(next_collision.bdir);
+            this->resolve_collision(a, next_collision.b, next_collision.normal);
+        }
+
+        i++;
     }
 
     // Accept resolved positions; zero forces
-    for (auto *obj : active_objects) {
-        obj->timestep_velocity(this->get_dt());
-        obj->set_force({0, 0});
+    for (auto *rb : rigidbodies) {
+        rb->timestep_velocity(this->dt);
+        rb->set_force({0, 0});
     }
 }
 

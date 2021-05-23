@@ -10,7 +10,6 @@
 #include <armadillo>
 
 #include "texture/texture.hpp"
-#include "../object/object.hpp"
 #include "../transform/rect/rect.hpp"
 
 /**

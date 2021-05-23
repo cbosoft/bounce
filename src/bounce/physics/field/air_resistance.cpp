@@ -6,7 +6,7 @@ AirResField::AirResField(double strength)
 
 }
 
-arma::vec2 AirResField::f(Object *obj) const
+arma::vec2 AirResField::f(Rigidbody *obj) const
 {
     return -this->_strength*obj->get_velocity();
 }

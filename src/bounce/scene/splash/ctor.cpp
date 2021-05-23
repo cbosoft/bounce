@@ -1,24 +1,26 @@
 #include <bounce/scene/splash/splash.hpp>
 #include <bounce/game/game.hpp>
 #include <bounce/events.hpp>
+#include <bounce/physics/rigidbody/rigidbody.hpp>
+#include <bounce/renderer/renderable/text/text.hpp>
 
 BounceEngineLogoSplash::BounceEngineLogoSplash(const std::string &target, const std::string &font)
 :   Scene("bounce engine logo")
 {
     Game::ref().add_event(new DelayRunOtherEvent(3500, new PushSceneTransitionEvent(target)));
 
-    auto *bounce = new Object(this);
+    auto *bounce = new Rigidbody(this);
     auto *icon = new AnimatedBounceIcon();
     icon->set_parent(bounce);
     bounce->set_position({0, 200});
     bounce->set_velocity({0, -80});
-    bounce->set_shape(CollisionShape::rectangle(10, 10));
+    bounce->set_shape_rectangle(10, 10);
 
-    auto *eng = new Object(this);
+    auto *eng = new Rigidbody(this);
     auto *txt = new TextRenderable("bounce by cbo", font, 150);
     txt->set_parent(eng);
     eng->set_position({0, -5});
-    eng->set_shape(CollisionShape::rectangle(10, 10));
+    eng->set_shape_rectangle(10, 10);
 
 }
 

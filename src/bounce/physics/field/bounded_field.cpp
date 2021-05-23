@@ -7,7 +7,7 @@ BoundedForceField::BoundedForceField(const arma::vec2 &topleft, const arma::vec2
     // do nothing
 }
 
-arma::vec2 BoundedForceField::measure_at(Object *obj) const
+arma::vec2 BoundedForceField::measure_at(Rigidbody *obj) const
 {
     arma::vec2 p = obj->get_position();
     if (this->is_in_range(p))

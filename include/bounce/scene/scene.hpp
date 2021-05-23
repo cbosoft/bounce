@@ -5,7 +5,6 @@
 
 #include "camera/camera.hpp"
 #include "../input/context/context.hpp"
-#include "../object/object.hpp"
 #include "../transform/transform.hpp"
 #include "../physics/field/field.hpp"
 #include "../game/game.hpp"
@@ -16,7 +15,6 @@ public:
     Scene(json j, int dummy);
 
     [[nodiscard]] const std::string &get_name() const;
-    std::vector<Object *> find_objects_near_to(Transform *t, double radius) const;
 
     void add_field(ForceField *field);
     [[nodiscard]] const std::vector<ForceField *> &get_fields() const;

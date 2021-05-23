@@ -6,7 +6,7 @@ GravityField::GravityField(double strength)
     // do nothing
 }
 
-arma::vec2 GravityField::f(Object *obj) const
+arma::vec2 GravityField::f(Rigidbody *obj) const
 {
     arma::vec2 accel{0, -this->_strength};
     return accel*obj->get_mass();
