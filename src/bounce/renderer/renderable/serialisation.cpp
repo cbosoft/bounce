@@ -15,6 +15,8 @@ Renderable::Renderable(json j)
     this->_colour = Colour::from_json(j["colour"]);
     this->_border_colour = Colour::from_json(j["border colour"]);
     this->_border_size = j["border size"];
+    this->_is_x_flipped = j["is flipped x"];
+    this->_is_y_flipped = j["is flipped y"];
 }
 
 json Renderable::serialise()
@@ -29,5 +31,7 @@ json Renderable::serialise()
     rv["colour"] = this->_colour.serialise();
     rv["border colour"] = this->_border_colour.serialise();
     rv["border size"] = this->_border_size;
+    rv["is flipped x"] = this->_is_x_flipped;
+    rv["is flipped y"] = this->_is_y_flipped;
     return rv;
 }

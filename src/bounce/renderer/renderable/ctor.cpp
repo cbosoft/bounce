@@ -17,6 +17,8 @@ Renderable::Renderable()
 ,   _current_frame(0)
 ,   _visible(true)
 ,   _animated(false)
+,   _is_x_flipped(false)
+,   _is_y_flipped(false)
 {
     this->add_tag("renderable");
 }
